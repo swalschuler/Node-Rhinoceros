@@ -1,0 +1,785 @@
+ARM GAS  D:\Windows\AppData\Local\Temp\ccUTqoL0.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"main.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.main,"ax",%progbits
+  19              		.align	2
+  20              		.global	main
+  21              		.thumb
+  22              		.thumb_func
+  23              		.type	main, %function
+  24              	main:
+  25              	.LFB63:
+  26              		.file 1 "main.c"
+   1:main.c        **** /* Node-Rhinoceros
+   2:main.c        **** 	 Charger board
+   3:main.c        ****  */
+   4:main.c        **** 
+   5:main.c        **** #include <project.h>
+   6:main.c        **** #include "data.h"
+   7:main.c        **** #include "can_manager.h"
+   8:main.c        **** 
+   9:main.c        **** 
+  10:main.c        **** 
+  11:main.c        **** int main(void) {
+  27              		.loc 1 11 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 10B5     		push	{r4, lr}
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 4, -8
+  34              		.cfi_offset 14, -4
+  12:main.c        **** 	CYGlobalIntEnable;      //Uncomment this line to enable global interrupts 
+  35              		.loc 1 12 0
+  36              	@ 12 "main.c" 1
+  37 0002 62B6     		CPSIE   i
+  38              	@ 0 "" 2
+  13:main.c        **** 
+  14:main.c        **** 	uint8_t atomic_state = CyEnterCriticalSection(); // BEGIN ATOMIC
+  39              		.loc 1 14 0
+  40              		.thumb
+  41 0004 FFF7FEFF 		bl	CyEnterCriticalSection
+  42              	.LVL0:
+  43 0008 0446     		mov	r4, r0
+ARM GAS  D:\Windows\AppData\Local\Temp\ccUTqoL0.s 			page 2
+
+
+  44              	.LVL1:
+  15:main.c        **** 	CAN_1_GlobalIntEnable(); // CAN Initialization
+  45              		.loc 1 15 0
+  46 000a FFF7FEFF 		bl	CAN_1_GlobalIntEnable
+  47              	.LVL2:
+  16:main.c        **** 	CAN_1_Init();
+  48              		.loc 1 16 0
+  49 000e FFF7FEFF 		bl	CAN_1_Init
+  50              	.LVL3:
+  17:main.c        **** 	CAN_1_Start();
+  51              		.loc 1 17 0
+  52 0012 FFF7FEFF 		bl	CAN_1_Start
+  53              	.LVL4:
+  18:main.c        **** 	CyDelay(500);				//give some time to finish setup
+  54              		.loc 1 18 0
+  55 0016 4FF4FA70 		mov	r0, #500
+  56 001a FFF7FEFF 		bl	CyDelay
+  57              	.LVL5:
+  19:main.c        **** 	CyExitCriticalSection(atomic_state);               // END ATOMIC
+  58              		.loc 1 19 0
+  59 001e 2046     		mov	r0, r4
+  60 0020 FFF7FEFF 		bl	CyExitCriticalSection
+  61              	.LVL6:
+  62              	.L2:
+  20:main.c        **** 	
+  21:main.c        **** 	for(;;)	{
+  22:main.c        **** 	    can_test_send();
+  63              		.loc 1 22 0 discriminator 1
+  64 0024 FFF7FEFF 		bl	can_test_send
+  65              	.LVL7:
+  23:main.c        **** 		//can_test_receive();
+  24:main.c        **** 		CyDelay(1000);
+  66              		.loc 1 24 0 discriminator 1
+  67 0028 4FF47A70 		mov	r0, #1000
+  68 002c FFF7FEFF 		bl	CyDelay
+  69              	.LVL8:
+  25:main.c        **** 	} // main loop
+  70              		.loc 1 25 0 discriminator 1
+  71 0030 F8E7     		b	.L2
+  72              		.cfi_endproc
+  73              	.LFE63:
+  74              		.size	main, .-main
+  75 0032 00BF     		.text
+  76              	.Letext0:
+  77              		.file 2 "d:\\programming\\cypress\\psoc creator\\4.0\\psoc creator\\import\\gnu\\arm\\4.9.3\\arm-n
+  78              		.file 3 "d:\\programming\\cypress\\psoc creator\\4.0\\psoc creator\\import\\gnu\\arm\\4.9.3\\arm-n
+  79              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+  80              		.file 5 "Generated_Source\\PSoC5/CyLib.h"
+  81              		.file 6 "Generated_Source\\PSoC5/CAN_1.h"
+  82              		.file 7 "Generated_Source\\PSoC5/core_cm3.h"
+  83              		.file 8 "can_manager.h"
+  84              		.section	.debug_info,"",%progbits
+  85              	.Ldebug_info0:
+  86 0000 BE010000 		.4byte	0x1be
+  87 0004 0400     		.2byte	0x4
+  88 0006 00000000 		.4byte	.Ldebug_abbrev0
+  89 000a 04       		.byte	0x4
+ARM GAS  D:\Windows\AppData\Local\Temp\ccUTqoL0.s 			page 3
+
+
+  90 000b 01       		.uleb128 0x1
+  91 000c A6000000 		.4byte	.LASF25
+  92 0010 01       		.byte	0x1
+  93 0011 E2010000 		.4byte	.LASF26
+  94 0015 77010000 		.4byte	.LASF27
+  95 0019 00000000 		.4byte	.Ldebug_ranges0+0
+  96 001d 00000000 		.4byte	0
+  97 0021 00000000 		.4byte	.Ldebug_line0
+  98 0025 02       		.uleb128 0x2
+  99 0026 01       		.byte	0x1
+ 100 0027 06       		.byte	0x6
+ 101 0028 29020000 		.4byte	.LASF0
+ 102 002c 03       		.uleb128 0x3
+ 103 002d 00000000 		.4byte	.LASF4
+ 104 0031 02       		.byte	0x2
+ 105 0032 1D       		.byte	0x1d
+ 106 0033 37000000 		.4byte	0x37
+ 107 0037 02       		.uleb128 0x2
+ 108 0038 01       		.byte	0x1
+ 109 0039 08       		.byte	0x8
+ 110 003a 46000000 		.4byte	.LASF1
+ 111 003e 02       		.uleb128 0x2
+ 112 003f 02       		.byte	0x2
+ 113 0040 05       		.byte	0x5
+ 114 0041 EE010000 		.4byte	.LASF2
+ 115 0045 02       		.uleb128 0x2
+ 116 0046 02       		.byte	0x2
+ 117 0047 07       		.byte	0x7
+ 118 0048 73000000 		.4byte	.LASF3
+ 119 004c 03       		.uleb128 0x3
+ 120 004d 0A000000 		.4byte	.LASF5
+ 121 0051 02       		.byte	0x2
+ 122 0052 3F       		.byte	0x3f
+ 123 0053 57000000 		.4byte	0x57
+ 124 0057 02       		.uleb128 0x2
+ 125 0058 04       		.byte	0x4
+ 126 0059 05       		.byte	0x5
+ 127 005a 14020000 		.4byte	.LASF6
+ 128 005e 02       		.uleb128 0x2
+ 129 005f 04       		.byte	0x4
+ 130 0060 07       		.byte	0x7
+ 131 0061 54000000 		.4byte	.LASF7
+ 132 0065 02       		.uleb128 0x2
+ 133 0066 08       		.byte	0x8
+ 134 0067 05       		.byte	0x5
+ 135 0068 D4010000 		.4byte	.LASF8
+ 136 006c 02       		.uleb128 0x2
+ 137 006d 08       		.byte	0x8
+ 138 006e 07       		.byte	0x7
+ 139 006f 58010000 		.4byte	.LASF9
+ 140 0073 04       		.uleb128 0x4
+ 141 0074 04       		.byte	0x4
+ 142 0075 05       		.byte	0x5
+ 143 0076 696E7400 		.ascii	"int\000"
+ 144 007a 02       		.uleb128 0x2
+ 145 007b 04       		.byte	0x4
+ 146 007c 07       		.byte	0x7
+ARM GAS  D:\Windows\AppData\Local\Temp\ccUTqoL0.s 			page 4
+
+
+ 147 007d 4B010000 		.4byte	.LASF10
+ 148 0081 03       		.uleb128 0x3
+ 149 0082 6F010000 		.4byte	.LASF11
+ 150 0086 03       		.byte	0x3
+ 151 0087 15       		.byte	0x15
+ 152 0088 2C000000 		.4byte	0x2c
+ 153 008c 03       		.uleb128 0x3
+ 154 008d 38000000 		.4byte	.LASF12
+ 155 0091 03       		.byte	0x3
+ 156 0092 2C       		.byte	0x2c
+ 157 0093 4C000000 		.4byte	0x4c
+ 158 0097 05       		.uleb128 0x5
+ 159 0098 F8010000 		.4byte	.LASF13
+ 160 009c 04       		.byte	0x4
+ 161 009d 9201     		.2byte	0x192
+ 162 009f 37000000 		.4byte	0x37
+ 163 00a3 05       		.uleb128 0x5
+ 164 00a4 9F000000 		.4byte	.LASF14
+ 165 00a8 04       		.byte	0x4
+ 166 00a9 9401     		.2byte	0x194
+ 167 00ab 5E000000 		.4byte	0x5e
+ 168 00af 02       		.uleb128 0x2
+ 169 00b0 04       		.byte	0x4
+ 170 00b1 04       		.byte	0x4
+ 171 00b2 40000000 		.4byte	.LASF15
+ 172 00b6 02       		.uleb128 0x2
+ 173 00b7 08       		.byte	0x8
+ 174 00b8 04       		.byte	0x4
+ 175 00b9 93000000 		.4byte	.LASF16
+ 176 00bd 02       		.uleb128 0x2
+ 177 00be 01       		.byte	0x1
+ 178 00bf 08       		.byte	0x8
+ 179 00c0 E9010000 		.4byte	.LASF17
+ 180 00c4 02       		.uleb128 0x2
+ 181 00c5 04       		.byte	0x4
+ 182 00c6 07       		.byte	0x7
+ 183 00c7 CB010000 		.4byte	.LASF18
+ 184 00cb 06       		.uleb128 0x6
+ 185 00cc 9A000000 		.4byte	.LASF28
+ 186 00d0 01       		.byte	0x1
+ 187 00d1 0B       		.byte	0xb
+ 188 00d2 73000000 		.4byte	0x73
+ 189 00d6 00000000 		.4byte	.LFB63
+ 190 00da 32000000 		.4byte	.LFE63-.LFB63
+ 191 00de 01       		.uleb128 0x1
+ 192 00df 9C       		.byte	0x9c
+ 193 00e0 59010000 		.4byte	0x159
+ 194 00e4 07       		.uleb128 0x7
+ 195 00e5 66000000 		.4byte	.LASF29
+ 196 00e9 01       		.byte	0x1
+ 197 00ea 0E       		.byte	0xe
+ 198 00eb 81000000 		.4byte	0x81
+ 199 00ef 01       		.uleb128 0x1
+ 200 00f0 54       		.byte	0x54
+ 201 00f1 08       		.uleb128 0x8
+ 202 00f2 08000000 		.4byte	.LVL0
+ 203 00f6 6A010000 		.4byte	0x16a
+ARM GAS  D:\Windows\AppData\Local\Temp\ccUTqoL0.s 			page 5
+
+
+ 204 00fa 08       		.uleb128 0x8
+ 205 00fb 0E000000 		.4byte	.LVL2
+ 206 00ff 75010000 		.4byte	0x175
+ 207 0103 08       		.uleb128 0x8
+ 208 0104 12000000 		.4byte	.LVL3
+ 209 0108 80010000 		.4byte	0x180
+ 210 010c 08       		.uleb128 0x8
+ 211 010d 16000000 		.4byte	.LVL4
+ 212 0111 8B010000 		.4byte	0x18b
+ 213 0115 09       		.uleb128 0x9
+ 214 0116 1E000000 		.4byte	.LVL5
+ 215 011a 96010000 		.4byte	0x196
+ 216 011e 2A010000 		.4byte	0x12a
+ 217 0122 0A       		.uleb128 0xa
+ 218 0123 01       		.uleb128 0x1
+ 219 0124 50       		.byte	0x50
+ 220 0125 03       		.uleb128 0x3
+ 221 0126 0A       		.byte	0xa
+ 222 0127 F401     		.2byte	0x1f4
+ 223 0129 00       		.byte	0
+ 224 012a 09       		.uleb128 0x9
+ 225 012b 24000000 		.4byte	.LVL6
+ 226 012f A7010000 		.4byte	0x1a7
+ 227 0133 3E010000 		.4byte	0x13e
+ 228 0137 0A       		.uleb128 0xa
+ 229 0138 01       		.uleb128 0x1
+ 230 0139 50       		.byte	0x50
+ 231 013a 02       		.uleb128 0x2
+ 232 013b 74       		.byte	0x74
+ 233 013c 00       		.sleb128 0
+ 234 013d 00       		.byte	0
+ 235 013e 08       		.uleb128 0x8
+ 236 013f 28000000 		.4byte	.LVL7
+ 237 0143 B8010000 		.4byte	0x1b8
+ 238 0147 0B       		.uleb128 0xb
+ 239 0148 30000000 		.4byte	.LVL8
+ 240 014c 96010000 		.4byte	0x196
+ 241 0150 0A       		.uleb128 0xa
+ 242 0151 01       		.uleb128 0x1
+ 243 0152 50       		.byte	0x50
+ 244 0153 03       		.uleb128 0x3
+ 245 0154 0A       		.byte	0xa
+ 246 0155 E803     		.2byte	0x3e8
+ 247 0157 00       		.byte	0
+ 248 0158 00       		.byte	0
+ 249 0159 0C       		.uleb128 0xc
+ 250 015a 86000000 		.4byte	.LASF30
+ 251 015e 07       		.byte	0x7
+ 252 015f 9606     		.2byte	0x696
+ 253 0161 65010000 		.4byte	0x165
+ 254 0165 0D       		.uleb128 0xd
+ 255 0166 8C000000 		.4byte	0x8c
+ 256 016a 0E       		.uleb128 0xe
+ 257 016b 34010000 		.4byte	.LASF19
+ 258 016f 05       		.byte	0x5
+ 259 0170 7D       		.byte	0x7d
+ 260 0171 97000000 		.4byte	0x97
+ARM GAS  D:\Windows\AppData\Local\Temp\ccUTqoL0.s 			page 6
+
+
+ 261 0175 0E       		.uleb128 0xe
+ 262 0176 22000000 		.4byte	.LASF20
+ 263 017a 06       		.byte	0x6
+ 264 017b C8       		.byte	0xc8
+ 265 017c 97000000 		.4byte	0x97
+ 266 0180 0E       		.uleb128 0xe
+ 267 0181 C0010000 		.4byte	.LASF21
+ 268 0185 06       		.byte	0x6
+ 269 0186 C4       		.byte	0xc4
+ 270 0187 97000000 		.4byte	0x97
+ 271 018b 0E       		.uleb128 0xe
+ 272 018c 1D020000 		.4byte	.LASF22
+ 273 0190 06       		.byte	0x6
+ 274 0191 C5       		.byte	0xc5
+ 275 0192 97000000 		.4byte	0x97
+ 276 0196 0F       		.uleb128 0xf
+ 277 0197 35020000 		.4byte	.LASF23
+ 278 019b 05       		.byte	0x5
+ 279 019c 76       		.byte	0x76
+ 280 019d A7010000 		.4byte	0x1a7
+ 281 01a1 10       		.uleb128 0x10
+ 282 01a2 A3000000 		.4byte	0xa3
+ 283 01a6 00       		.byte	0
+ 284 01a7 0F       		.uleb128 0xf
+ 285 01a8 FE010000 		.4byte	.LASF24
+ 286 01ac 05       		.byte	0x5
+ 287 01ad 7E       		.byte	0x7e
+ 288 01ae B8010000 		.4byte	0x1b8
+ 289 01b2 10       		.uleb128 0x10
+ 290 01b3 97000000 		.4byte	0x97
+ 291 01b7 00       		.byte	0
+ 292 01b8 11       		.uleb128 0x11
+ 293 01b9 14000000 		.4byte	.LASF31
+ 294 01bd 08       		.byte	0x8
+ 295 01be 08       		.byte	0x8
+ 296 01bf 12       		.uleb128 0x12
+ 297 01c0 00       		.byte	0
+ 298 01c1 00       		.byte	0
+ 299              		.section	.debug_abbrev,"",%progbits
+ 300              	.Ldebug_abbrev0:
+ 301 0000 01       		.uleb128 0x1
+ 302 0001 11       		.uleb128 0x11
+ 303 0002 01       		.byte	0x1
+ 304 0003 25       		.uleb128 0x25
+ 305 0004 0E       		.uleb128 0xe
+ 306 0005 13       		.uleb128 0x13
+ 307 0006 0B       		.uleb128 0xb
+ 308 0007 03       		.uleb128 0x3
+ 309 0008 0E       		.uleb128 0xe
+ 310 0009 1B       		.uleb128 0x1b
+ 311 000a 0E       		.uleb128 0xe
+ 312 000b 55       		.uleb128 0x55
+ 313 000c 17       		.uleb128 0x17
+ 314 000d 11       		.uleb128 0x11
+ 315 000e 01       		.uleb128 0x1
+ 316 000f 10       		.uleb128 0x10
+ 317 0010 17       		.uleb128 0x17
+ARM GAS  D:\Windows\AppData\Local\Temp\ccUTqoL0.s 			page 7
+
+
+ 318 0011 00       		.byte	0
+ 319 0012 00       		.byte	0
+ 320 0013 02       		.uleb128 0x2
+ 321 0014 24       		.uleb128 0x24
+ 322 0015 00       		.byte	0
+ 323 0016 0B       		.uleb128 0xb
+ 324 0017 0B       		.uleb128 0xb
+ 325 0018 3E       		.uleb128 0x3e
+ 326 0019 0B       		.uleb128 0xb
+ 327 001a 03       		.uleb128 0x3
+ 328 001b 0E       		.uleb128 0xe
+ 329 001c 00       		.byte	0
+ 330 001d 00       		.byte	0
+ 331 001e 03       		.uleb128 0x3
+ 332 001f 16       		.uleb128 0x16
+ 333 0020 00       		.byte	0
+ 334 0021 03       		.uleb128 0x3
+ 335 0022 0E       		.uleb128 0xe
+ 336 0023 3A       		.uleb128 0x3a
+ 337 0024 0B       		.uleb128 0xb
+ 338 0025 3B       		.uleb128 0x3b
+ 339 0026 0B       		.uleb128 0xb
+ 340 0027 49       		.uleb128 0x49
+ 341 0028 13       		.uleb128 0x13
+ 342 0029 00       		.byte	0
+ 343 002a 00       		.byte	0
+ 344 002b 04       		.uleb128 0x4
+ 345 002c 24       		.uleb128 0x24
+ 346 002d 00       		.byte	0
+ 347 002e 0B       		.uleb128 0xb
+ 348 002f 0B       		.uleb128 0xb
+ 349 0030 3E       		.uleb128 0x3e
+ 350 0031 0B       		.uleb128 0xb
+ 351 0032 03       		.uleb128 0x3
+ 352 0033 08       		.uleb128 0x8
+ 353 0034 00       		.byte	0
+ 354 0035 00       		.byte	0
+ 355 0036 05       		.uleb128 0x5
+ 356 0037 16       		.uleb128 0x16
+ 357 0038 00       		.byte	0
+ 358 0039 03       		.uleb128 0x3
+ 359 003a 0E       		.uleb128 0xe
+ 360 003b 3A       		.uleb128 0x3a
+ 361 003c 0B       		.uleb128 0xb
+ 362 003d 3B       		.uleb128 0x3b
+ 363 003e 05       		.uleb128 0x5
+ 364 003f 49       		.uleb128 0x49
+ 365 0040 13       		.uleb128 0x13
+ 366 0041 00       		.byte	0
+ 367 0042 00       		.byte	0
+ 368 0043 06       		.uleb128 0x6
+ 369 0044 2E       		.uleb128 0x2e
+ 370 0045 01       		.byte	0x1
+ 371 0046 3F       		.uleb128 0x3f
+ 372 0047 19       		.uleb128 0x19
+ 373 0048 03       		.uleb128 0x3
+ 374 0049 0E       		.uleb128 0xe
+ARM GAS  D:\Windows\AppData\Local\Temp\ccUTqoL0.s 			page 8
+
+
+ 375 004a 3A       		.uleb128 0x3a
+ 376 004b 0B       		.uleb128 0xb
+ 377 004c 3B       		.uleb128 0x3b
+ 378 004d 0B       		.uleb128 0xb
+ 379 004e 27       		.uleb128 0x27
+ 380 004f 19       		.uleb128 0x19
+ 381 0050 49       		.uleb128 0x49
+ 382 0051 13       		.uleb128 0x13
+ 383 0052 11       		.uleb128 0x11
+ 384 0053 01       		.uleb128 0x1
+ 385 0054 12       		.uleb128 0x12
+ 386 0055 06       		.uleb128 0x6
+ 387 0056 40       		.uleb128 0x40
+ 388 0057 18       		.uleb128 0x18
+ 389 0058 9742     		.uleb128 0x2117
+ 390 005a 19       		.uleb128 0x19
+ 391 005b 01       		.uleb128 0x1
+ 392 005c 13       		.uleb128 0x13
+ 393 005d 00       		.byte	0
+ 394 005e 00       		.byte	0
+ 395 005f 07       		.uleb128 0x7
+ 396 0060 34       		.uleb128 0x34
+ 397 0061 00       		.byte	0
+ 398 0062 03       		.uleb128 0x3
+ 399 0063 0E       		.uleb128 0xe
+ 400 0064 3A       		.uleb128 0x3a
+ 401 0065 0B       		.uleb128 0xb
+ 402 0066 3B       		.uleb128 0x3b
+ 403 0067 0B       		.uleb128 0xb
+ 404 0068 49       		.uleb128 0x49
+ 405 0069 13       		.uleb128 0x13
+ 406 006a 02       		.uleb128 0x2
+ 407 006b 18       		.uleb128 0x18
+ 408 006c 00       		.byte	0
+ 409 006d 00       		.byte	0
+ 410 006e 08       		.uleb128 0x8
+ 411 006f 898201   		.uleb128 0x4109
+ 412 0072 00       		.byte	0
+ 413 0073 11       		.uleb128 0x11
+ 414 0074 01       		.uleb128 0x1
+ 415 0075 31       		.uleb128 0x31
+ 416 0076 13       		.uleb128 0x13
+ 417 0077 00       		.byte	0
+ 418 0078 00       		.byte	0
+ 419 0079 09       		.uleb128 0x9
+ 420 007a 898201   		.uleb128 0x4109
+ 421 007d 01       		.byte	0x1
+ 422 007e 11       		.uleb128 0x11
+ 423 007f 01       		.uleb128 0x1
+ 424 0080 31       		.uleb128 0x31
+ 425 0081 13       		.uleb128 0x13
+ 426 0082 01       		.uleb128 0x1
+ 427 0083 13       		.uleb128 0x13
+ 428 0084 00       		.byte	0
+ 429 0085 00       		.byte	0
+ 430 0086 0A       		.uleb128 0xa
+ 431 0087 8A8201   		.uleb128 0x410a
+ARM GAS  D:\Windows\AppData\Local\Temp\ccUTqoL0.s 			page 9
+
+
+ 432 008a 00       		.byte	0
+ 433 008b 02       		.uleb128 0x2
+ 434 008c 18       		.uleb128 0x18
+ 435 008d 9142     		.uleb128 0x2111
+ 436 008f 18       		.uleb128 0x18
+ 437 0090 00       		.byte	0
+ 438 0091 00       		.byte	0
+ 439 0092 0B       		.uleb128 0xb
+ 440 0093 898201   		.uleb128 0x4109
+ 441 0096 01       		.byte	0x1
+ 442 0097 11       		.uleb128 0x11
+ 443 0098 01       		.uleb128 0x1
+ 444 0099 31       		.uleb128 0x31
+ 445 009a 13       		.uleb128 0x13
+ 446 009b 00       		.byte	0
+ 447 009c 00       		.byte	0
+ 448 009d 0C       		.uleb128 0xc
+ 449 009e 34       		.uleb128 0x34
+ 450 009f 00       		.byte	0
+ 451 00a0 03       		.uleb128 0x3
+ 452 00a1 0E       		.uleb128 0xe
+ 453 00a2 3A       		.uleb128 0x3a
+ 454 00a3 0B       		.uleb128 0xb
+ 455 00a4 3B       		.uleb128 0x3b
+ 456 00a5 05       		.uleb128 0x5
+ 457 00a6 49       		.uleb128 0x49
+ 458 00a7 13       		.uleb128 0x13
+ 459 00a8 3F       		.uleb128 0x3f
+ 460 00a9 19       		.uleb128 0x19
+ 461 00aa 3C       		.uleb128 0x3c
+ 462 00ab 19       		.uleb128 0x19
+ 463 00ac 00       		.byte	0
+ 464 00ad 00       		.byte	0
+ 465 00ae 0D       		.uleb128 0xd
+ 466 00af 35       		.uleb128 0x35
+ 467 00b0 00       		.byte	0
+ 468 00b1 49       		.uleb128 0x49
+ 469 00b2 13       		.uleb128 0x13
+ 470 00b3 00       		.byte	0
+ 471 00b4 00       		.byte	0
+ 472 00b5 0E       		.uleb128 0xe
+ 473 00b6 2E       		.uleb128 0x2e
+ 474 00b7 00       		.byte	0
+ 475 00b8 3F       		.uleb128 0x3f
+ 476 00b9 19       		.uleb128 0x19
+ 477 00ba 03       		.uleb128 0x3
+ 478 00bb 0E       		.uleb128 0xe
+ 479 00bc 3A       		.uleb128 0x3a
+ 480 00bd 0B       		.uleb128 0xb
+ 481 00be 3B       		.uleb128 0x3b
+ 482 00bf 0B       		.uleb128 0xb
+ 483 00c0 27       		.uleb128 0x27
+ 484 00c1 19       		.uleb128 0x19
+ 485 00c2 49       		.uleb128 0x49
+ 486 00c3 13       		.uleb128 0x13
+ 487 00c4 3C       		.uleb128 0x3c
+ 488 00c5 19       		.uleb128 0x19
+ARM GAS  D:\Windows\AppData\Local\Temp\ccUTqoL0.s 			page 10
+
+
+ 489 00c6 00       		.byte	0
+ 490 00c7 00       		.byte	0
+ 491 00c8 0F       		.uleb128 0xf
+ 492 00c9 2E       		.uleb128 0x2e
+ 493 00ca 01       		.byte	0x1
+ 494 00cb 3F       		.uleb128 0x3f
+ 495 00cc 19       		.uleb128 0x19
+ 496 00cd 03       		.uleb128 0x3
+ 497 00ce 0E       		.uleb128 0xe
+ 498 00cf 3A       		.uleb128 0x3a
+ 499 00d0 0B       		.uleb128 0xb
+ 500 00d1 3B       		.uleb128 0x3b
+ 501 00d2 0B       		.uleb128 0xb
+ 502 00d3 27       		.uleb128 0x27
+ 503 00d4 19       		.uleb128 0x19
+ 504 00d5 3C       		.uleb128 0x3c
+ 505 00d6 19       		.uleb128 0x19
+ 506 00d7 01       		.uleb128 0x1
+ 507 00d8 13       		.uleb128 0x13
+ 508 00d9 00       		.byte	0
+ 509 00da 00       		.byte	0
+ 510 00db 10       		.uleb128 0x10
+ 511 00dc 05       		.uleb128 0x5
+ 512 00dd 00       		.byte	0
+ 513 00de 49       		.uleb128 0x49
+ 514 00df 13       		.uleb128 0x13
+ 515 00e0 00       		.byte	0
+ 516 00e1 00       		.byte	0
+ 517 00e2 11       		.uleb128 0x11
+ 518 00e3 2E       		.uleb128 0x2e
+ 519 00e4 01       		.byte	0x1
+ 520 00e5 3F       		.uleb128 0x3f
+ 521 00e6 19       		.uleb128 0x19
+ 522 00e7 03       		.uleb128 0x3
+ 523 00e8 0E       		.uleb128 0xe
+ 524 00e9 3A       		.uleb128 0x3a
+ 525 00ea 0B       		.uleb128 0xb
+ 526 00eb 3B       		.uleb128 0x3b
+ 527 00ec 0B       		.uleb128 0xb
+ 528 00ed 3C       		.uleb128 0x3c
+ 529 00ee 19       		.uleb128 0x19
+ 530 00ef 00       		.byte	0
+ 531 00f0 00       		.byte	0
+ 532 00f1 12       		.uleb128 0x12
+ 533 00f2 18       		.uleb128 0x18
+ 534 00f3 00       		.byte	0
+ 535 00f4 00       		.byte	0
+ 536 00f5 00       		.byte	0
+ 537 00f6 00       		.byte	0
+ 538              		.section	.debug_aranges,"",%progbits
+ 539 0000 1C000000 		.4byte	0x1c
+ 540 0004 0200     		.2byte	0x2
+ 541 0006 00000000 		.4byte	.Ldebug_info0
+ 542 000a 04       		.byte	0x4
+ 543 000b 00       		.byte	0
+ 544 000c 0000     		.2byte	0
+ 545 000e 0000     		.2byte	0
+ARM GAS  D:\Windows\AppData\Local\Temp\ccUTqoL0.s 			page 11
+
+
+ 546 0010 00000000 		.4byte	.LFB63
+ 547 0014 32000000 		.4byte	.LFE63-.LFB63
+ 548 0018 00000000 		.4byte	0
+ 549 001c 00000000 		.4byte	0
+ 550              		.section	.debug_ranges,"",%progbits
+ 551              	.Ldebug_ranges0:
+ 552 0000 00000000 		.4byte	.LFB63
+ 553 0004 32000000 		.4byte	.LFE63
+ 554 0008 00000000 		.4byte	0
+ 555 000c 00000000 		.4byte	0
+ 556              		.section	.debug_line,"",%progbits
+ 557              	.Ldebug_line0:
+ 558 0000 89010000 		.section	.debug_str,"MS",%progbits,1
+ 558      02005E01 
+ 558      00000201 
+ 558      FB0E0D00 
+ 558      01010101 
+ 559              	.LASF4:
+ 560 0000 5F5F7569 		.ascii	"__uint8_t\000"
+ 560      6E74385F 
+ 560      7400
+ 561              	.LASF5:
+ 562 000a 5F5F696E 		.ascii	"__int32_t\000"
+ 562      7433325F 
+ 562      7400
+ 563              	.LASF31:
+ 564 0014 63616E5F 		.ascii	"can_test_send\000"
+ 564      74657374 
+ 564      5F73656E 
+ 564      6400
+ 565              	.LASF20:
+ 566 0022 43414E5F 		.ascii	"CAN_1_GlobalIntEnable\000"
+ 566      315F476C 
+ 566      6F62616C 
+ 566      496E7445 
+ 566      6E61626C 
+ 567              	.LASF12:
+ 568 0038 696E7433 		.ascii	"int32_t\000"
+ 568      325F7400 
+ 569              	.LASF15:
+ 570 0040 666C6F61 		.ascii	"float\000"
+ 570      7400
+ 571              	.LASF1:
+ 572 0046 756E7369 		.ascii	"unsigned char\000"
+ 572      676E6564 
+ 572      20636861 
+ 572      7200
+ 573              	.LASF7:
+ 574 0054 6C6F6E67 		.ascii	"long unsigned int\000"
+ 574      20756E73 
+ 574      69676E65 
+ 574      6420696E 
+ 574      7400
+ 575              	.LASF29:
+ 576 0066 61746F6D 		.ascii	"atomic_state\000"
+ 576      69635F73 
+ 576      74617465 
+ARM GAS  D:\Windows\AppData\Local\Temp\ccUTqoL0.s 			page 12
+
+
+ 576      00
+ 577              	.LASF3:
+ 578 0073 73686F72 		.ascii	"short unsigned int\000"
+ 578      7420756E 
+ 578      7369676E 
+ 578      65642069 
+ 578      6E7400
+ 579              	.LASF30:
+ 580 0086 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 580      52784275 
+ 580      66666572 
+ 580      00
+ 581              	.LASF16:
+ 582 0093 646F7562 		.ascii	"double\000"
+ 582      6C6500
+ 583              	.LASF28:
+ 584 009a 6D61696E 		.ascii	"main\000"
+ 584      00
+ 585              	.LASF14:
+ 586 009f 75696E74 		.ascii	"uint32\000"
+ 586      333200
+ 587              	.LASF25:
+ 588 00a6 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 588      4320342E 
+ 588      392E3320 
+ 588      32303135 
+ 588      30333033 
+ 589 00d9 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 589      20726576 
+ 589      6973696F 
+ 589      6E203232 
+ 589      31323230 
+ 590 010c 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 590      66756E63 
+ 590      74696F6E 
+ 590      2D736563 
+ 590      74696F6E 
+ 591              	.LASF19:
+ 592 0134 4379456E 		.ascii	"CyEnterCriticalSection\000"
+ 592      74657243 
+ 592      72697469 
+ 592      63616C53 
+ 592      65637469 
+ 593              	.LASF10:
+ 594 014b 756E7369 		.ascii	"unsigned int\000"
+ 594      676E6564 
+ 594      20696E74 
+ 594      00
+ 595              	.LASF9:
+ 596 0158 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 596      206C6F6E 
+ 596      6720756E 
+ 596      7369676E 
+ 596      65642069 
+ 597              	.LASF11:
+ 598 016f 75696E74 		.ascii	"uint8_t\000"
+ 598      385F7400 
+ARM GAS  D:\Windows\AppData\Local\Temp\ccUTqoL0.s 			page 13
+
+
+ 599              	.LASF27:
+ 600 0177 443A5C44 		.ascii	"D:\\Downloads\\FRUCD\\Node-Rhinoceros\\Node-Rhinoce"
+ 600      6F776E6C 
+ 600      6F616473 
+ 600      5C465255 
+ 600      43445C4E 
+ 601 01a6 726F735C 		.ascii	"ros\\Node-Rhinoceros.cydsn\000"
+ 601      4E6F6465 
+ 601      2D526869 
+ 601      6E6F6365 
+ 601      726F732E 
+ 602              	.LASF21:
+ 603 01c0 43414E5F 		.ascii	"CAN_1_Init\000"
+ 603      315F496E 
+ 603      697400
+ 604              	.LASF18:
+ 605 01cb 73697A65 		.ascii	"sizetype\000"
+ 605      74797065 
+ 605      00
+ 606              	.LASF8:
+ 607 01d4 6C6F6E67 		.ascii	"long long int\000"
+ 607      206C6F6E 
+ 607      6720696E 
+ 607      7400
+ 608              	.LASF26:
+ 609 01e2 6D61696E 		.ascii	"main.c\000"
+ 609      2E6300
+ 610              	.LASF17:
+ 611 01e9 63686172 		.ascii	"char\000"
+ 611      00
+ 612              	.LASF2:
+ 613 01ee 73686F72 		.ascii	"short int\000"
+ 613      7420696E 
+ 613      7400
+ 614              	.LASF13:
+ 615 01f8 75696E74 		.ascii	"uint8\000"
+ 615      3800
+ 616              	.LASF24:
+ 617 01fe 43794578 		.ascii	"CyExitCriticalSection\000"
+ 617      69744372 
+ 617      69746963 
+ 617      616C5365 
+ 617      6374696F 
+ 618              	.LASF6:
+ 619 0214 6C6F6E67 		.ascii	"long int\000"
+ 619      20696E74 
+ 619      00
+ 620              	.LASF22:
+ 621 021d 43414E5F 		.ascii	"CAN_1_Start\000"
+ 621      315F5374 
+ 621      61727400 
+ 622              	.LASF0:
+ 623 0229 7369676E 		.ascii	"signed char\000"
+ 623      65642063 
+ 623      68617200 
+ 624              	.LASF23:
+ 625 0235 43794465 		.ascii	"CyDelay\000"
+ARM GAS  D:\Windows\AppData\Local\Temp\ccUTqoL0.s 			page 14
+
+
+ 625      6C617900 
+ 626              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br

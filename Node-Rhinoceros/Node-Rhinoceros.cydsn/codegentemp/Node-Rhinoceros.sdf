@@ -1,0 +1,27 @@
+(DELAYFILE
+ (SDFVERSION "IEEE 1497 4.0")
+ (DATE "2017-05-28T04:15:48Z")
+ (DESIGN "Node-Rhinoceros")
+ (VENDOR "Cypress Semiconductor")
+ (PROGRAM "PSoC Creator")
+ (VERSION " 4.0 Update 1")
+ (DIVIDER .)
+ (TIMESCALE 1 ns)
+ (CELL
+  (CELLTYPE "Node-Rhinoceros")
+  (INSTANCE *)
+  (DELAY
+   (ABSOLUTE
+    (INTERCONNECT ClockBlock.clk_bus_glb \\CAN_1\:isr\\.clock (0.000:0.000:0.000))
+    (INTERCONNECT Rx_1\(0\).fb \\CAN_1\:CanIP\\.can_rx (9.984:9.984:9.984))
+    (INTERCONNECT \\CAN_1\:CanIP\\.can_tx Tx_1\(0\).pin_input (10.262:10.262:10.262))
+    (INTERCONNECT \\CAN_1\:CanIP\\.interrupt \\CAN_1\:isr\\.interrupt (1.000:1.000:1.000))
+    (INTERCONNECT Tx_1\(0\).pad_out Tx_1\(0\).pad_in (0.000:0.000:0.000))
+    (INTERCONNECT ClockBlock.clk_bus_glb_ff \\CAN_1\:CanIP\\.clock (0.000:0.000:0.000))
+    (INTERCONNECT Rx_1\(0\)_PAD Rx_1\(0\).pad_in (0.000:0.000:0.000))
+    (INTERCONNECT Tx_1\(0\).pad_out Tx_1\(0\)_PAD (0.000:0.000:0.000))
+    (INTERCONNECT Tx_1\(0\)_PAD Tx_1\(0\).pad_in (0.000:0.000:0.000))
+   )
+  )
+ )
+)

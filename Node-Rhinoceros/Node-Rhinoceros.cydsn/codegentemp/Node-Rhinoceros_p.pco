@@ -1,0 +1,9 @@
+dont_use_io iocell 1 0
+dont_use_io iocell 1 1
+dont_use_io iocell 1 3
+set_location "ClockBlock" clockblockcell -1 -1 0
+set_location "\CAN_1:CanIP\" cancell -1 -1 0
+# Note: port 12 is the logical name for port 7
+set_io "Rx_1(0)" iocell 12 3
+set_location "\CAN_1:isr\" interrupt -1 -1 16
+set_io "Tx_1(0)" iocell 4 0
