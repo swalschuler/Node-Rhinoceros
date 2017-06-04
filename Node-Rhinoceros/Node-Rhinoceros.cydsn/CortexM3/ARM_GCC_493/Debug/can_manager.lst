@@ -1,4 +1,4 @@
-ARM GAS  D:\Windows\AppData\Local\Temp\cctCKL3l.s 			page 1
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 1
 
 
    1              		.syntax unified
@@ -18,1062 +18,3110 @@ ARM GAS  D:\Windows\AppData\Local\Temp\cctCKL3l.s 			page 1
   15              		.text
   16              	.Ltext0:
   17              		.cfi_sections	.debug_frame
-  18              		.section	.text.can_test_send,"ax",%progbits
+  18              		.section	.text.can_msg_init,"ax",%progbits
   19              		.align	2
-  20              		.global	can_test_send
+  20              		.global	can_msg_init
   21              		.thumb
   22              		.thumb_func
-  23              		.type	can_test_send, %function
-  24              	can_test_send:
-  25              	.LFB63:
+  23              		.type	can_msg_init, %function
+  24              	can_msg_init:
+  25              	.LFB64:
   26              		.file 1 "can_manager.c"
    1:can_manager.c **** #include "can_manager.h"
-   2:can_manager.c **** 
+   2:can_manager.c **** #include <stdio.h>
    3:can_manager.c **** 
-   4:can_manager.c **** void can_test_send() {
-  27              		.loc 1 4 0
+   4:can_manager.c **** #define BMS_CURRENT_ID		0x288
+   5:can_manager.c **** #define BMS_VOLTAGE_ID		0x388
+   6:can_manager.c **** #define BMS_TEMP_ID			0x488
+   7:can_manager.c **** 
+   8:can_manager.c **** DataPacket BMS_STATUS;		//0x188
+   9:can_manager.c **** DataPacket BMS_CURRENT;		//0x288
+  10:can_manager.c **** DataPacket BMS_VOLTAGE;		//0x388
+  11:can_manager.c **** DataPacket BMS_TEMP;		//0x488
+  12:can_manager.c **** 
+  13:can_manager.c **** void can_init() {
+  14:can_manager.c **** 	CAN_GlobalIntEnable(); // CAN Initialization
+  15:can_manager.c **** 	CAN_Init();
+  16:can_manager.c **** 	CAN_Start();
+  17:can_manager.c **** 	
+  18:can_manager.c **** 	
+  19:can_manager.c **** 	can_msg_init(&BMS_CURRENT, BMS_CURRENT_ID); 
+  20:can_manager.c **** 	can_msg_init(&BMS_VOLTAGE, BMS_VOLTAGE_ID);
+  21:can_manager.c **** 	can_msg_init(&BMS_TEMP, BMS_TEMP_ID);
+  22:can_manager.c **** }
+  23:can_manager.c **** 
+  24:can_manager.c **** //initalize CAN message variables with FF's everywhere
+  25:can_manager.c **** void can_msg_init(DataPacket* can_msg, uint16_t id) {
+  27              		.loc 1 25 0
   28              		.cfi_startproc
-  29              		@ args = 0, pretend = 0, frame = 24
+  29              		@ args = 0, pretend = 0, frame = 0
   30              		@ frame_needed = 0, uses_anonymous_args = 0
-  31 0000 00B5     		push	{lr}
-  32              		.cfi_def_cfa_offset 4
-  33              		.cfi_offset 14, -4
-  34 0002 87B0     		sub	sp, sp, #28
-  35              		.cfi_def_cfa_offset 32
-   5:can_manager.c **** 	uint8_t i;
-   6:can_manager.c **** 	CAN_1_TX_MSG message;
-   7:can_manager.c **** 	CAN_1_DATA_BYTES_MSG test_data;
-   8:can_manager.c **** 
-   9:can_manager.c **** 	message.id = 0x100;
-  36              		.loc 1 9 0
-  37 0004 4FF48073 		mov	r3, #256
-  38 0008 0393     		str	r3, [sp, #12]
-  10:can_manager.c **** 	message.rtr = 0;
-  39              		.loc 1 10 0
-  40 000a 0023     		movs	r3, #0
-  41 000c 8DF81030 		strb	r3, [sp, #16]
-  11:can_manager.c **** 	message.ide = 0;
-  42              		.loc 1 11 0
-  43 0010 8DF81130 		strb	r3, [sp, #17]
-  12:can_manager.c **** 	message.dlc = 0x08;
-  44              		.loc 1 12 0
-  45 0014 0822     		movs	r2, #8
-ARM GAS  D:\Windows\AppData\Local\Temp\cctCKL3l.s 			page 2
+  31              		@ link register save eliminated.
+  32              	.LVL0:
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 2
 
 
-  46 0016 8DF81220 		strb	r2, [sp, #18]
-  13:can_manager.c **** 	message.irq = 1;
-  47              		.loc 1 13 0
-  48 001a 0122     		movs	r2, #1
-  49 001c 8DF81320 		strb	r2, [sp, #19]
-  14:can_manager.c **** 	message.msg = &test_data;
-  50              		.loc 1 14 0
-  51 0020 01AA     		add	r2, sp, #4
-  52 0022 0592     		str	r2, [sp, #20]
-  53              	.LVL0:
-  15:can_manager.c **** 
-  16:can_manager.c **** 	for(i=0;i<8;i++)
-  54              		.loc 1 16 0
-  55 0024 06E0     		b	.L2
-  56              	.LVL1:
-  57              	.L3:
-  17:can_manager.c **** 		test_data.byte[i] = 2;
-  58              		.loc 1 17 0 discriminator 3
-  59 0026 06AA     		add	r2, sp, #24
-  60 0028 1A44     		add	r2, r2, r3
-  61 002a 0221     		movs	r1, #2
-  62 002c 02F8141C 		strb	r1, [r2, #-20]
-  16:can_manager.c **** 		test_data.byte[i] = 2;
-  63              		.loc 1 16 0 discriminator 3
-  64 0030 0133     		adds	r3, r3, #1
-  65              	.LVL2:
-  66 0032 DBB2     		uxtb	r3, r3
-  67              	.LVL3:
-  68              	.L2:
-  16:can_manager.c **** 		test_data.byte[i] = 2;
-  69              		.loc 1 16 0 is_stmt 0 discriminator 1
-  70 0034 072B     		cmp	r3, #7
-  71 0036 F6D9     		bls	.L3
-  18:can_manager.c **** 
-  19:can_manager.c **** 	CAN_1_SendMsg(&message);
-  72              		.loc 1 19 0 is_stmt 1
-  73 0038 03A8     		add	r0, sp, #12
-  74 003a FFF7FEFF 		bl	CAN_1_SendMsg
-  75              	.LVL4:
-  20:can_manager.c **** } // can_test_send()
-  76              		.loc 1 20 0
-  77 003e 07B0     		add	sp, sp, #28
-  78              		.cfi_def_cfa_offset 4
-  79              		@ sp needed
-  80 0040 5DF804FB 		ldr	pc, [sp], #4
-  81              		.cfi_endproc
-  82              	.LFE63:
-  83              		.size	can_test_send, .-can_test_send
-  84              		.section	.text.can_test_receive,"ax",%progbits
-  85              		.align	2
-  86              		.global	can_test_receive
-  87              		.thumb
-  88              		.thumb_func
-  89              		.type	can_test_receive, %function
-  90              	can_test_receive:
-  91              	.LFB64:
-  21:can_manager.c **** 
-ARM GAS  D:\Windows\AppData\Local\Temp\cctCKL3l.s 			page 3
+  26:can_manager.c **** 	uint8_t i;
+  27:can_manager.c **** 	can_msg->id = id;
+  33              		.loc 1 27 0
+  34 0000 8180     		strh	r1, [r0, #4]	@ movhi
+  28:can_manager.c **** 	can_msg->length = 8;
+  35              		.loc 1 28 0
+  36 0002 0823     		movs	r3, #8
+  37 0004 8371     		strb	r3, [r0, #6]
+  29:can_manager.c **** 	can_msg->millicounter = 0;
+  38              		.loc 1 29 0
+  39 0006 0023     		movs	r3, #0
+  40 0008 0360     		str	r3, [r0]
+  41              	.LVL1:
+  30:can_manager.c **** 	for(i=0; i<can_msg->length; i++) {
+  42              		.loc 1 30 0
+  43 000a 04E0     		b	.L2
+  44              	.LVL2:
+  45              	.L3:
+  31:can_manager.c **** 		can_msg->data[i] = 0xFF;
+  46              		.loc 1 31 0 discriminator 3
+  47 000c C218     		adds	r2, r0, r3
+  48 000e FF21     		movs	r1, #255
+  49 0010 D171     		strb	r1, [r2, #7]
+  30:can_manager.c **** 	for(i=0; i<can_msg->length; i++) {
+  50              		.loc 1 30 0 discriminator 3
+  51 0012 0133     		adds	r3, r3, #1
+  52              	.LVL3:
+  53 0014 DBB2     		uxtb	r3, r3
+  54              	.LVL4:
+  55              	.L2:
+  30:can_manager.c **** 	for(i=0; i<can_msg->length; i++) {
+  56              		.loc 1 30 0 is_stmt 0 discriminator 1
+  57 0016 072B     		cmp	r3, #7
+  58 0018 F8D9     		bls	.L3
+  32:can_manager.c **** 	}
+  33:can_manager.c **** 	
+  34:can_manager.c **** } //can_msg_init()
+  59              		.loc 1 34 0 is_stmt 1
+  60 001a 7047     		bx	lr
+  61              		.cfi_endproc
+  62              	.LFE64:
+  63              		.size	can_msg_init, .-can_msg_init
+  64              		.section	.text.can_init,"ax",%progbits
+  65              		.align	2
+  66              		.global	can_init
+  67              		.thumb
+  68              		.thumb_func
+  69              		.type	can_init, %function
+  70              	can_init:
+  71              	.LFB63:
+  13:can_manager.c **** 	CAN_GlobalIntEnable(); // CAN Initialization
+  72              		.loc 1 13 0
+  73              		.cfi_startproc
+  74              		@ args = 0, pretend = 0, frame = 0
+  75              		@ frame_needed = 0, uses_anonymous_args = 0
+  76 0000 08B5     		push	{r3, lr}
+  77              		.cfi_def_cfa_offset 8
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 3
 
 
-  22:can_manager.c **** 
-  23:can_manager.c **** void can_test_receive() {
-  92              		.loc 1 23 0
-  93              		.cfi_startproc
-  94              		@ args = 0, pretend = 0, frame = 0
-  95              		@ frame_needed = 0, uses_anonymous_args = 0
-  96              		@ link register save eliminated.
-  97              	.LVL5:
-  24:can_manager.c **** 	DataPacket test_msg;
-  25:can_manager.c ****     uint8 i;
-  26:can_manager.c **** 	
-  27:can_manager.c ****     //test packets
-  28:can_manager.c ****     for(i=100; i<115; i++) { 
-  98              		.loc 1 28 0
-  99 0000 6423     		movs	r3, #100
- 100 0002 01E0     		b	.L6
- 101              	.LVL6:
- 102              	.L7:
- 103              		.loc 1 28 0 is_stmt 0 discriminator 3
- 104 0004 0133     		adds	r3, r3, #1
- 105              	.LVL7:
- 106 0006 DBB2     		uxtb	r3, r3
- 107              	.LVL8:
- 108              	.L6:
- 109              		.loc 1 28 0 discriminator 1
- 110 0008 722B     		cmp	r3, #114
- 111 000a FBD9     		bls	.L7
-  29:can_manager.c **** 		//test_msg.millicounter = millis_timer_ReadCounter();    
-  30:can_manager.c **** 		test_msg.id = 0x0923;
-  31:can_manager.c **** 		test_msg.length = 8;
-  32:can_manager.c **** 		test_msg.data[0]= 1;
-  33:can_manager.c **** 		test_msg.data[1]= 2;
-  34:can_manager.c **** 		test_msg.data[2]= 3;
-  35:can_manager.c **** 		test_msg.data[3]= 4;
-  36:can_manager.c **** 		test_msg.data[4]= 5;
-  37:can_manager.c **** 		test_msg.data[5]= 6;
-  38:can_manager.c **** 		test_msg.data[6]= 7;
-  39:can_manager.c ****         test_msg.data[7]= 8;
-  40:can_manager.c **** 		
-  41:can_manager.c **** 		//msg_recieve(&test_msg);
-  42:can_manager.c ****     } //for
-  43:can_manager.c **** }
- 112              		.loc 1 43 0 is_stmt 1
- 113 000c 7047     		bx	lr
- 114              		.cfi_endproc
- 115              	.LFE64:
- 116              		.size	can_test_receive, .-can_test_receive
- 117 000e 00BF     		.text
- 118              	.Letext0:
- 119              		.file 2 "d:\\programming\\cypress\\psoc creator\\4.0\\psoc creator\\import\\gnu\\arm\\4.9.3\\arm-n
- 120              		.file 3 "d:\\programming\\cypress\\psoc creator\\4.0\\psoc creator\\import\\gnu\\arm\\4.9.3\\arm-n
- 121              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
- 122              		.file 5 "Generated_Source\\PSoC5/CAN_1.h"
- 123              		.file 6 "data.h"
- 124              		.file 7 "Generated_Source\\PSoC5/core_cm3.h"
- 125              		.section	.debug_info,"",%progbits
- 126              	.Ldebug_info0:
-ARM GAS  D:\Windows\AppData\Local\Temp\cctCKL3l.s 			page 4
+  78              		.cfi_offset 3, -8
+  79              		.cfi_offset 14, -4
+  14:can_manager.c **** 	CAN_Init();
+  80              		.loc 1 14 0
+  81 0002 FFF7FEFF 		bl	CAN_GlobalIntEnable
+  82              	.LVL5:
+  15:can_manager.c **** 	CAN_Start();
+  83              		.loc 1 15 0
+  84 0006 FFF7FEFF 		bl	CAN_Init
+  85              	.LVL6:
+  16:can_manager.c **** 	
+  86              		.loc 1 16 0
+  87 000a FFF7FEFF 		bl	CAN_Start
+  88              	.LVL7:
+  19:can_manager.c **** 	can_msg_init(&BMS_VOLTAGE, BMS_VOLTAGE_ID);
+  89              		.loc 1 19 0
+  90 000e 0848     		ldr	r0, .L6
+  91 0010 4FF42271 		mov	r1, #648
+  92 0014 FFF7FEFF 		bl	can_msg_init
+  93              	.LVL8:
+  20:can_manager.c **** 	can_msg_init(&BMS_TEMP, BMS_TEMP_ID);
+  94              		.loc 1 20 0
+  95 0018 0648     		ldr	r0, .L6+4
+  96 001a 4FF46271 		mov	r1, #904
+  97 001e FFF7FEFF 		bl	can_msg_init
+  98              	.LVL9:
+  21:can_manager.c **** }
+  99              		.loc 1 21 0
+ 100 0022 0548     		ldr	r0, .L6+8
+ 101 0024 4FF49161 		mov	r1, #1160
+ 102 0028 FFF7FEFF 		bl	can_msg_init
+ 103              	.LVL10:
+ 104 002c 08BD     		pop	{r3, pc}
+ 105              	.L7:
+ 106 002e 00BF     		.align	2
+ 107              	.L6:
+ 108 0030 00000000 		.word	BMS_CURRENT
+ 109 0034 00000000 		.word	BMS_VOLTAGE
+ 110 0038 00000000 		.word	BMS_TEMP
+ 111              		.cfi_endproc
+ 112              	.LFE63:
+ 113              		.size	can_init, .-can_init
+ 114              		.section	.text.can_compare,"ax",%progbits
+ 115              		.align	2
+ 116              		.global	can_compare
+ 117              		.thumb
+ 118              		.thumb_func
+ 119              		.type	can_compare, %function
+ 120              	can_compare:
+ 121              	.LFB66:
+  35:can_manager.c **** 
+  36:can_manager.c **** 
+  37:can_manager.c **** /*  recieves can message from bus can compares it with is respective id*/
+  38:can_manager.c **** int can_process(DataPacket* can_msg){
+  39:can_manager.c **** 	int status = 0;		//returns 1 if message is updated
+  40:can_manager.c ****     switch (can_msg->id) {
+  41:can_manager.c **** 	case BMS_CURRENT_ID:		//0x288
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 4
 
 
- 127 0000 87020000 		.4byte	0x287
- 128 0004 0400     		.2byte	0x4
- 129 0006 00000000 		.4byte	.Ldebug_abbrev0
- 130 000a 04       		.byte	0x4
- 131 000b 01       		.uleb128 0x1
- 132 000c FA000000 		.4byte	.LASF34
- 133 0010 01       		.byte	0x1
- 134 0011 6F020000 		.4byte	.LASF35
- 135 0015 C8010000 		.4byte	.LASF36
- 136 0019 00000000 		.4byte	.Ldebug_ranges0+0
- 137 001d 00000000 		.4byte	0
- 138 0021 00000000 		.4byte	.Ldebug_line0
- 139 0025 02       		.uleb128 0x2
- 140 0026 01       		.byte	0x1
- 141 0027 06       		.byte	0x6
- 142 0028 5C020000 		.4byte	.LASF0
- 143 002c 03       		.uleb128 0x3
- 144 002d 08000000 		.4byte	.LASF3
- 145 0031 02       		.byte	0x2
- 146 0032 1D       		.byte	0x1d
- 147 0033 37000000 		.4byte	0x37
- 148 0037 02       		.uleb128 0x2
- 149 0038 01       		.byte	0x1
- 150 0039 08       		.byte	0x8
- 151 003a 8F000000 		.4byte	.LASF1
- 152 003e 02       		.uleb128 0x2
- 153 003f 02       		.byte	0x2
- 154 0040 05       		.byte	0x5
- 155 0041 E9000000 		.4byte	.LASF2
- 156 0045 03       		.uleb128 0x3
- 157 0046 D7000000 		.4byte	.LASF4
- 158 004a 02       		.byte	0x2
- 159 004b 2B       		.byte	0x2b
- 160 004c 50000000 		.4byte	0x50
- 161 0050 02       		.uleb128 0x2
- 162 0051 02       		.byte	0x2
- 163 0052 07       		.byte	0x7
- 164 0053 40000000 		.4byte	.LASF5
- 165 0057 03       		.uleb128 0x3
- 166 0058 20000000 		.4byte	.LASF6
- 167 005c 02       		.byte	0x2
- 168 005d 3F       		.byte	0x3f
- 169 005e 62000000 		.4byte	0x62
- 170 0062 02       		.uleb128 0x2
- 171 0063 04       		.byte	0x4
- 172 0064 05       		.byte	0x5
- 173 0065 2A000000 		.4byte	.LASF7
- 174 0069 03       		.uleb128 0x3
- 175 006a 73000000 		.4byte	.LASF8
- 176 006e 02       		.byte	0x2
- 177 006f 41       		.byte	0x41
- 178 0070 74000000 		.4byte	0x74
- 179 0074 02       		.uleb128 0x2
- 180 0075 04       		.byte	0x4
- 181 0076 07       		.byte	0x7
- 182 0077 AE000000 		.4byte	.LASF9
- 183 007b 02       		.uleb128 0x2
-ARM GAS  D:\Windows\AppData\Local\Temp\cctCKL3l.s 			page 5
+  42:can_manager.c **** 		status = can_compare(&BMS_STATUS, can_msg);
+  43:can_manager.c **** 		if(status)
+  44:can_manager.c **** 			can_process_BMS_CURR();
+  45:can_manager.c **** 		break;
+  46:can_manager.c **** 	case BMS_VOLTAGE_ID:	//0x388
+  47:can_manager.c **** 		status = can_compare(&BMS_VOLTAGE, can_msg);
+  48:can_manager.c **** 		if(status)
+  49:can_manager.c **** 			can_process_BMS_VOLT();
+  50:can_manager.c **** 		break;
+  51:can_manager.c **** 	case BMS_TEMP_ID:		//0x488
+  52:can_manager.c **** 		status = can_compare(&BMS_TEMP, can_msg);
+  53:can_manager.c **** 		if(status)
+  54:can_manager.c **** 			can_process_BMS_TEMP();
+  55:can_manager.c **** 		break;
+  56:can_manager.c ****     default:
+  57:can_manager.c **** 		status = 0;
+  58:can_manager.c ****         break;
+  59:can_manager.c ****     }
+  60:can_manager.c **** 	return status;
+  61:can_manager.c **** }
+  62:can_manager.c **** 
+  63:can_manager.c **** /*	compares received can message with the latest can message of the same id.
+  64:can_manager.c **** 	if it is different, it will add update that DataPacket variable and add it to the can buffer	
+  65:can_manager.c **** 	returns: 1 if message was updated, 0 if message same as before */
+  66:can_manager.c **** int can_compare(DataPacket* prev_msg, DataPacket* new_msg) {
+ 122              		.loc 1 66 0
+ 123              		.cfi_startproc
+ 124              		@ args = 0, pretend = 0, frame = 16
+ 125              		@ frame_needed = 0, uses_anonymous_args = 0
+ 126              		@ link register save eliminated.
+ 127              	.LVL11:
+ 128 0000 F0B4     		push	{r4, r5, r6, r7}
+ 129              		.cfi_def_cfa_offset 16
+ 130              		.cfi_offset 4, -16
+ 131              		.cfi_offset 5, -12
+ 132              		.cfi_offset 6, -8
+ 133              		.cfi_offset 7, -4
+ 134 0002 84B0     		sub	sp, sp, #16
+ 135              		.cfi_def_cfa_offset 32
+ 136              	.LVL12:
+  67:can_manager.c **** 	uint8_t i, j;
+  68:can_manager.c **** 	uint8_t offset = 0;
+  69:can_manager.c **** 	DataPacket temp;
+  70:can_manager.c ****  
+  71:can_manager.c **** 	temp.id = new_msg->id;
+ 137              		.loc 1 71 0
+ 138 0004 8D88     		ldrh	r5, [r1, #4]
+  72:can_manager.c **** 	temp.length = new_msg->length;
+ 139              		.loc 1 72 0
+ 140 0006 8C79     		ldrb	r4, [r1, #6]	@ zero_extendqisi2
+ 141              	.LVL13:
+  73:can_manager.c **** 	temp.millicounter = new_msg->millicounter;
+  74:can_manager.c **** 	for(i=0; i<temp.length; i++) {
+ 142              		.loc 1 74 0
+ 143 0008 0023     		movs	r3, #0
+ 144 000a 07E0     		b	.L9
+ 145              	.LVL14:
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 5
 
 
- 184 007c 08       		.byte	0x8
- 185 007d 05       		.byte	0x5
- 186 007e 22020000 		.4byte	.LASF10
- 187 0082 02       		.uleb128 0x2
- 188 0083 08       		.byte	0x8
- 189 0084 07       		.byte	0x7
- 190 0085 A9010000 		.4byte	.LASF11
- 191 0089 04       		.uleb128 0x4
- 192 008a 04       		.byte	0x4
- 193 008b 05       		.byte	0x5
- 194 008c 696E7400 		.ascii	"int\000"
- 195 0090 02       		.uleb128 0x2
- 196 0091 04       		.byte	0x4
- 197 0092 07       		.byte	0x7
- 198 0093 91010000 		.4byte	.LASF12
- 199 0097 03       		.uleb128 0x3
- 200 0098 C0010000 		.4byte	.LASF13
- 201 009c 03       		.byte	0x3
- 202 009d 15       		.byte	0x15
- 203 009e 2C000000 		.4byte	0x2c
- 204 00a2 03       		.uleb128 0x3
- 205 00a3 4A020000 		.4byte	.LASF14
- 206 00a7 03       		.byte	0x3
- 207 00a8 21       		.byte	0x21
- 208 00a9 45000000 		.4byte	0x45
- 209 00ad 03       		.uleb128 0x3
- 210 00ae 11020000 		.4byte	.LASF15
- 211 00b2 03       		.byte	0x3
- 212 00b3 2C       		.byte	0x2c
- 213 00b4 57000000 		.4byte	0x57
- 214 00b8 03       		.uleb128 0x3
- 215 00b9 53020000 		.4byte	.LASF16
- 216 00bd 03       		.byte	0x3
- 217 00be 2D       		.byte	0x2d
- 218 00bf 69000000 		.4byte	0x69
- 219 00c3 05       		.uleb128 0x5
- 220 00c4 89000000 		.4byte	.LASF17
- 221 00c8 04       		.byte	0x4
- 222 00c9 9201     		.2byte	0x192
- 223 00cb 37000000 		.4byte	0x37
- 224 00cf 05       		.uleb128 0x5
- 225 00d0 F3000000 		.4byte	.LASF18
- 226 00d4 04       		.byte	0x4
- 227 00d5 9401     		.2byte	0x194
- 228 00d7 74000000 		.4byte	0x74
- 229 00db 02       		.uleb128 0x2
- 230 00dc 04       		.byte	0x4
- 231 00dd 04       		.byte	0x4
- 232 00de 7E000000 		.4byte	.LASF19
- 233 00e2 02       		.uleb128 0x2
- 234 00e3 08       		.byte	0x8
- 235 00e4 04       		.byte	0x4
- 236 00e5 E2000000 		.4byte	.LASF20
- 237 00e9 02       		.uleb128 0x2
- 238 00ea 01       		.byte	0x1
- 239 00eb 08       		.byte	0x8
- 240 00ec 30020000 		.4byte	.LASF21
-ARM GAS  D:\Windows\AppData\Local\Temp\cctCKL3l.s 			page 6
+ 146              	.L10:
+  75:can_manager.c **** 		temp.data[i] = new_msg->data[i];
+ 147              		.loc 1 75 0 discriminator 3
+ 148 000c CA18     		adds	r2, r1, r3
+ 149 000e D679     		ldrb	r6, [r2, #7]	@ zero_extendqisi2
+ 150 0010 04AA     		add	r2, sp, #16
+ 151 0012 1A44     		add	r2, r2, r3
+ 152 0014 02F8096C 		strb	r6, [r2, #-9]
+  74:can_manager.c **** 		temp.data[i] = new_msg->data[i];
+ 153              		.loc 1 74 0 discriminator 3
+ 154 0018 0133     		adds	r3, r3, #1
+ 155              	.LVL15:
+ 156 001a DBB2     		uxtb	r3, r3
+ 157              	.LVL16:
+ 158              	.L9:
+  74:can_manager.c **** 		temp.data[i] = new_msg->data[i];
+ 159              		.loc 1 74 0 is_stmt 0 discriminator 1
+ 160 001c A342     		cmp	r3, r4
+ 161 001e F5D3     		bcc	.L10
+ 162 0020 0022     		movs	r2, #0
+ 163 0022 08E0     		b	.L11
+ 164              	.LVL17:
+ 165              	.L12:
+  76:can_manager.c **** 	}
+  77:can_manager.c **** 	
+  78:can_manager.c **** 	//bytes received in little endian so have to reverse to big endian 32bits
+  79:can_manager.c **** 	for(i=0; i<(new_msg->length/2); i++) {		//swap bytes 0-3
+  80:can_manager.c **** 		new_msg->data[i+offset] = temp.data[offset + temp.length/2 - i - 1];
+ 166              		.loc 1 80 0 is_stmt 1 discriminator 3
+ 167 0024 9B1A     		subs	r3, r3, r2
+ 168 0026 04AE     		add	r6, sp, #16
+ 169 0028 3344     		add	r3, r3, r6
+ 170 002a 13F80A6C 		ldrb	r6, [r3, #-10]	@ zero_extendqisi2
+ 171 002e 8B18     		adds	r3, r1, r2
+ 172 0030 DE71     		strb	r6, [r3, #7]
+  79:can_manager.c **** 		new_msg->data[i+offset] = temp.data[offset + temp.length/2 - i - 1];
+ 173              		.loc 1 79 0 discriminator 3
+ 174 0032 0132     		adds	r2, r2, #1
+ 175              	.LVL18:
+ 176 0034 D2B2     		uxtb	r2, r2
+ 177              	.LVL19:
+ 178              	.L11:
+  79:can_manager.c **** 		new_msg->data[i+offset] = temp.data[offset + temp.length/2 - i - 1];
+ 179              		.loc 1 79 0 is_stmt 0 discriminator 1
+ 180 0036 6308     		lsrs	r3, r4, #1
+ 181 0038 9342     		cmp	r3, r2
+ 182 003a F3D8     		bhi	.L12
+ 183 003c 0022     		movs	r2, #0
+ 184              	.LVL20:
+ 185 003e 08E0     		b	.L13
+ 186              	.LVL21:
+ 187              	.L14:
+  81:can_manager.c **** 	}//for
+  82:can_manager.c **** 	offset = 4;
+  83:can_manager.c **** 	for(i=0; i<(new_msg->length/2); i++) {		//swap bytes 4-7
+  84:can_manager.c **** 		new_msg->data[i+offset] = temp.data[offset + temp.length/2 - i - 1];
+ 188              		.loc 1 84 0 is_stmt 1 discriminator 3
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 6
 
 
- 241 00f0 02       		.uleb128 0x2
- 242 00f1 04       		.byte	0x4
- 243 00f2 07       		.byte	0x7
- 244 00f3 19020000 		.4byte	.LASF22
- 245 00f7 06       		.uleb128 0x6
- 246 00f8 08       		.byte	0x8
- 247 00f9 05       		.byte	0x5
- 248 00fa 6F       		.byte	0x6f
- 249 00fb 0C010000 		.4byte	0x10c
- 250 00ff 07       		.uleb128 0x7
- 251 0100 61000000 		.4byte	.LASF24
- 252 0104 05       		.byte	0x5
- 253 0105 71       		.byte	0x71
- 254 0106 0C010000 		.4byte	0x10c
- 255 010a 00       		.byte	0
- 256 010b 00       		.byte	0
- 257 010c 08       		.uleb128 0x8
- 258 010d C3000000 		.4byte	0xc3
- 259 0111 1C010000 		.4byte	0x11c
- 260 0115 09       		.uleb128 0x9
- 261 0116 F0000000 		.4byte	0xf0
- 262 011a 07       		.byte	0x7
- 263 011b 00       		.byte	0
- 264 011c 03       		.uleb128 0x3
- 265 011d 35020000 		.4byte	.LASF23
- 266 0121 05       		.byte	0x5
- 267 0122 72       		.byte	0x72
- 268 0123 F7000000 		.4byte	0xf7
- 269 0127 06       		.uleb128 0x6
- 270 0128 0C       		.byte	0xc
- 271 0129 05       		.byte	0x5
- 272 012a 81       		.byte	0x81
- 273 012b 77010000 		.4byte	0x177
- 274 012f 0A       		.uleb128 0xa
- 275 0130 696400   		.ascii	"id\000"
- 276 0133 05       		.byte	0x5
- 277 0134 83       		.byte	0x83
- 278 0135 CF000000 		.4byte	0xcf
- 279 0139 00       		.byte	0
- 280 013a 0A       		.uleb128 0xa
- 281 013b 72747200 		.ascii	"rtr\000"
- 282 013f 05       		.byte	0x5
- 283 0140 84       		.byte	0x84
- 284 0141 C3000000 		.4byte	0xc3
- 285 0145 04       		.byte	0x4
- 286 0146 0A       		.uleb128 0xa
- 287 0147 69646500 		.ascii	"ide\000"
- 288 014b 05       		.byte	0x5
- 289 014c 85       		.byte	0x85
- 290 014d C3000000 		.4byte	0xc3
- 291 0151 05       		.byte	0x5
- 292 0152 0A       		.uleb128 0xa
- 293 0153 646C6300 		.ascii	"dlc\000"
- 294 0157 05       		.byte	0x5
- 295 0158 86       		.byte	0x86
- 296 0159 C3000000 		.4byte	0xc3
- 297 015d 06       		.byte	0x6
-ARM GAS  D:\Windows\AppData\Local\Temp\cctCKL3l.s 			page 7
+ 189 0040 9E1A     		subs	r6, r3, r2
+ 190 0042 04AF     		add	r7, sp, #16
+ 191 0044 3E44     		add	r6, r6, r7
+ 192 0046 16F8067C 		ldrb	r7, [r6, #-6]	@ zero_extendqisi2
+ 193 004a 8E18     		adds	r6, r1, r2
+ 194 004c F772     		strb	r7, [r6, #11]
+  83:can_manager.c **** 		new_msg->data[i+offset] = temp.data[offset + temp.length/2 - i - 1];
+ 195              		.loc 1 83 0 discriminator 3
+ 196 004e 0132     		adds	r2, r2, #1
+ 197              	.LVL22:
+ 198 0050 D2B2     		uxtb	r2, r2
+ 199              	.LVL23:
+ 200              	.L13:
+  83:can_manager.c **** 		new_msg->data[i+offset] = temp.data[offset + temp.length/2 - i - 1];
+ 201              		.loc 1 83 0 is_stmt 0 discriminator 1
+ 202 0052 9A42     		cmp	r2, r3
+ 203 0054 F4D3     		bcc	.L14
+ 204 0056 0023     		movs	r3, #0
+ 205 0058 19E0     		b	.L15
+ 206              	.LVL24:
+ 207              	.L20:
+  85:can_manager.c **** 	}//for
+  86:can_manager.c **** 	
+  87:can_manager.c **** 	for(i=0; i<new_msg->length; i++) {					//compare all 8 data bytes
+  88:can_manager.c **** 		if(prev_msg->data[i] != new_msg->data[i]) {		//update it if data[] has changed
+ 208              		.loc 1 88 0 is_stmt 1
+ 209 005a C218     		adds	r2, r0, r3
+ 210 005c D679     		ldrb	r6, [r2, #7]	@ zero_extendqisi2
+ 211 005e CA18     		adds	r2, r1, r3
+ 212 0060 D279     		ldrb	r2, [r2, #7]	@ zero_extendqisi2
+ 213 0062 9642     		cmp	r6, r2
+ 214 0064 11D0     		beq	.L16
+  89:can_manager.c **** 			prev_msg->id = new_msg->id;
+ 215              		.loc 1 89 0
+ 216 0066 8580     		strh	r5, [r0, #4]	@ movhi
+  90:can_manager.c **** 			prev_msg->length = new_msg->length;
+ 217              		.loc 1 90 0
+ 218 0068 8B79     		ldrb	r3, [r1, #6]	@ zero_extendqisi2
+ 219              	.LVL25:
+ 220 006a 8371     		strb	r3, [r0, #6]
+  91:can_manager.c **** 			prev_msg->millicounter = new_msg->millicounter;	
+ 221              		.loc 1 91 0
+ 222 006c 0B68     		ldr	r3, [r1]
+ 223 006e 0360     		str	r3, [r0]
+ 224              	.LVL26:
+  92:can_manager.c **** 			for(j=0; j<new_msg->length; j++) {
+ 225              		.loc 1 92 0
+ 226 0070 0023     		movs	r3, #0
+ 227 0072 05E0     		b	.L17
+ 228              	.LVL27:
+ 229              	.L18:
+  93:can_manager.c **** 				prev_msg->data[j] = new_msg->data[j];
+ 230              		.loc 1 93 0 discriminator 3
+ 231 0074 CA18     		adds	r2, r1, r3
+ 232 0076 D479     		ldrb	r4, [r2, #7]	@ zero_extendqisi2
+ 233 0078 C218     		adds	r2, r0, r3
+ 234 007a D471     		strb	r4, [r2, #7]
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 7
 
 
- 298 015e 0A       		.uleb128 0xa
- 299 015f 69727100 		.ascii	"irq\000"
- 300 0163 05       		.byte	0x5
- 301 0164 87       		.byte	0x87
- 302 0165 C3000000 		.4byte	0xc3
- 303 0169 07       		.byte	0x7
- 304 016a 0A       		.uleb128 0xa
- 305 016b 6D736700 		.ascii	"msg\000"
- 306 016f 05       		.byte	0x5
- 307 0170 8B       		.byte	0x8b
- 308 0171 77010000 		.4byte	0x177
- 309 0175 08       		.byte	0x8
- 310 0176 00       		.byte	0
- 311 0177 0B       		.uleb128 0xb
- 312 0178 04       		.byte	0x4
- 313 0179 1C010000 		.4byte	0x11c
- 314 017d 03       		.uleb128 0x3
- 315 017e 33000000 		.4byte	.LASF25
- 316 0182 05       		.byte	0x5
- 317 0183 8C       		.byte	0x8c
- 318 0184 27010000 		.4byte	0x127
- 319 0188 06       		.uleb128 0x6
- 320 0189 10       		.byte	0x10
- 321 018a 06       		.byte	0x6
- 322 018b 08       		.byte	0x8
- 323 018c C0010000 		.4byte	0x1c0
- 324 0190 07       		.uleb128 0x7
- 325 0191 66000000 		.4byte	.LASF26
- 326 0195 06       		.byte	0x6
- 327 0196 09       		.byte	0x9
- 328 0197 B8000000 		.4byte	0xb8
- 329 019b 00       		.byte	0
- 330 019c 0A       		.uleb128 0xa
- 331 019d 696400   		.ascii	"id\000"
- 332 01a0 06       		.byte	0x6
- 333 01a1 0A       		.byte	0xa
- 334 01a2 A2000000 		.4byte	0xa2
- 335 01a6 04       		.byte	0x4
- 336 01a7 07       		.uleb128 0x7
- 337 01a8 68020000 		.4byte	.LASF27
- 338 01ac 06       		.byte	0x6
- 339 01ad 0B       		.byte	0xb
- 340 01ae 97000000 		.4byte	0x97
- 341 01b2 06       		.byte	0x6
- 342 01b3 07       		.uleb128 0x7
- 343 01b4 84000000 		.4byte	.LASF28
- 344 01b8 06       		.byte	0x6
- 345 01b9 0C       		.byte	0xc
- 346 01ba C0010000 		.4byte	0x1c0
- 347 01be 07       		.byte	0x7
- 348 01bf 00       		.byte	0
- 349 01c0 08       		.uleb128 0x8
- 350 01c1 97000000 		.4byte	0x97
- 351 01c5 D0010000 		.4byte	0x1d0
- 352 01c9 09       		.uleb128 0x9
- 353 01ca F0000000 		.4byte	0xf0
- 354 01ce 07       		.byte	0x7
-ARM GAS  D:\Windows\AppData\Local\Temp\cctCKL3l.s 			page 8
+  92:can_manager.c **** 			for(j=0; j<new_msg->length; j++) {
+ 235              		.loc 1 92 0 discriminator 3
+ 236 007c 0133     		adds	r3, r3, #1
+ 237              	.LVL28:
+ 238 007e DBB2     		uxtb	r3, r3
+ 239              	.LVL29:
+ 240              	.L17:
+  92:can_manager.c **** 			for(j=0; j<new_msg->length; j++) {
+ 241              		.loc 1 92 0 is_stmt 0 discriminator 1
+ 242 0080 8A79     		ldrb	r2, [r1, #6]	@ zero_extendqisi2
+ 243 0082 9A42     		cmp	r2, r3
+ 244 0084 F6D8     		bhi	.L18
+  94:can_manager.c **** 			}
+  95:can_manager.c **** 			
+  96:can_manager.c **** 			return 1;
+ 245              		.loc 1 96 0 is_stmt 1
+ 246 0086 0120     		movs	r0, #1
+ 247              	.LVL30:
+ 248 0088 04E0     		b	.L19
+ 249              	.LVL31:
+ 250              	.L16:
+  87:can_manager.c **** 		if(prev_msg->data[i] != new_msg->data[i]) {		//update it if data[] has changed
+ 251              		.loc 1 87 0 discriminator 2
+ 252 008a 0133     		adds	r3, r3, #1
+ 253              	.LVL32:
+ 254 008c DBB2     		uxtb	r3, r3
+ 255              	.LVL33:
+ 256              	.L15:
+  87:can_manager.c **** 		if(prev_msg->data[i] != new_msg->data[i]) {		//update it if data[] has changed
+ 257              		.loc 1 87 0 is_stmt 0 discriminator 1
+ 258 008e A342     		cmp	r3, r4
+ 259 0090 E3D3     		bcc	.L20
+  97:can_manager.c **** 		}//if
+  98:can_manager.c **** 	}//for
+  99:can_manager.c **** 	return 0;
+ 260              		.loc 1 99 0 is_stmt 1
+ 261 0092 0020     		movs	r0, #0
+ 262              	.LVL34:
+ 263              	.L19:
+ 100:can_manager.c **** }
+ 264              		.loc 1 100 0
+ 265 0094 04B0     		add	sp, sp, #16
+ 266              		.cfi_def_cfa_offset 16
+ 267              		@ sp needed
+ 268 0096 F0BC     		pop	{r4, r5, r6, r7}
+ 269              		.cfi_restore 7
+ 270              		.cfi_restore 6
+ 271              		.cfi_restore 5
+ 272              		.cfi_restore 4
+ 273              		.cfi_def_cfa_offset 0
+ 274 0098 7047     		bx	lr
+ 275              		.cfi_endproc
+ 276              	.LFE66:
+ 277              		.size	can_compare, .-can_compare
+ 278 009a 00BF     		.section	.text.can_process_BMS_CURR,"ax",%progbits
+ 279              		.align	2
+ 280              		.global	can_process_BMS_CURR
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 8
 
 
- 355 01cf 00       		.byte	0
- 356 01d0 03       		.uleb128 0x3
- 357 01d1 9E010000 		.4byte	.LASF29
- 358 01d5 06       		.byte	0x6
- 359 01d6 0D       		.byte	0xd
- 360 01d7 88010000 		.4byte	0x188
- 361 01db 0C       		.uleb128 0xc
- 362 01dc 53000000 		.4byte	.LASF32
- 363 01e0 01       		.byte	0x1
- 364 01e1 04       		.byte	0x4
- 365 01e2 00000000 		.4byte	.LFB63
- 366 01e6 44000000 		.4byte	.LFE63-.LFB63
- 367 01ea 01       		.uleb128 0x1
- 368 01eb 9C       		.byte	0x9c
- 369 01ec 2A020000 		.4byte	0x22a
- 370 01f0 0D       		.uleb128 0xd
- 371 01f1 6900     		.ascii	"i\000"
- 372 01f3 01       		.byte	0x1
- 373 01f4 05       		.byte	0x5
- 374 01f5 97000000 		.4byte	0x97
- 375 01f9 00000000 		.4byte	.LLST0
- 376 01fd 0E       		.uleb128 0xe
- 377 01fe 00000000 		.4byte	.LASF30
- 378 0202 01       		.byte	0x1
- 379 0203 06       		.byte	0x6
- 380 0204 7D010000 		.4byte	0x17d
- 381 0208 02       		.uleb128 0x2
- 382 0209 91       		.byte	0x91
- 383 020a 6C       		.sleb128 -20
- 384 020b 0E       		.uleb128 0xe
- 385 020c C0000000 		.4byte	.LASF31
- 386 0210 01       		.byte	0x1
- 387 0211 07       		.byte	0x7
- 388 0212 1C010000 		.4byte	0x11c
- 389 0216 02       		.uleb128 0x2
- 390 0217 91       		.byte	0x91
- 391 0218 64       		.sleb128 -28
- 392 0219 0F       		.uleb128 0xf
- 393 021a 3E000000 		.4byte	.LVL4
- 394 021e 69020000 		.4byte	0x269
- 395 0222 10       		.uleb128 0x10
- 396 0223 01       		.uleb128 0x1
- 397 0224 50       		.byte	0x50
- 398 0225 02       		.uleb128 0x2
- 399 0226 91       		.byte	0x91
- 400 0227 6C       		.sleb128 -20
- 401 0228 00       		.byte	0
- 402 0229 00       		.byte	0
- 403 022a 0C       		.uleb128 0xc
- 404 022b 9D000000 		.4byte	.LASF33
- 405 022f 01       		.byte	0x1
- 406 0230 17       		.byte	0x17
- 407 0231 00000000 		.4byte	.LFB64
- 408 0235 0E000000 		.4byte	.LFE64-.LFB64
- 409 0239 01       		.uleb128 0x1
- 410 023a 9C       		.byte	0x9c
- 411 023b 58020000 		.4byte	0x258
-ARM GAS  D:\Windows\AppData\Local\Temp\cctCKL3l.s 			page 9
+ 281              		.thumb
+ 282              		.thumb_func
+ 283              		.type	can_process_BMS_CURR, %function
+ 284              	can_process_BMS_CURR:
+ 285              	.LFB67:
+ 101:can_manager.c **** 
+ 102:can_manager.c **** //formats and gets lcd pos
+ 103:can_manager.c **** void can_process_BMS_CURR() {
+ 286              		.loc 1 103 0
+ 287              		.cfi_startproc
+ 288              		@ args = 0, pretend = 0, frame = 8
+ 289              		@ frame_needed = 0, uses_anonymous_args = 0
+ 290 0000 00B5     		push	{lr}
+ 291              		.cfi_def_cfa_offset 4
+ 292              		.cfi_offset 14, -4
+ 293 0002 83B0     		sub	sp, sp, #12
+ 294              		.cfi_def_cfa_offset 16
+ 295              	.LVL35:
+ 104:can_manager.c **** 	uint16_t current;
+ 105:can_manager.c **** 	char8 curr_string[4]; 
+ 106:can_manager.c **** 	
+ 107:can_manager.c **** 	uint16_t byte2 = BMS_CURRENT.data[1] << 8;
+ 108:can_manager.c **** 	uint16_t byte1 = BMS_CURRENT.data[2];
+ 109:can_manager.c **** 	current = byte2 | byte1;
+ 110:can_manager.c **** 	
+ 111:can_manager.c **** 	current = 0x10;
+ 112:can_manager.c **** 	sprintf(curr_string, "%03dC", current); 
+ 296              		.loc 1 112 0
+ 297 0004 01A8     		add	r0, sp, #4
+ 298 0006 0749     		ldr	r1, .L24
+ 299 0008 1022     		movs	r2, #16
+ 300 000a FFF7FEFF 		bl	sprintf
+ 301              	.LVL36:
+ 113:can_manager.c **** 	LCD_Position(1, 3);
+ 302              		.loc 1 113 0
+ 303 000e 0120     		movs	r0, #1
+ 304 0010 0321     		movs	r1, #3
+ 305 0012 FFF7FEFF 		bl	LCD_Position
+ 306              	.LVL37:
+ 114:can_manager.c **** 	LCD_PrintString(curr_string);
+ 307              		.loc 1 114 0
+ 308 0016 01A8     		add	r0, sp, #4
+ 309 0018 FFF7FEFF 		bl	LCD_PrintString
+ 310              	.LVL38:
+ 115:can_manager.c **** }
+ 311              		.loc 1 115 0
+ 312 001c 03B0     		add	sp, sp, #12
+ 313              		.cfi_def_cfa_offset 4
+ 314              		@ sp needed
+ 315 001e 5DF804FB 		ldr	pc, [sp], #4
+ 316              	.L25:
+ 317 0022 00BF     		.align	2
+ 318              	.L24:
+ 319 0024 00000000 		.word	.LC0
+ 320              		.cfi_endproc
+ 321              	.LFE67:
+ 322              		.size	can_process_BMS_CURR, .-can_process_BMS_CURR
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 9
 
 
- 412 023f 11       		.uleb128 0x11
- 413 0240 88010000 		.4byte	.LASF37
- 414 0244 01       		.byte	0x1
- 415 0245 18       		.byte	0x18
- 416 0246 D0010000 		.4byte	0x1d0
- 417 024a 0D       		.uleb128 0xd
- 418 024b 6900     		.ascii	"i\000"
- 419 024d 01       		.byte	0x1
- 420 024e 19       		.byte	0x19
- 421 024f C3000000 		.4byte	0xc3
- 422 0253 2A000000 		.4byte	.LLST1
- 423 0257 00       		.byte	0
- 424 0258 12       		.uleb128 0x12
- 425 0259 CA000000 		.4byte	.LASF38
- 426 025d 07       		.byte	0x7
- 427 025e 9606     		.2byte	0x696
- 428 0260 64020000 		.4byte	0x264
- 429 0264 13       		.uleb128 0x13
- 430 0265 AD000000 		.4byte	0xad
- 431 0269 14       		.uleb128 0x14
- 432 026a 12000000 		.4byte	.LASF39
- 433 026e 05       		.byte	0x5
- 434 026f 1801     		.2byte	0x118
- 435 0271 C3000000 		.4byte	0xc3
- 436 0275 7F020000 		.4byte	0x27f
- 437 0279 15       		.uleb128 0x15
- 438 027a 7F020000 		.4byte	0x27f
- 439 027e 00       		.byte	0
- 440 027f 0B       		.uleb128 0xb
- 441 0280 04       		.byte	0x4
- 442 0281 85020000 		.4byte	0x285
- 443 0285 16       		.uleb128 0x16
- 444 0286 7D010000 		.4byte	0x17d
- 445 028a 00       		.byte	0
- 446              		.section	.debug_abbrev,"",%progbits
- 447              	.Ldebug_abbrev0:
- 448 0000 01       		.uleb128 0x1
- 449 0001 11       		.uleb128 0x11
- 450 0002 01       		.byte	0x1
- 451 0003 25       		.uleb128 0x25
- 452 0004 0E       		.uleb128 0xe
- 453 0005 13       		.uleb128 0x13
- 454 0006 0B       		.uleb128 0xb
- 455 0007 03       		.uleb128 0x3
- 456 0008 0E       		.uleb128 0xe
- 457 0009 1B       		.uleb128 0x1b
- 458 000a 0E       		.uleb128 0xe
- 459 000b 55       		.uleb128 0x55
- 460 000c 17       		.uleb128 0x17
- 461 000d 11       		.uleb128 0x11
- 462 000e 01       		.uleb128 0x1
- 463 000f 10       		.uleb128 0x10
- 464 0010 17       		.uleb128 0x17
- 465 0011 00       		.byte	0
- 466 0012 00       		.byte	0
- 467 0013 02       		.uleb128 0x2
- 468 0014 24       		.uleb128 0x24
-ARM GAS  D:\Windows\AppData\Local\Temp\cctCKL3l.s 			page 10
+ 323              		.section	.text.can_process_BMS_VOLT,"ax",%progbits
+ 324              		.align	2
+ 325              		.global	can_process_BMS_VOLT
+ 326              		.thumb
+ 327              		.thumb_func
+ 328              		.type	can_process_BMS_VOLT, %function
+ 329              	can_process_BMS_VOLT:
+ 330              	.LFB68:
+ 116:can_manager.c **** 
+ 117:can_manager.c **** //gets pack voltage
+ 118:can_manager.c **** void can_process_BMS_VOLT() {
+ 331              		.loc 1 118 0
+ 332              		.cfi_startproc
+ 333              		@ args = 0, pretend = 0, frame = 8
+ 334              		@ frame_needed = 0, uses_anonymous_args = 0
+ 335 0000 00B5     		push	{lr}
+ 336              		.cfi_def_cfa_offset 4
+ 337              		.cfi_offset 14, -4
+ 338 0002 83B0     		sub	sp, sp, #12
+ 339              		.cfi_def_cfa_offset 16
+ 340              	.LVL39:
+ 119:can_manager.c **** 	uint32_t voltage;
+ 120:can_manager.c **** 	char8 volt_string[6];
+ 121:can_manager.c **** 	
+ 122:can_manager.c **** 	uint32_t byte4 = BMS_VOLTAGE.data[7] << 24;
+ 123:can_manager.c **** 	uint32_t byte3 = BMS_VOLTAGE.data[6] << 16;
+ 124:can_manager.c **** 	uint32_t byte2 = BMS_VOLTAGE.data[5] << 8;
+ 125:can_manager.c **** 	uint32_t byte1 = BMS_VOLTAGE.data[4];
+ 126:can_manager.c **** 	voltage = byte4 | byte3 | byte2 | byte1;
+ 127:can_manager.c **** 	
+ 128:can_manager.c **** 	voltage = 0x0001C3E3;
+ 129:can_manager.c **** 	sprintf(volt_string, "%03d.%01dV", voltage/1000, voltage/100%10);
+ 341              		.loc 1 129 0
+ 342 0004 6846     		mov	r0, sp
+ 343 0006 0749     		ldr	r1, .L28
+ 344 0008 7322     		movs	r2, #115
+ 345 000a 0623     		movs	r3, #6
+ 346 000c FFF7FEFF 		bl	sprintf
+ 347              	.LVL40:
+ 130:can_manager.c **** 	LCD_Position(0, 3);
+ 348              		.loc 1 130 0
+ 349 0010 0020     		movs	r0, #0
+ 350 0012 0321     		movs	r1, #3
+ 351 0014 FFF7FEFF 		bl	LCD_Position
+ 352              	.LVL41:
+ 131:can_manager.c **** 	LCD_PrintString(volt_string);
+ 353              		.loc 1 131 0
+ 354 0018 6846     		mov	r0, sp
+ 355 001a FFF7FEFF 		bl	LCD_PrintString
+ 356              	.LVL42:
+ 132:can_manager.c **** }
+ 357              		.loc 1 132 0
+ 358 001e 03B0     		add	sp, sp, #12
+ 359              		.cfi_def_cfa_offset 4
+ 360              		@ sp needed
+ 361 0020 5DF804FB 		ldr	pc, [sp], #4
+ 362              	.L29:
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 10
 
 
- 469 0015 00       		.byte	0
- 470 0016 0B       		.uleb128 0xb
- 471 0017 0B       		.uleb128 0xb
- 472 0018 3E       		.uleb128 0x3e
- 473 0019 0B       		.uleb128 0xb
- 474 001a 03       		.uleb128 0x3
- 475 001b 0E       		.uleb128 0xe
- 476 001c 00       		.byte	0
- 477 001d 00       		.byte	0
- 478 001e 03       		.uleb128 0x3
- 479 001f 16       		.uleb128 0x16
- 480 0020 00       		.byte	0
- 481 0021 03       		.uleb128 0x3
- 482 0022 0E       		.uleb128 0xe
- 483 0023 3A       		.uleb128 0x3a
- 484 0024 0B       		.uleb128 0xb
- 485 0025 3B       		.uleb128 0x3b
- 486 0026 0B       		.uleb128 0xb
- 487 0027 49       		.uleb128 0x49
- 488 0028 13       		.uleb128 0x13
- 489 0029 00       		.byte	0
- 490 002a 00       		.byte	0
- 491 002b 04       		.uleb128 0x4
- 492 002c 24       		.uleb128 0x24
- 493 002d 00       		.byte	0
- 494 002e 0B       		.uleb128 0xb
- 495 002f 0B       		.uleb128 0xb
- 496 0030 3E       		.uleb128 0x3e
- 497 0031 0B       		.uleb128 0xb
- 498 0032 03       		.uleb128 0x3
- 499 0033 08       		.uleb128 0x8
- 500 0034 00       		.byte	0
- 501 0035 00       		.byte	0
- 502 0036 05       		.uleb128 0x5
- 503 0037 16       		.uleb128 0x16
- 504 0038 00       		.byte	0
- 505 0039 03       		.uleb128 0x3
- 506 003a 0E       		.uleb128 0xe
- 507 003b 3A       		.uleb128 0x3a
- 508 003c 0B       		.uleb128 0xb
- 509 003d 3B       		.uleb128 0x3b
- 510 003e 05       		.uleb128 0x5
- 511 003f 49       		.uleb128 0x49
- 512 0040 13       		.uleb128 0x13
- 513 0041 00       		.byte	0
- 514 0042 00       		.byte	0
- 515 0043 06       		.uleb128 0x6
- 516 0044 13       		.uleb128 0x13
- 517 0045 01       		.byte	0x1
- 518 0046 0B       		.uleb128 0xb
- 519 0047 0B       		.uleb128 0xb
- 520 0048 3A       		.uleb128 0x3a
- 521 0049 0B       		.uleb128 0xb
- 522 004a 3B       		.uleb128 0x3b
- 523 004b 0B       		.uleb128 0xb
- 524 004c 01       		.uleb128 0x1
- 525 004d 13       		.uleb128 0x13
-ARM GAS  D:\Windows\AppData\Local\Temp\cctCKL3l.s 			page 11
+ 363              		.align	2
+ 364              	.L28:
+ 365 0024 08000000 		.word	.LC1
+ 366              		.cfi_endproc
+ 367              	.LFE68:
+ 368              		.size	can_process_BMS_VOLT, .-can_process_BMS_VOLT
+ 369              		.section	.text.can_process_BMS_TEMP,"ax",%progbits
+ 370              		.align	2
+ 371              		.global	can_process_BMS_TEMP
+ 372              		.thumb
+ 373              		.thumb_func
+ 374              		.type	can_process_BMS_TEMP, %function
+ 375              	can_process_BMS_TEMP:
+ 376              	.LFB69:
+ 133:can_manager.c **** 
+ 134:can_manager.c **** //highest temp
+ 135:can_manager.c **** void can_process_BMS_TEMP() {
+ 377              		.loc 1 135 0
+ 378              		.cfi_startproc
+ 379              		@ args = 0, pretend = 0, frame = 0
+ 380              		@ frame_needed = 0, uses_anonymous_args = 0
+ 381 0000 08B5     		push	{r3, lr}
+ 382              		.cfi_def_cfa_offset 8
+ 383              		.cfi_offset 3, -8
+ 384              		.cfi_offset 14, -4
+ 385              	.LVL43:
+ 136:can_manager.c **** 	uint8_t temperature = BMS_TEMP.data[7];	//displays as decimal
+ 137:can_manager.c **** 	temperature = 0x25;
+ 138:can_manager.c **** 	LCD_Position(1, 13);
+ 386              		.loc 1 138 0
+ 387 0002 0120     		movs	r0, #1
+ 388 0004 0D21     		movs	r1, #13
+ 389 0006 FFF7FEFF 		bl	LCD_Position
+ 390              	.LVL44:
+ 139:can_manager.c **** 	LCD_PrintHexUint8(temperature);
+ 391              		.loc 1 139 0
+ 392 000a 2520     		movs	r0, #37
+ 393 000c FFF7FEFF 		bl	LCD_PrintInt8
+ 394              	.LVL45:
+ 395 0010 08BD     		pop	{r3, pc}
+ 396              		.cfi_endproc
+ 397              	.LFE69:
+ 398              		.size	can_process_BMS_TEMP, .-can_process_BMS_TEMP
+ 399 0012 00BF     		.section	.text.can_process,"ax",%progbits
+ 400              		.align	2
+ 401              		.global	can_process
+ 402              		.thumb
+ 403              		.thumb_func
+ 404              		.type	can_process, %function
+ 405              	can_process:
+ 406              	.LFB65:
+  38:can_manager.c **** 	int status = 0;		//returns 1 if message is updated
+ 407              		.loc 1 38 0
+ 408              		.cfi_startproc
+ 409              		@ args = 0, pretend = 0, frame = 0
+ 410              		@ frame_needed = 0, uses_anonymous_args = 0
+ 411              	.LVL46:
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 11
 
 
- 526 004e 00       		.byte	0
- 527 004f 00       		.byte	0
- 528 0050 07       		.uleb128 0x7
- 529 0051 0D       		.uleb128 0xd
- 530 0052 00       		.byte	0
- 531 0053 03       		.uleb128 0x3
- 532 0054 0E       		.uleb128 0xe
- 533 0055 3A       		.uleb128 0x3a
- 534 0056 0B       		.uleb128 0xb
- 535 0057 3B       		.uleb128 0x3b
- 536 0058 0B       		.uleb128 0xb
- 537 0059 49       		.uleb128 0x49
- 538 005a 13       		.uleb128 0x13
- 539 005b 38       		.uleb128 0x38
- 540 005c 0B       		.uleb128 0xb
- 541 005d 00       		.byte	0
- 542 005e 00       		.byte	0
- 543 005f 08       		.uleb128 0x8
- 544 0060 01       		.uleb128 0x1
- 545 0061 01       		.byte	0x1
- 546 0062 49       		.uleb128 0x49
- 547 0063 13       		.uleb128 0x13
- 548 0064 01       		.uleb128 0x1
- 549 0065 13       		.uleb128 0x13
- 550 0066 00       		.byte	0
- 551 0067 00       		.byte	0
- 552 0068 09       		.uleb128 0x9
- 553 0069 21       		.uleb128 0x21
- 554 006a 00       		.byte	0
- 555 006b 49       		.uleb128 0x49
- 556 006c 13       		.uleb128 0x13
- 557 006d 2F       		.uleb128 0x2f
- 558 006e 0B       		.uleb128 0xb
- 559 006f 00       		.byte	0
- 560 0070 00       		.byte	0
- 561 0071 0A       		.uleb128 0xa
- 562 0072 0D       		.uleb128 0xd
- 563 0073 00       		.byte	0
- 564 0074 03       		.uleb128 0x3
- 565 0075 08       		.uleb128 0x8
- 566 0076 3A       		.uleb128 0x3a
- 567 0077 0B       		.uleb128 0xb
- 568 0078 3B       		.uleb128 0x3b
- 569 0079 0B       		.uleb128 0xb
- 570 007a 49       		.uleb128 0x49
- 571 007b 13       		.uleb128 0x13
- 572 007c 38       		.uleb128 0x38
- 573 007d 0B       		.uleb128 0xb
- 574 007e 00       		.byte	0
- 575 007f 00       		.byte	0
- 576 0080 0B       		.uleb128 0xb
- 577 0081 0F       		.uleb128 0xf
- 578 0082 00       		.byte	0
- 579 0083 0B       		.uleb128 0xb
- 580 0084 0B       		.uleb128 0xb
- 581 0085 49       		.uleb128 0x49
- 582 0086 13       		.uleb128 0x13
-ARM GAS  D:\Windows\AppData\Local\Temp\cctCKL3l.s 			page 12
+ 412 0000 10B5     		push	{r4, lr}
+ 413              		.cfi_def_cfa_offset 8
+ 414              		.cfi_offset 4, -8
+ 415              		.cfi_offset 14, -4
+ 416 0002 0146     		mov	r1, r0
+ 417              	.LVL47:
+  40:can_manager.c **** 	case BMS_CURRENT_ID:		//0x288
+ 418              		.loc 1 40 0
+ 419 0004 8388     		ldrh	r3, [r0, #4]
+ 420 0006 B3F5627F 		cmp	r3, #904
+ 421 000a 0DD0     		beq	.L34
+ 422 000c B3F5916F 		cmp	r3, #1160
+ 423 0010 12D0     		beq	.L35
+ 424 0012 B3F5227F 		cmp	r3, #648
+ 425 0016 17D1     		bne	.L38
+  42:can_manager.c **** 		if(status)
+ 426              		.loc 1 42 0
+ 427 0018 0D48     		ldr	r0, .L40
+ 428              	.LVL48:
+ 429 001a FFF7FEFF 		bl	can_compare
+ 430              	.LVL49:
+  43:can_manager.c **** 			can_process_BMS_CURR();
+ 431              		.loc 1 43 0
+ 432 001e 0446     		mov	r4, r0
+ 433 0020 98B1     		cbz	r0, .L33
+  44:can_manager.c **** 		break;
+ 434              		.loc 1 44 0
+ 435 0022 FFF7FEFF 		bl	can_process_BMS_CURR
+ 436              	.LVL50:
+ 437 0026 10E0     		b	.L33
+ 438              	.LVL51:
+ 439              	.L34:
+  47:can_manager.c **** 		if(status)
+ 440              		.loc 1 47 0
+ 441 0028 0A48     		ldr	r0, .L40+4
+ 442              	.LVL52:
+ 443 002a FFF7FEFF 		bl	can_compare
+ 444              	.LVL53:
+  48:can_manager.c **** 			can_process_BMS_VOLT();
+ 445              		.loc 1 48 0
+ 446 002e 0446     		mov	r4, r0
+ 447 0030 58B1     		cbz	r0, .L33
+  49:can_manager.c **** 		break;
+ 448              		.loc 1 49 0
+ 449 0032 FFF7FEFF 		bl	can_process_BMS_VOLT
+ 450              	.LVL54:
+ 451 0036 08E0     		b	.L33
+ 452              	.LVL55:
+ 453              	.L35:
+  52:can_manager.c **** 		if(status)
+ 454              		.loc 1 52 0
+ 455 0038 0748     		ldr	r0, .L40+8
+ 456              	.LVL56:
+ 457 003a FFF7FEFF 		bl	can_compare
+ 458              	.LVL57:
+  53:can_manager.c **** 			can_process_BMS_TEMP();
+ 459              		.loc 1 53 0
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 12
 
 
- 583 0087 00       		.byte	0
- 584 0088 00       		.byte	0
- 585 0089 0C       		.uleb128 0xc
- 586 008a 2E       		.uleb128 0x2e
- 587 008b 01       		.byte	0x1
- 588 008c 3F       		.uleb128 0x3f
- 589 008d 19       		.uleb128 0x19
- 590 008e 03       		.uleb128 0x3
- 591 008f 0E       		.uleb128 0xe
- 592 0090 3A       		.uleb128 0x3a
- 593 0091 0B       		.uleb128 0xb
- 594 0092 3B       		.uleb128 0x3b
- 595 0093 0B       		.uleb128 0xb
- 596 0094 11       		.uleb128 0x11
- 597 0095 01       		.uleb128 0x1
- 598 0096 12       		.uleb128 0x12
- 599 0097 06       		.uleb128 0x6
- 600 0098 40       		.uleb128 0x40
- 601 0099 18       		.uleb128 0x18
- 602 009a 9742     		.uleb128 0x2117
- 603 009c 19       		.uleb128 0x19
- 604 009d 01       		.uleb128 0x1
- 605 009e 13       		.uleb128 0x13
- 606 009f 00       		.byte	0
- 607 00a0 00       		.byte	0
- 608 00a1 0D       		.uleb128 0xd
- 609 00a2 34       		.uleb128 0x34
- 610 00a3 00       		.byte	0
- 611 00a4 03       		.uleb128 0x3
- 612 00a5 08       		.uleb128 0x8
- 613 00a6 3A       		.uleb128 0x3a
- 614 00a7 0B       		.uleb128 0xb
- 615 00a8 3B       		.uleb128 0x3b
- 616 00a9 0B       		.uleb128 0xb
- 617 00aa 49       		.uleb128 0x49
- 618 00ab 13       		.uleb128 0x13
- 619 00ac 02       		.uleb128 0x2
- 620 00ad 17       		.uleb128 0x17
- 621 00ae 00       		.byte	0
- 622 00af 00       		.byte	0
- 623 00b0 0E       		.uleb128 0xe
- 624 00b1 34       		.uleb128 0x34
- 625 00b2 00       		.byte	0
- 626 00b3 03       		.uleb128 0x3
- 627 00b4 0E       		.uleb128 0xe
- 628 00b5 3A       		.uleb128 0x3a
- 629 00b6 0B       		.uleb128 0xb
- 630 00b7 3B       		.uleb128 0x3b
- 631 00b8 0B       		.uleb128 0xb
- 632 00b9 49       		.uleb128 0x49
- 633 00ba 13       		.uleb128 0x13
- 634 00bb 02       		.uleb128 0x2
- 635 00bc 18       		.uleb128 0x18
- 636 00bd 00       		.byte	0
- 637 00be 00       		.byte	0
- 638 00bf 0F       		.uleb128 0xf
- 639 00c0 898201   		.uleb128 0x4109
-ARM GAS  D:\Windows\AppData\Local\Temp\cctCKL3l.s 			page 13
+ 460 003e 0446     		mov	r4, r0
+ 461 0040 18B1     		cbz	r0, .L33
+  54:can_manager.c **** 		break;
+ 462              		.loc 1 54 0
+ 463 0042 FFF7FEFF 		bl	can_process_BMS_TEMP
+ 464              	.LVL58:
+ 465 0046 00E0     		b	.L33
+ 466              	.LVL59:
+ 467              	.L38:
+  57:can_manager.c ****         break;
+ 468              		.loc 1 57 0
+ 469 0048 0024     		movs	r4, #0
+ 470              	.LVL60:
+ 471              	.L33:
+  61:can_manager.c **** 
+ 472              		.loc 1 61 0
+ 473 004a 2046     		mov	r0, r4
+ 474 004c 10BD     		pop	{r4, pc}
+ 475              	.LVL61:
+ 476              	.L41:
+ 477 004e 00BF     		.align	2
+ 478              	.L40:
+ 479 0050 00000000 		.word	BMS_STATUS
+ 480 0054 00000000 		.word	BMS_VOLTAGE
+ 481 0058 00000000 		.word	BMS_TEMP
+ 482              		.cfi_endproc
+ 483              	.LFE65:
+ 484              		.size	can_process, .-can_process
+ 485              		.section	.text.can_test_send,"ax",%progbits
+ 486              		.align	2
+ 487              		.global	can_test_send
+ 488              		.thumb
+ 489              		.thumb_func
+ 490              		.type	can_test_send, %function
+ 491              	can_test_send:
+ 492              	.LFB70:
+ 140:can_manager.c **** }
+ 141:can_manager.c **** 
+ 142:can_manager.c **** 
+ 143:can_manager.c **** void can_test_send() {
+ 493              		.loc 1 143 0
+ 494              		.cfi_startproc
+ 495              		@ args = 0, pretend = 0, frame = 24
+ 496              		@ frame_needed = 0, uses_anonymous_args = 0
+ 497 0000 00B5     		push	{lr}
+ 498              		.cfi_def_cfa_offset 4
+ 499              		.cfi_offset 14, -4
+ 500 0002 87B0     		sub	sp, sp, #28
+ 501              		.cfi_def_cfa_offset 32
+ 144:can_manager.c **** 	uint8_t i;
+ 145:can_manager.c **** 	CAN_TX_MSG message;
+ 146:can_manager.c **** 	CAN_DATA_BYTES_MSG test_data;
+ 147:can_manager.c **** 
+ 148:can_manager.c **** 	message.id = 0x100;
+ 502              		.loc 1 148 0
+ 503 0004 4FF48073 		mov	r3, #256
+ 504 0008 0393     		str	r3, [sp, #12]
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 13
 
 
- 640 00c3 01       		.byte	0x1
- 641 00c4 11       		.uleb128 0x11
- 642 00c5 01       		.uleb128 0x1
- 643 00c6 31       		.uleb128 0x31
- 644 00c7 13       		.uleb128 0x13
- 645 00c8 00       		.byte	0
- 646 00c9 00       		.byte	0
- 647 00ca 10       		.uleb128 0x10
- 648 00cb 8A8201   		.uleb128 0x410a
- 649 00ce 00       		.byte	0
- 650 00cf 02       		.uleb128 0x2
- 651 00d0 18       		.uleb128 0x18
- 652 00d1 9142     		.uleb128 0x2111
- 653 00d3 18       		.uleb128 0x18
- 654 00d4 00       		.byte	0
- 655 00d5 00       		.byte	0
- 656 00d6 11       		.uleb128 0x11
- 657 00d7 34       		.uleb128 0x34
- 658 00d8 00       		.byte	0
- 659 00d9 03       		.uleb128 0x3
- 660 00da 0E       		.uleb128 0xe
- 661 00db 3A       		.uleb128 0x3a
- 662 00dc 0B       		.uleb128 0xb
- 663 00dd 3B       		.uleb128 0x3b
- 664 00de 0B       		.uleb128 0xb
- 665 00df 49       		.uleb128 0x49
- 666 00e0 13       		.uleb128 0x13
- 667 00e1 00       		.byte	0
- 668 00e2 00       		.byte	0
- 669 00e3 12       		.uleb128 0x12
- 670 00e4 34       		.uleb128 0x34
- 671 00e5 00       		.byte	0
- 672 00e6 03       		.uleb128 0x3
- 673 00e7 0E       		.uleb128 0xe
- 674 00e8 3A       		.uleb128 0x3a
- 675 00e9 0B       		.uleb128 0xb
- 676 00ea 3B       		.uleb128 0x3b
- 677 00eb 05       		.uleb128 0x5
- 678 00ec 49       		.uleb128 0x49
- 679 00ed 13       		.uleb128 0x13
- 680 00ee 3F       		.uleb128 0x3f
- 681 00ef 19       		.uleb128 0x19
- 682 00f0 3C       		.uleb128 0x3c
- 683 00f1 19       		.uleb128 0x19
- 684 00f2 00       		.byte	0
- 685 00f3 00       		.byte	0
- 686 00f4 13       		.uleb128 0x13
- 687 00f5 35       		.uleb128 0x35
- 688 00f6 00       		.byte	0
- 689 00f7 49       		.uleb128 0x49
- 690 00f8 13       		.uleb128 0x13
- 691 00f9 00       		.byte	0
- 692 00fa 00       		.byte	0
- 693 00fb 14       		.uleb128 0x14
- 694 00fc 2E       		.uleb128 0x2e
- 695 00fd 01       		.byte	0x1
- 696 00fe 3F       		.uleb128 0x3f
-ARM GAS  D:\Windows\AppData\Local\Temp\cctCKL3l.s 			page 14
+ 149:can_manager.c **** 	message.rtr = 0;
+ 505              		.loc 1 149 0
+ 506 000a 0023     		movs	r3, #0
+ 507 000c 8DF81030 		strb	r3, [sp, #16]
+ 150:can_manager.c **** 	message.ide = 0;
+ 508              		.loc 1 150 0
+ 509 0010 8DF81130 		strb	r3, [sp, #17]
+ 151:can_manager.c **** 	message.dlc = 0x08;
+ 510              		.loc 1 151 0
+ 511 0014 0822     		movs	r2, #8
+ 512 0016 8DF81220 		strb	r2, [sp, #18]
+ 152:can_manager.c **** 	message.irq = 1;
+ 513              		.loc 1 152 0
+ 514 001a 0122     		movs	r2, #1
+ 515 001c 8DF81320 		strb	r2, [sp, #19]
+ 153:can_manager.c **** 	message.msg = &test_data;
+ 516              		.loc 1 153 0
+ 517 0020 01AA     		add	r2, sp, #4
+ 518 0022 0592     		str	r2, [sp, #20]
+ 519              	.LVL62:
+ 154:can_manager.c **** 
+ 155:can_manager.c **** 	for(i=0;i<8;i++)
+ 520              		.loc 1 155 0
+ 521 0024 06E0     		b	.L43
+ 522              	.LVL63:
+ 523              	.L44:
+ 156:can_manager.c **** 		test_data.byte[i] = 2;
+ 524              		.loc 1 156 0 discriminator 3
+ 525 0026 06AA     		add	r2, sp, #24
+ 526 0028 1A44     		add	r2, r2, r3
+ 527 002a 0221     		movs	r1, #2
+ 528 002c 02F8141C 		strb	r1, [r2, #-20]
+ 155:can_manager.c **** 		test_data.byte[i] = 2;
+ 529              		.loc 1 155 0 discriminator 3
+ 530 0030 0133     		adds	r3, r3, #1
+ 531              	.LVL64:
+ 532 0032 DBB2     		uxtb	r3, r3
+ 533              	.LVL65:
+ 534              	.L43:
+ 155:can_manager.c **** 		test_data.byte[i] = 2;
+ 535              		.loc 1 155 0 is_stmt 0 discriminator 1
+ 536 0034 072B     		cmp	r3, #7
+ 537 0036 F6D9     		bls	.L44
+ 157:can_manager.c **** 
+ 158:can_manager.c **** 	CAN_SendMsg(&message);
+ 538              		.loc 1 158 0 is_stmt 1
+ 539 0038 03A8     		add	r0, sp, #12
+ 540 003a FFF7FEFF 		bl	CAN_SendMsg
+ 541              	.LVL66:
+ 159:can_manager.c **** } // can_test_send()
+ 542              		.loc 1 159 0
+ 543 003e 07B0     		add	sp, sp, #28
+ 544              		.cfi_def_cfa_offset 4
+ 545              		@ sp needed
+ 546 0040 5DF804FB 		ldr	pc, [sp], #4
+ 547              		.cfi_endproc
+ 548              	.LFE70:
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 14
 
 
- 697 00ff 19       		.uleb128 0x19
- 698 0100 03       		.uleb128 0x3
- 699 0101 0E       		.uleb128 0xe
- 700 0102 3A       		.uleb128 0x3a
- 701 0103 0B       		.uleb128 0xb
- 702 0104 3B       		.uleb128 0x3b
- 703 0105 05       		.uleb128 0x5
- 704 0106 27       		.uleb128 0x27
- 705 0107 19       		.uleb128 0x19
- 706 0108 49       		.uleb128 0x49
- 707 0109 13       		.uleb128 0x13
- 708 010a 3C       		.uleb128 0x3c
- 709 010b 19       		.uleb128 0x19
- 710 010c 01       		.uleb128 0x1
- 711 010d 13       		.uleb128 0x13
- 712 010e 00       		.byte	0
- 713 010f 00       		.byte	0
- 714 0110 15       		.uleb128 0x15
- 715 0111 05       		.uleb128 0x5
- 716 0112 00       		.byte	0
- 717 0113 49       		.uleb128 0x49
- 718 0114 13       		.uleb128 0x13
- 719 0115 00       		.byte	0
- 720 0116 00       		.byte	0
- 721 0117 16       		.uleb128 0x16
- 722 0118 26       		.uleb128 0x26
- 723 0119 00       		.byte	0
- 724 011a 49       		.uleb128 0x49
- 725 011b 13       		.uleb128 0x13
- 726 011c 00       		.byte	0
- 727 011d 00       		.byte	0
- 728 011e 00       		.byte	0
- 729              		.section	.debug_loc,"",%progbits
- 730              	.Ldebug_loc0:
- 731              	.LLST0:
- 732 0000 24000000 		.4byte	.LVL0
- 733 0004 26000000 		.4byte	.LVL1
- 734 0008 0200     		.2byte	0x2
- 735 000a 30       		.byte	0x30
- 736 000b 9F       		.byte	0x9f
- 737 000c 26000000 		.4byte	.LVL1
- 738 0010 32000000 		.4byte	.LVL2
- 739 0014 0100     		.2byte	0x1
- 740 0016 53       		.byte	0x53
- 741 0017 34000000 		.4byte	.LVL3
- 742 001b 3D000000 		.4byte	.LVL4-1
- 743 001f 0100     		.2byte	0x1
- 744 0021 53       		.byte	0x53
- 745 0022 00000000 		.4byte	0
- 746 0026 00000000 		.4byte	0
- 747              	.LLST1:
- 748 002a 00000000 		.4byte	.LVL5
- 749 002e 04000000 		.4byte	.LVL6
- 750 0032 0300     		.2byte	0x3
- 751 0034 08       		.byte	0x8
- 752 0035 64       		.byte	0x64
- 753 0036 9F       		.byte	0x9f
-ARM GAS  D:\Windows\AppData\Local\Temp\cctCKL3l.s 			page 15
+ 549              		.size	can_test_send, .-can_test_send
+ 550              		.section	.text.can_test_receive,"ax",%progbits
+ 551              		.align	2
+ 552              		.global	can_test_receive
+ 553              		.thumb
+ 554              		.thumb_func
+ 555              		.type	can_test_receive, %function
+ 556              	can_test_receive:
+ 557              	.LFB71:
+ 160:can_manager.c **** 
+ 161:can_manager.c **** 
+ 162:can_manager.c **** void can_test_receive() {
+ 558              		.loc 1 162 0
+ 559              		.cfi_startproc
+ 560              		@ args = 0, pretend = 0, frame = 0
+ 561              		@ frame_needed = 0, uses_anonymous_args = 0
+ 562              		@ link register save eliminated.
+ 563              	.LVL67:
+ 163:can_manager.c **** 	DataPacket test_msg;
+ 164:can_manager.c ****     uint8 i;
+ 165:can_manager.c **** 	
+ 166:can_manager.c ****     //test packets
+ 167:can_manager.c ****     for(i=100; i<115; i++) { 
+ 564              		.loc 1 167 0
+ 565 0000 6423     		movs	r3, #100
+ 566 0002 01E0     		b	.L47
+ 567              	.LVL68:
+ 568              	.L48:
+ 569              		.loc 1 167 0 is_stmt 0 discriminator 3
+ 570 0004 0133     		adds	r3, r3, #1
+ 571              	.LVL69:
+ 572 0006 DBB2     		uxtb	r3, r3
+ 573              	.LVL70:
+ 574              	.L47:
+ 575              		.loc 1 167 0 discriminator 1
+ 576 0008 722B     		cmp	r3, #114
+ 577 000a FBD9     		bls	.L48
+ 168:can_manager.c **** 		//test_msg.millicounter = millis_timer_ReadCounter();    
+ 169:can_manager.c **** 		test_msg.id = 0x0923;
+ 170:can_manager.c **** 		test_msg.length = 8;
+ 171:can_manager.c **** 		test_msg.data[0]= 1;
+ 172:can_manager.c **** 		test_msg.data[1]= 2;
+ 173:can_manager.c **** 		test_msg.data[2]= 3;
+ 174:can_manager.c **** 		test_msg.data[3]= 4;
+ 175:can_manager.c **** 		test_msg.data[4]= 5;
+ 176:can_manager.c **** 		test_msg.data[5]= 6;
+ 177:can_manager.c **** 		test_msg.data[6]= 7;
+ 178:can_manager.c ****         test_msg.data[7]= 8;
+ 179:can_manager.c **** 		
+ 180:can_manager.c **** 		//msg_recieve(&test_msg);
+ 181:can_manager.c ****     } //for
+ 182:can_manager.c **** }
+ 578              		.loc 1 182 0 is_stmt 1
+ 579 000c 7047     		bx	lr
+ 580              		.cfi_endproc
+ 581              	.LFE71:
+ 582              		.size	can_test_receive, .-can_test_receive
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 15
 
 
- 754 0037 04000000 		.4byte	.LVL6
- 755 003b 06000000 		.4byte	.LVL7
- 756 003f 0100     		.2byte	0x1
- 757 0041 53       		.byte	0x53
- 758 0042 08000000 		.4byte	.LVL8
- 759 0046 0E000000 		.4byte	.LFE64
- 760 004a 0100     		.2byte	0x1
- 761 004c 53       		.byte	0x53
- 762 004d 00000000 		.4byte	0
- 763 0051 00000000 		.4byte	0
- 764              		.section	.debug_aranges,"",%progbits
- 765 0000 24000000 		.4byte	0x24
- 766 0004 0200     		.2byte	0x2
- 767 0006 00000000 		.4byte	.Ldebug_info0
- 768 000a 04       		.byte	0x4
- 769 000b 00       		.byte	0
- 770 000c 0000     		.2byte	0
- 771 000e 0000     		.2byte	0
- 772 0010 00000000 		.4byte	.LFB63
- 773 0014 44000000 		.4byte	.LFE63-.LFB63
- 774 0018 00000000 		.4byte	.LFB64
- 775 001c 0E000000 		.4byte	.LFE64-.LFB64
- 776 0020 00000000 		.4byte	0
- 777 0024 00000000 		.4byte	0
- 778              		.section	.debug_ranges,"",%progbits
- 779              	.Ldebug_ranges0:
- 780 0000 00000000 		.4byte	.LFB63
- 781 0004 44000000 		.4byte	.LFE63
- 782 0008 00000000 		.4byte	.LFB64
- 783 000c 0E000000 		.4byte	.LFE64
- 784 0010 00000000 		.4byte	0
- 785 0014 00000000 		.4byte	0
- 786              		.section	.debug_line,"",%progbits
- 787              	.Ldebug_line0:
- 788 0000 9F010000 		.section	.debug_str,"MS",%progbits,1
- 788      02005301 
- 788      00000201 
- 788      FB0E0D00 
- 788      01010101 
- 789              	.LASF30:
- 790 0000 6D657373 		.ascii	"message\000"
- 790      61676500 
- 791              	.LASF3:
- 792 0008 5F5F7569 		.ascii	"__uint8_t\000"
- 792      6E74385F 
- 792      7400
- 793              	.LASF39:
- 794 0012 43414E5F 		.ascii	"CAN_1_SendMsg\000"
- 794      315F5365 
- 794      6E644D73 
- 794      6700
- 795              	.LASF6:
- 796 0020 5F5F696E 		.ascii	"__int32_t\000"
- 796      7433325F 
- 796      7400
- 797              	.LASF7:
- 798 002a 6C6F6E67 		.ascii	"long int\000"
-ARM GAS  D:\Windows\AppData\Local\Temp\cctCKL3l.s 			page 16
+ 583              		.comm	BMS_TEMP,16,4
+ 584              		.comm	BMS_VOLTAGE,16,4
+ 585              		.comm	BMS_CURRENT,16,4
+ 586              		.comm	BMS_STATUS,16,4
+ 587 000e 00BF     		.section	.rodata.str1.4,"aMS",%progbits,1
+ 588              		.align	2
+ 589              	.LC0:
+ 590 0000 25303364 		.ascii	"%03dC\000"
+ 590      4300
+ 591 0006 0000     		.space	2
+ 592              	.LC1:
+ 593 0008 25303364 		.ascii	"%03d.%01dV\000"
+ 593      2E253031 
+ 593      645600
+ 594 0013 00       		.text
+ 595              	.Letext0:
+ 596              		.file 2 "d:\\programming\\cypress\\psoc creator\\4.0\\psoc creator\\import\\gnu\\arm\\4.9.3\\arm-n
+ 597              		.file 3 "d:\\programming\\cypress\\psoc creator\\4.0\\psoc creator\\import\\gnu\\arm\\4.9.3\\arm-n
+ 598              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 599              		.file 5 "Generated_Source\\PSoC5/CAN.h"
+ 600              		.file 6 "data.h"
+ 601              		.file 7 "Generated_Source\\PSoC5/core_cm3.h"
+ 602              		.file 8 "Generated_Source\\PSoC5/LCD.h"
+ 603              		.file 9 "d:\\programming\\cypress\\psoc creator\\4.0\\psoc creator\\import\\gnu\\arm\\4.9.3\\arm-n
+ 604              		.section	.debug_info,"",%progbits
+ 605              	.Ldebug_info0:
+ 606 0000 FC060000 		.4byte	0x6fc
+ 607 0004 0400     		.2byte	0x4
+ 608 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 609 000a 04       		.byte	0x4
+ 610 000b 01       		.uleb128 0x1
+ 611 000c 50020000 		.4byte	.LASF69
+ 612 0010 01       		.byte	0x1
+ 613 0011 F3000000 		.4byte	.LASF70
+ 614 0015 44010000 		.4byte	.LASF71
+ 615 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 616 001d 00000000 		.4byte	0
+ 617 0021 00000000 		.4byte	.Ldebug_line0
+ 618 0025 02       		.uleb128 0x2
+ 619 0026 01       		.byte	0x1
+ 620 0027 06       		.byte	0x6
+ 621 0028 8D010000 		.4byte	.LASF0
+ 622 002c 03       		.uleb128 0x3
+ 623 002d E4000000 		.4byte	.LASF3
+ 624 0031 02       		.byte	0x2
+ 625 0032 1D       		.byte	0x1d
+ 626 0033 37000000 		.4byte	0x37
+ 627 0037 02       		.uleb128 0x2
+ 628 0038 01       		.byte	0x1
+ 629 0039 08       		.byte	0x8
+ 630 003a 1E010000 		.4byte	.LASF1
+ 631 003e 02       		.uleb128 0x2
+ 632 003f 02       		.byte	0x2
+ 633 0040 05       		.byte	0x5
+ 634 0041 2D000000 		.4byte	.LASF2
+ 635 0045 03       		.uleb128 0x3
+ 636 0046 64000000 		.4byte	.LASF4
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 16
 
 
- 798      20696E74 
- 798      00
- 799              	.LASF25:
- 800 0033 43414E5F 		.ascii	"CAN_1_TX_MSG\000"
- 800      315F5458 
- 800      5F4D5347 
- 800      00
- 801              	.LASF5:
- 802 0040 73686F72 		.ascii	"short unsigned int\000"
- 802      7420756E 
- 802      7369676E 
- 802      65642069 
- 802      6E7400
- 803              	.LASF32:
- 804 0053 63616E5F 		.ascii	"can_test_send\000"
- 804      74657374 
- 804      5F73656E 
- 804      6400
- 805              	.LASF24:
- 806 0061 62797465 		.ascii	"byte\000"
- 806      00
- 807              	.LASF26:
- 808 0066 6D696C6C 		.ascii	"millicounter\000"
- 808      69636F75 
- 808      6E746572 
- 808      00
- 809              	.LASF8:
- 810 0073 5F5F7569 		.ascii	"__uint32_t\000"
- 810      6E743332 
- 810      5F7400
- 811              	.LASF19:
- 812 007e 666C6F61 		.ascii	"float\000"
- 812      7400
- 813              	.LASF28:
- 814 0084 64617461 		.ascii	"data\000"
- 814      00
- 815              	.LASF17:
- 816 0089 75696E74 		.ascii	"uint8\000"
- 816      3800
- 817              	.LASF1:
- 818 008f 756E7369 		.ascii	"unsigned char\000"
- 818      676E6564 
- 818      20636861 
- 818      7200
- 819              	.LASF33:
- 820 009d 63616E5F 		.ascii	"can_test_receive\000"
- 820      74657374 
- 820      5F726563 
- 820      65697665 
- 820      00
- 821              	.LASF9:
- 822 00ae 6C6F6E67 		.ascii	"long unsigned int\000"
- 822      20756E73 
- 822      69676E65 
- 822      6420696E 
- 822      7400
- 823              	.LASF31:
-ARM GAS  D:\Windows\AppData\Local\Temp\cctCKL3l.s 			page 17
+ 637 004a 02       		.byte	0x2
+ 638 004b 2B       		.byte	0x2b
+ 639 004c 50000000 		.4byte	0x50
+ 640 0050 02       		.uleb128 0x2
+ 641 0051 02       		.byte	0x2
+ 642 0052 07       		.byte	0x7
+ 643 0053 26020000 		.4byte	.LASF5
+ 644 0057 03       		.uleb128 0x3
+ 645 0058 76030000 		.4byte	.LASF6
+ 646 005c 02       		.byte	0x2
+ 647 005d 3F       		.byte	0x3f
+ 648 005e 62000000 		.4byte	0x62
+ 649 0062 02       		.uleb128 0x2
+ 650 0063 04       		.byte	0x4
+ 651 0064 05       		.byte	0x5
+ 652 0065 BA000000 		.4byte	.LASF7
+ 653 0069 03       		.uleb128 0x3
+ 654 006a 59000000 		.4byte	.LASF8
+ 655 006e 02       		.byte	0x2
+ 656 006f 41       		.byte	0x41
+ 657 0070 74000000 		.4byte	0x74
+ 658 0074 02       		.uleb128 0x2
+ 659 0075 04       		.byte	0x4
+ 660 0076 07       		.byte	0x7
+ 661 0077 D2000000 		.4byte	.LASF9
+ 662 007b 02       		.uleb128 0x2
+ 663 007c 08       		.byte	0x8
+ 664 007d 05       		.byte	0x5
+ 665 007e AC000000 		.4byte	.LASF10
+ 666 0082 02       		.uleb128 0x2
+ 667 0083 08       		.byte	0x8
+ 668 0084 07       		.byte	0x7
+ 669 0085 99010000 		.4byte	.LASF11
+ 670 0089 04       		.uleb128 0x4
+ 671 008a 04       		.byte	0x4
+ 672 008b 05       		.byte	0x5
+ 673 008c 696E7400 		.ascii	"int\000"
+ 674 0090 02       		.uleb128 0x2
+ 675 0091 04       		.byte	0x4
+ 676 0092 07       		.byte	0x7
+ 677 0093 CE010000 		.4byte	.LASF12
+ 678 0097 03       		.uleb128 0x3
+ 679 0098 86000000 		.4byte	.LASF13
+ 680 009c 03       		.byte	0x3
+ 681 009d 15       		.byte	0x15
+ 682 009e 2C000000 		.4byte	0x2c
+ 683 00a2 03       		.uleb128 0x3
+ 684 00a3 EB010000 		.4byte	.LASF14
+ 685 00a7 03       		.byte	0x3
+ 686 00a8 21       		.byte	0x21
+ 687 00a9 45000000 		.4byte	0x45
+ 688 00ad 03       		.uleb128 0x3
+ 689 00ae EC020000 		.4byte	.LASF15
+ 690 00b2 03       		.byte	0x3
+ 691 00b3 2C       		.byte	0x2c
+ 692 00b4 57000000 		.4byte	0x57
+ 693 00b8 03       		.uleb128 0x3
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 17
 
 
- 824 00c0 74657374 		.ascii	"test_data\000"
- 824      5F646174 
- 824      6100
- 825              	.LASF38:
- 826 00ca 49544D5F 		.ascii	"ITM_RxBuffer\000"
- 826      52784275 
- 826      66666572 
- 826      00
- 827              	.LASF4:
- 828 00d7 5F5F7569 		.ascii	"__uint16_t\000"
- 828      6E743136 
- 828      5F7400
- 829              	.LASF20:
- 830 00e2 646F7562 		.ascii	"double\000"
- 830      6C6500
- 831              	.LASF2:
- 832 00e9 73686F72 		.ascii	"short int\000"
- 832      7420696E 
- 832      7400
- 833              	.LASF18:
- 834 00f3 75696E74 		.ascii	"uint32\000"
- 834      333200
- 835              	.LASF34:
- 836 00fa 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
- 836      4320342E 
- 836      392E3320 
- 836      32303135 
- 836      30333033 
- 837 012d 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
- 837      20726576 
- 837      6973696F 
- 837      6E203232 
- 837      31323230 
- 838 0160 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
- 838      66756E63 
- 838      74696F6E 
- 838      2D736563 
- 838      74696F6E 
- 839              	.LASF37:
- 840 0188 74657374 		.ascii	"test_msg\000"
- 840      5F6D7367 
- 840      00
- 841              	.LASF12:
- 842 0191 756E7369 		.ascii	"unsigned int\000"
- 842      676E6564 
- 842      20696E74 
- 842      00
- 843              	.LASF29:
- 844 019e 44617461 		.ascii	"DataPacket\000"
- 844      5061636B 
- 844      657400
- 845              	.LASF11:
- 846 01a9 6C6F6E67 		.ascii	"long long unsigned int\000"
- 846      206C6F6E 
- 846      6720756E 
- 846      7369676E 
- 846      65642069 
-ARM GAS  D:\Windows\AppData\Local\Temp\cctCKL3l.s 			page 18
+ 694 00b9 B0010000 		.4byte	.LASF16
+ 695 00bd 03       		.byte	0x3
+ 696 00be 2D       		.byte	0x2d
+ 697 00bf 69000000 		.4byte	0x69
+ 698 00c3 05       		.uleb128 0x5
+ 699 00c4 8E000000 		.4byte	.LASF17
+ 700 00c8 04       		.byte	0x4
+ 701 00c9 9201     		.2byte	0x192
+ 702 00cb 37000000 		.4byte	0x37
+ 703 00cf 05       		.uleb128 0x5
+ 704 00d0 1C030000 		.4byte	.LASF18
+ 705 00d4 04       		.byte	0x4
+ 706 00d5 9401     		.2byte	0x194
+ 707 00d7 74000000 		.4byte	0x74
+ 708 00db 02       		.uleb128 0x2
+ 709 00dc 04       		.byte	0x4
+ 710 00dd 04       		.byte	0x4
+ 711 00de 9D000000 		.4byte	.LASF19
+ 712 00e2 02       		.uleb128 0x2
+ 713 00e3 08       		.byte	0x8
+ 714 00e4 04       		.byte	0x4
+ 715 00e5 AB030000 		.4byte	.LASF20
+ 716 00e9 05       		.uleb128 0x5
+ 717 00ea 53000000 		.4byte	.LASF21
+ 718 00ee 04       		.byte	0x4
+ 719 00ef A301     		.2byte	0x1a3
+ 720 00f1 F5000000 		.4byte	0xf5
+ 721 00f5 02       		.uleb128 0x2
+ 722 00f6 01       		.byte	0x1
+ 723 00f7 08       		.byte	0x8
+ 724 00f8 4B020000 		.4byte	.LASF22
+ 725 00fc 02       		.uleb128 0x2
+ 726 00fd 04       		.byte	0x4
+ 727 00fe 07       		.byte	0x7
+ 728 00ff 37000000 		.4byte	.LASF23
+ 729 0103 06       		.uleb128 0x6
+ 730 0104 04       		.byte	0x4
+ 731 0105 F5000000 		.4byte	0xf5
+ 732 0109 06       		.uleb128 0x6
+ 733 010a 04       		.byte	0x4
+ 734 010b 0F010000 		.4byte	0x10f
+ 735 010f 07       		.uleb128 0x7
+ 736 0110 F5000000 		.4byte	0xf5
+ 737 0114 08       		.uleb128 0x8
+ 738 0115 08       		.byte	0x8
+ 739 0116 05       		.byte	0x5
+ 740 0117 6F       		.byte	0x6f
+ 741 0118 29010000 		.4byte	0x129
+ 742 011c 09       		.uleb128 0x9
+ 743 011d EE000000 		.4byte	.LASF25
+ 744 0121 05       		.byte	0x5
+ 745 0122 71       		.byte	0x71
+ 746 0123 29010000 		.4byte	0x129
+ 747 0127 00       		.byte	0
+ 748 0128 00       		.byte	0
+ 749 0129 0A       		.uleb128 0xa
+ 750 012a C3000000 		.4byte	0xc3
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 18
 
 
- 847              	.LASF13:
- 848 01c0 75696E74 		.ascii	"uint8_t\000"
- 848      385F7400 
- 849              	.LASF36:
- 850 01c8 443A5C44 		.ascii	"D:\\Downloads\\FRUCD\\Node-Rhinoceros\\Node-Rhinoce"
- 850      6F776E6C 
- 850      6F616473 
- 850      5C465255 
- 850      43445C4E 
- 851 01f7 726F735C 		.ascii	"ros\\Node-Rhinoceros.cydsn\000"
- 851      4E6F6465 
- 851      2D526869 
- 851      6E6F6365 
- 851      726F732E 
- 852              	.LASF15:
- 853 0211 696E7433 		.ascii	"int32_t\000"
- 853      325F7400 
- 854              	.LASF22:
- 855 0219 73697A65 		.ascii	"sizetype\000"
- 855      74797065 
- 855      00
- 856              	.LASF10:
- 857 0222 6C6F6E67 		.ascii	"long long int\000"
- 857      206C6F6E 
- 857      6720696E 
- 857      7400
- 858              	.LASF21:
- 859 0230 63686172 		.ascii	"char\000"
- 859      00
- 860              	.LASF23:
- 861 0235 43414E5F 		.ascii	"CAN_1_DATA_BYTES_MSG\000"
- 861      315F4441 
- 861      54415F42 
- 861      59544553 
- 861      5F4D5347 
- 862              	.LASF14:
- 863 024a 75696E74 		.ascii	"uint16_t\000"
- 863      31365F74 
- 863      00
- 864              	.LASF16:
- 865 0253 75696E74 		.ascii	"uint32_t\000"
- 865      33325F74 
- 865      00
- 866              	.LASF0:
- 867 025c 7369676E 		.ascii	"signed char\000"
- 867      65642063 
- 867      68617200 
- 868              	.LASF27:
- 869 0268 6C656E67 		.ascii	"length\000"
- 869      746800
- 870              	.LASF35:
- 871 026f 63616E5F 		.ascii	"can_manager.c\000"
- 871      6D616E61 
- 871      6765722E 
- 871      6300
- 872              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br
+ 751 012e 39010000 		.4byte	0x139
+ 752 0132 0B       		.uleb128 0xb
+ 753 0133 FC000000 		.4byte	0xfc
+ 754 0137 07       		.byte	0x7
+ 755 0138 00       		.byte	0
+ 756 0139 03       		.uleb128 0x3
+ 757 013a 40000000 		.4byte	.LASF24
+ 758 013e 05       		.byte	0x5
+ 759 013f 72       		.byte	0x72
+ 760 0140 14010000 		.4byte	0x114
+ 761 0144 08       		.uleb128 0x8
+ 762 0145 0C       		.byte	0xc
+ 763 0146 05       		.byte	0x5
+ 764 0147 81       		.byte	0x81
+ 765 0148 94010000 		.4byte	0x194
+ 766 014c 0C       		.uleb128 0xc
+ 767 014d 696400   		.ascii	"id\000"
+ 768 0150 05       		.byte	0x5
+ 769 0151 83       		.byte	0x83
+ 770 0152 CF000000 		.4byte	0xcf
+ 771 0156 00       		.byte	0
+ 772 0157 0C       		.uleb128 0xc
+ 773 0158 72747200 		.ascii	"rtr\000"
+ 774 015c 05       		.byte	0x5
+ 775 015d 84       		.byte	0x84
+ 776 015e C3000000 		.4byte	0xc3
+ 777 0162 04       		.byte	0x4
+ 778 0163 0C       		.uleb128 0xc
+ 779 0164 69646500 		.ascii	"ide\000"
+ 780 0168 05       		.byte	0x5
+ 781 0169 85       		.byte	0x85
+ 782 016a C3000000 		.4byte	0xc3
+ 783 016e 05       		.byte	0x5
+ 784 016f 0C       		.uleb128 0xc
+ 785 0170 646C6300 		.ascii	"dlc\000"
+ 786 0174 05       		.byte	0x5
+ 787 0175 86       		.byte	0x86
+ 788 0176 C3000000 		.4byte	0xc3
+ 789 017a 06       		.byte	0x6
+ 790 017b 0C       		.uleb128 0xc
+ 791 017c 69727100 		.ascii	"irq\000"
+ 792 0180 05       		.byte	0x5
+ 793 0181 87       		.byte	0x87
+ 794 0182 C3000000 		.4byte	0xc3
+ 795 0186 07       		.byte	0x7
+ 796 0187 0C       		.uleb128 0xc
+ 797 0188 6D736700 		.ascii	"msg\000"
+ 798 018c 05       		.byte	0x5
+ 799 018d 8B       		.byte	0x8b
+ 800 018e 94010000 		.4byte	0x194
+ 801 0192 08       		.byte	0x8
+ 802 0193 00       		.byte	0
+ 803 0194 06       		.uleb128 0x6
+ 804 0195 04       		.byte	0x4
+ 805 0196 39010000 		.4byte	0x139
+ 806 019a 03       		.uleb128 0x3
+ 807 019b 33030000 		.4byte	.LASF26
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 19
+
+
+ 808 019f 05       		.byte	0x5
+ 809 01a0 8C       		.byte	0x8c
+ 810 01a1 44010000 		.4byte	0x144
+ 811 01a5 08       		.uleb128 0x8
+ 812 01a6 10       		.byte	0x10
+ 813 01a7 06       		.byte	0x6
+ 814 01a8 08       		.byte	0x8
+ 815 01a9 DD010000 		.4byte	0x1dd
+ 816 01ad 09       		.uleb128 0x9
+ 817 01ae 79000000 		.4byte	.LASF27
+ 818 01b2 06       		.byte	0x6
+ 819 01b3 09       		.byte	0x9
+ 820 01b4 B8000000 		.4byte	0xb8
+ 821 01b8 00       		.byte	0
+ 822 01b9 0C       		.uleb128 0xc
+ 823 01ba 696400   		.ascii	"id\000"
+ 824 01bd 06       		.byte	0x6
+ 825 01be 0A       		.byte	0xa
+ 826 01bf A2000000 		.4byte	0xa2
+ 827 01c3 04       		.byte	0x4
+ 828 01c4 09       		.uleb128 0x9
+ 829 01c5 E1030000 		.4byte	.LASF28
+ 830 01c9 06       		.byte	0x6
+ 831 01ca 0B       		.byte	0xb
+ 832 01cb 97000000 		.4byte	0x97
+ 833 01cf 06       		.byte	0x6
+ 834 01d0 09       		.uleb128 0x9
+ 835 01d1 17030000 		.4byte	.LASF29
+ 836 01d5 06       		.byte	0x6
+ 837 01d6 0C       		.byte	0xc
+ 838 01d7 DD010000 		.4byte	0x1dd
+ 839 01db 07       		.byte	0x7
+ 840 01dc 00       		.byte	0
+ 841 01dd 0A       		.uleb128 0xa
+ 842 01de 97000000 		.4byte	0x97
+ 843 01e2 ED010000 		.4byte	0x1ed
+ 844 01e6 0B       		.uleb128 0xb
+ 845 01e7 FC000000 		.4byte	0xfc
+ 846 01eb 07       		.byte	0x7
+ 847 01ec 00       		.byte	0
+ 848 01ed 03       		.uleb128 0x3
+ 849 01ee 0C030000 		.4byte	.LASF30
+ 850 01f2 06       		.byte	0x6
+ 851 01f3 0D       		.byte	0xd
+ 852 01f4 A5010000 		.4byte	0x1a5
+ 853 01f8 0D       		.uleb128 0xd
+ 854 01f9 80030000 		.4byte	.LASF72
+ 855 01fd 01       		.byte	0x1
+ 856 01fe 19       		.byte	0x19
+ 857 01ff 00000000 		.4byte	.LFB64
+ 858 0203 1C000000 		.4byte	.LFE64-.LFB64
+ 859 0207 01       		.uleb128 0x1
+ 860 0208 9C       		.byte	0x9c
+ 861 0209 36020000 		.4byte	0x236
+ 862 020d 0E       		.uleb128 0xe
+ 863 020e 2B030000 		.4byte	.LASF31
+ 864 0212 01       		.byte	0x1
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 20
+
+
+ 865 0213 19       		.byte	0x19
+ 866 0214 36020000 		.4byte	0x236
+ 867 0218 01       		.uleb128 0x1
+ 868 0219 50       		.byte	0x50
+ 869 021a 0F       		.uleb128 0xf
+ 870 021b 696400   		.ascii	"id\000"
+ 871 021e 01       		.byte	0x1
+ 872 021f 19       		.byte	0x19
+ 873 0220 A2000000 		.4byte	0xa2
+ 874 0224 00000000 		.4byte	.LLST0
+ 875 0228 10       		.uleb128 0x10
+ 876 0229 6900     		.ascii	"i\000"
+ 877 022b 01       		.byte	0x1
+ 878 022c 1A       		.byte	0x1a
+ 879 022d 97000000 		.4byte	0x97
+ 880 0231 21000000 		.4byte	.LLST1
+ 881 0235 00       		.byte	0
+ 882 0236 06       		.uleb128 0x6
+ 883 0237 04       		.byte	0x4
+ 884 0238 ED010000 		.4byte	0x1ed
+ 885 023c 11       		.uleb128 0x11
+ 886 023d 95030000 		.4byte	.LASF36
+ 887 0241 01       		.byte	0x1
+ 888 0242 0D       		.byte	0xd
+ 889 0243 00000000 		.4byte	.LFB63
+ 890 0247 3C000000 		.4byte	.LFE63-.LFB63
+ 891 024b 01       		.uleb128 0x1
+ 892 024c 9C       		.byte	0x9c
+ 893 024d C3020000 		.4byte	0x2c3
+ 894 0251 12       		.uleb128 0x12
+ 895 0252 06000000 		.4byte	.LVL5
+ 896 0256 5F060000 		.4byte	0x65f
+ 897 025a 12       		.uleb128 0x12
+ 898 025b 0A000000 		.4byte	.LVL6
+ 899 025f 6A060000 		.4byte	0x66a
+ 900 0263 12       		.uleb128 0x12
+ 901 0264 0E000000 		.4byte	.LVL7
+ 902 0268 75060000 		.4byte	0x675
+ 903 026c 13       		.uleb128 0x13
+ 904 026d 18000000 		.4byte	.LVL8
+ 905 0271 F8010000 		.4byte	0x1f8
+ 906 0275 8A020000 		.4byte	0x28a
+ 907 0279 14       		.uleb128 0x14
+ 908 027a 01       		.uleb128 0x1
+ 909 027b 51       		.byte	0x51
+ 910 027c 03       		.uleb128 0x3
+ 911 027d 0A       		.byte	0xa
+ 912 027e 8802     		.2byte	0x288
+ 913 0280 14       		.uleb128 0x14
+ 914 0281 01       		.uleb128 0x1
+ 915 0282 50       		.byte	0x50
+ 916 0283 05       		.uleb128 0x5
+ 917 0284 03       		.byte	0x3
+ 918 0285 00000000 		.4byte	BMS_CURRENT
+ 919 0289 00       		.byte	0
+ 920 028a 13       		.uleb128 0x13
+ 921 028b 22000000 		.4byte	.LVL9
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 21
+
+
+ 922 028f F8010000 		.4byte	0x1f8
+ 923 0293 A8020000 		.4byte	0x2a8
+ 924 0297 14       		.uleb128 0x14
+ 925 0298 01       		.uleb128 0x1
+ 926 0299 51       		.byte	0x51
+ 927 029a 03       		.uleb128 0x3
+ 928 029b 0A       		.byte	0xa
+ 929 029c 8803     		.2byte	0x388
+ 930 029e 14       		.uleb128 0x14
+ 931 029f 01       		.uleb128 0x1
+ 932 02a0 50       		.byte	0x50
+ 933 02a1 05       		.uleb128 0x5
+ 934 02a2 03       		.byte	0x3
+ 935 02a3 00000000 		.4byte	BMS_VOLTAGE
+ 936 02a7 00       		.byte	0
+ 937 02a8 15       		.uleb128 0x15
+ 938 02a9 2C000000 		.4byte	.LVL10
+ 939 02ad F8010000 		.4byte	0x1f8
+ 940 02b1 14       		.uleb128 0x14
+ 941 02b2 01       		.uleb128 0x1
+ 942 02b3 51       		.byte	0x51
+ 943 02b4 03       		.uleb128 0x3
+ 944 02b5 0A       		.byte	0xa
+ 945 02b6 8804     		.2byte	0x488
+ 946 02b8 14       		.uleb128 0x14
+ 947 02b9 01       		.uleb128 0x1
+ 948 02ba 50       		.byte	0x50
+ 949 02bb 05       		.uleb128 0x5
+ 950 02bc 03       		.byte	0x3
+ 951 02bd 00000000 		.4byte	BMS_TEMP
+ 952 02c1 00       		.byte	0
+ 953 02c2 00       		.byte	0
+ 954 02c3 16       		.uleb128 0x16
+ 955 02c4 D5030000 		.4byte	.LASF49
+ 956 02c8 01       		.byte	0x1
+ 957 02c9 42       		.byte	0x42
+ 958 02ca 89000000 		.4byte	0x89
+ 959 02ce 00000000 		.4byte	.LFB66
+ 960 02d2 9A000000 		.4byte	.LFE66-.LFB66
+ 961 02d6 01       		.uleb128 0x1
+ 962 02d7 9C       		.byte	0x9c
+ 963 02d8 2D030000 		.4byte	0x32d
+ 964 02dc 17       		.uleb128 0x17
+ 965 02dd A3000000 		.4byte	.LASF32
+ 966 02e1 01       		.byte	0x1
+ 967 02e2 42       		.byte	0x42
+ 968 02e3 36020000 		.4byte	0x236
+ 969 02e7 4B000000 		.4byte	.LLST2
+ 970 02eb 0E       		.uleb128 0xe
+ 971 02ec 8D030000 		.4byte	.LASF33
+ 972 02f0 01       		.byte	0x1
+ 973 02f1 42       		.byte	0x42
+ 974 02f2 36020000 		.4byte	0x236
+ 975 02f6 01       		.uleb128 0x1
+ 976 02f7 51       		.byte	0x51
+ 977 02f8 10       		.uleb128 0x10
+ 978 02f9 6900     		.ascii	"i\000"
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 22
+
+
+ 979 02fb 01       		.byte	0x1
+ 980 02fc 43       		.byte	0x43
+ 981 02fd 97000000 		.4byte	0x97
+ 982 0301 85000000 		.4byte	.LLST3
+ 983 0305 10       		.uleb128 0x10
+ 984 0306 6A00     		.ascii	"j\000"
+ 985 0308 01       		.byte	0x1
+ 986 0309 43       		.byte	0x43
+ 987 030a 97000000 		.4byte	0x97
+ 988 030e FC000000 		.4byte	.LLST4
+ 989 0312 18       		.uleb128 0x18
+ 990 0313 CB000000 		.4byte	.LASF34
+ 991 0317 01       		.byte	0x1
+ 992 0318 44       		.byte	0x44
+ 993 0319 97000000 		.4byte	0x97
+ 994 031d 00       		.byte	0
+ 995 031e 19       		.uleb128 0x19
+ 996 031f 28000000 		.4byte	.LASF35
+ 997 0323 01       		.byte	0x1
+ 998 0324 45       		.byte	0x45
+ 999 0325 ED010000 		.4byte	0x1ed
+ 1000 0329 02       		.uleb128 0x2
+ 1001 032a 91       		.byte	0x91
+ 1002 032b 60       		.sleb128 -32
+ 1003 032c 00       		.byte	0
+ 1004 032d 11       		.uleb128 0x11
+ 1005 032e B9010000 		.4byte	.LASF37
+ 1006 0332 01       		.byte	0x1
+ 1007 0333 67       		.byte	0x67
+ 1008 0334 00000000 		.4byte	.LFB67
+ 1009 0338 28000000 		.4byte	.LFE67-.LFB67
+ 1010 033c 01       		.uleb128 0x1
+ 1011 033d 9C       		.byte	0x9c
+ 1012 033e C5030000 		.4byte	0x3c5
+ 1013 0342 18       		.uleb128 0x18
+ 1014 0343 15020000 		.4byte	.LASF38
+ 1015 0347 01       		.byte	0x1
+ 1016 0348 68       		.byte	0x68
+ 1017 0349 A2000000 		.4byte	0xa2
+ 1018 034d 10       		.byte	0x10
+ 1019 034e 19       		.uleb128 0x19
+ 1020 034f BF030000 		.4byte	.LASF39
+ 1021 0353 01       		.byte	0x1
+ 1022 0354 69       		.byte	0x69
+ 1023 0355 C5030000 		.4byte	0x3c5
+ 1024 0359 02       		.uleb128 0x2
+ 1025 035a 91       		.byte	0x91
+ 1026 035b 74       		.sleb128 -12
+ 1027 035c 1A       		.uleb128 0x1a
+ 1028 035d 32010000 		.4byte	.LASF40
+ 1029 0361 01       		.byte	0x1
+ 1030 0362 6B       		.byte	0x6b
+ 1031 0363 A2000000 		.4byte	0xa2
+ 1032 0367 26010000 		.4byte	.LLST5
+ 1033 036b 1A       		.uleb128 0x1a
+ 1034 036c 2C010000 		.4byte	.LASF41
+ 1035 0370 01       		.byte	0x1
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 23
+
+
+ 1036 0371 6C       		.byte	0x6c
+ 1037 0372 A2000000 		.4byte	0xa2
+ 1038 0376 45010000 		.4byte	.LLST6
+ 1039 037a 13       		.uleb128 0x13
+ 1040 037b 0E000000 		.4byte	.LVL36
+ 1041 037f 80060000 		.4byte	0x680
+ 1042 0383 9C030000 		.4byte	0x39c
+ 1043 0387 14       		.uleb128 0x14
+ 1044 0388 01       		.uleb128 0x1
+ 1045 0389 52       		.byte	0x52
+ 1046 038a 01       		.uleb128 0x1
+ 1047 038b 40       		.byte	0x40
+ 1048 038c 14       		.uleb128 0x14
+ 1049 038d 01       		.uleb128 0x1
+ 1050 038e 51       		.byte	0x51
+ 1051 038f 05       		.uleb128 0x5
+ 1052 0390 03       		.byte	0x3
+ 1053 0391 00000000 		.4byte	.LC0
+ 1054 0395 14       		.uleb128 0x14
+ 1055 0396 01       		.uleb128 0x1
+ 1056 0397 50       		.byte	0x50
+ 1057 0398 02       		.uleb128 0x2
+ 1058 0399 91       		.byte	0x91
+ 1059 039a 74       		.sleb128 -12
+ 1060 039b 00       		.byte	0
+ 1061 039c 13       		.uleb128 0x13
+ 1062 039d 16000000 		.4byte	.LVL37
+ 1063 03a1 9B060000 		.4byte	0x69b
+ 1064 03a5 B4030000 		.4byte	0x3b4
+ 1065 03a9 14       		.uleb128 0x14
+ 1066 03aa 01       		.uleb128 0x1
+ 1067 03ab 51       		.byte	0x51
+ 1068 03ac 01       		.uleb128 0x1
+ 1069 03ad 33       		.byte	0x33
+ 1070 03ae 14       		.uleb128 0x14
+ 1071 03af 01       		.uleb128 0x1
+ 1072 03b0 50       		.byte	0x50
+ 1073 03b1 01       		.uleb128 0x1
+ 1074 03b2 31       		.byte	0x31
+ 1075 03b3 00       		.byte	0
+ 1076 03b4 15       		.uleb128 0x15
+ 1077 03b5 1C000000 		.4byte	.LVL38
+ 1078 03b9 B1060000 		.4byte	0x6b1
+ 1079 03bd 14       		.uleb128 0x14
+ 1080 03be 01       		.uleb128 0x1
+ 1081 03bf 50       		.byte	0x50
+ 1082 03c0 02       		.uleb128 0x2
+ 1083 03c1 91       		.byte	0x91
+ 1084 03c2 74       		.sleb128 -12
+ 1085 03c3 00       		.byte	0
+ 1086 03c4 00       		.byte	0
+ 1087 03c5 0A       		.uleb128 0xa
+ 1088 03c6 E9000000 		.4byte	0xe9
+ 1089 03ca D5030000 		.4byte	0x3d5
+ 1090 03ce 0B       		.uleb128 0xb
+ 1091 03cf FC000000 		.4byte	0xfc
+ 1092 03d3 03       		.byte	0x3
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 24
+
+
+ 1093 03d4 00       		.byte	0
+ 1094 03d5 11       		.uleb128 0x11
+ 1095 03d6 F4010000 		.4byte	.LASF42
+ 1096 03da 01       		.byte	0x1
+ 1097 03db 76       		.byte	0x76
+ 1098 03dc 00000000 		.4byte	.LFB68
+ 1099 03e0 28000000 		.4byte	.LFE68-.LFB68
+ 1100 03e4 01       		.uleb128 0x1
+ 1101 03e5 9C       		.byte	0x9c
+ 1102 03e6 94040000 		.4byte	0x494
+ 1103 03ea 1B       		.uleb128 0x1b
+ 1104 03eb C3000000 		.4byte	.LASF43
+ 1105 03ef 01       		.byte	0x1
+ 1106 03f0 77       		.byte	0x77
+ 1107 03f1 B8000000 		.4byte	0xb8
+ 1108 03f5 E3C30100 		.4byte	0x1c3e3
+ 1109 03f9 19       		.uleb128 0x19
+ 1110 03fa F4020000 		.4byte	.LASF44
+ 1111 03fe 01       		.byte	0x1
+ 1112 03ff 78       		.byte	0x78
+ 1113 0400 94040000 		.4byte	0x494
+ 1114 0404 02       		.uleb128 0x2
+ 1115 0405 91       		.byte	0x91
+ 1116 0406 70       		.sleb128 -16
+ 1117 0407 1A       		.uleb128 0x1a
+ 1118 0408 3E010000 		.4byte	.LASF45
+ 1119 040c 01       		.byte	0x1
+ 1120 040d 7A       		.byte	0x7a
+ 1121 040e B8000000 		.4byte	0xb8
+ 1122 0412 62010000 		.4byte	.LLST7
+ 1123 0416 1A       		.uleb128 0x1a
+ 1124 0417 38010000 		.4byte	.LASF46
+ 1125 041b 01       		.byte	0x1
+ 1126 041c 7B       		.byte	0x7b
+ 1127 041d B8000000 		.4byte	0xb8
+ 1128 0421 81010000 		.4byte	.LLST8
+ 1129 0425 1A       		.uleb128 0x1a
+ 1130 0426 32010000 		.4byte	.LASF40
+ 1131 042a 01       		.byte	0x1
+ 1132 042b 7C       		.byte	0x7c
+ 1133 042c B8000000 		.4byte	0xb8
+ 1134 0430 A0010000 		.4byte	.LLST9
+ 1135 0434 1A       		.uleb128 0x1a
+ 1136 0435 2C010000 		.4byte	.LASF41
+ 1137 0439 01       		.byte	0x1
+ 1138 043a 7D       		.byte	0x7d
+ 1139 043b B8000000 		.4byte	0xb8
+ 1140 043f BF010000 		.4byte	.LLST10
+ 1141 0443 13       		.uleb128 0x13
+ 1142 0444 10000000 		.4byte	.LVL40
+ 1143 0448 80060000 		.4byte	0x680
+ 1144 044c 6B040000 		.4byte	0x46b
+ 1145 0450 14       		.uleb128 0x14
+ 1146 0451 01       		.uleb128 0x1
+ 1147 0452 53       		.byte	0x53
+ 1148 0453 01       		.uleb128 0x1
+ 1149 0454 36       		.byte	0x36
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 25
+
+
+ 1150 0455 14       		.uleb128 0x14
+ 1151 0456 01       		.uleb128 0x1
+ 1152 0457 52       		.byte	0x52
+ 1153 0458 02       		.uleb128 0x2
+ 1154 0459 08       		.byte	0x8
+ 1155 045a 73       		.byte	0x73
+ 1156 045b 14       		.uleb128 0x14
+ 1157 045c 01       		.uleb128 0x1
+ 1158 045d 51       		.byte	0x51
+ 1159 045e 05       		.uleb128 0x5
+ 1160 045f 03       		.byte	0x3
+ 1161 0460 08000000 		.4byte	.LC1
+ 1162 0464 14       		.uleb128 0x14
+ 1163 0465 01       		.uleb128 0x1
+ 1164 0466 50       		.byte	0x50
+ 1165 0467 02       		.uleb128 0x2
+ 1166 0468 7D       		.byte	0x7d
+ 1167 0469 00       		.sleb128 0
+ 1168 046a 00       		.byte	0
+ 1169 046b 13       		.uleb128 0x13
+ 1170 046c 18000000 		.4byte	.LVL41
+ 1171 0470 9B060000 		.4byte	0x69b
+ 1172 0474 83040000 		.4byte	0x483
+ 1173 0478 14       		.uleb128 0x14
+ 1174 0479 01       		.uleb128 0x1
+ 1175 047a 51       		.byte	0x51
+ 1176 047b 01       		.uleb128 0x1
+ 1177 047c 33       		.byte	0x33
+ 1178 047d 14       		.uleb128 0x14
+ 1179 047e 01       		.uleb128 0x1
+ 1180 047f 50       		.byte	0x50
+ 1181 0480 01       		.uleb128 0x1
+ 1182 0481 30       		.byte	0x30
+ 1183 0482 00       		.byte	0
+ 1184 0483 15       		.uleb128 0x15
+ 1185 0484 1E000000 		.4byte	.LVL42
+ 1186 0488 B1060000 		.4byte	0x6b1
+ 1187 048c 14       		.uleb128 0x14
+ 1188 048d 01       		.uleb128 0x1
+ 1189 048e 50       		.byte	0x50
+ 1190 048f 02       		.uleb128 0x2
+ 1191 0490 7D       		.byte	0x7d
+ 1192 0491 00       		.sleb128 0
+ 1193 0492 00       		.byte	0
+ 1194 0493 00       		.byte	0
+ 1195 0494 0A       		.uleb128 0xa
+ 1196 0495 E9000000 		.4byte	0xe9
+ 1197 0499 A4040000 		.4byte	0x4a4
+ 1198 049d 0B       		.uleb128 0xb
+ 1199 049e FC000000 		.4byte	0xfc
+ 1200 04a2 05       		.byte	0x5
+ 1201 04a3 00       		.byte	0
+ 1202 04a4 11       		.uleb128 0x11
+ 1203 04a5 01010000 		.4byte	.LASF47
+ 1204 04a9 01       		.byte	0x1
+ 1205 04aa 87       		.byte	0x87
+ 1206 04ab 00000000 		.4byte	.LFB69
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 26
+
+
+ 1207 04af 12000000 		.4byte	.LFE69-.LFB69
+ 1208 04b3 01       		.uleb128 0x1
+ 1209 04b4 9C       		.byte	0x9c
+ 1210 04b5 EE040000 		.4byte	0x4ee
+ 1211 04b9 18       		.uleb128 0x18
+ 1212 04ba 6A030000 		.4byte	.LASF48
+ 1213 04be 01       		.byte	0x1
+ 1214 04bf 88       		.byte	0x88
+ 1215 04c0 97000000 		.4byte	0x97
+ 1216 04c4 25       		.byte	0x25
+ 1217 04c5 13       		.uleb128 0x13
+ 1218 04c6 0A000000 		.4byte	.LVL44
+ 1219 04ca 9B060000 		.4byte	0x69b
+ 1220 04ce DD040000 		.4byte	0x4dd
+ 1221 04d2 14       		.uleb128 0x14
+ 1222 04d3 01       		.uleb128 0x1
+ 1223 04d4 51       		.byte	0x51
+ 1224 04d5 01       		.uleb128 0x1
+ 1225 04d6 3D       		.byte	0x3d
+ 1226 04d7 14       		.uleb128 0x14
+ 1227 04d8 01       		.uleb128 0x1
+ 1228 04d9 50       		.byte	0x50
+ 1229 04da 01       		.uleb128 0x1
+ 1230 04db 31       		.byte	0x31
+ 1231 04dc 00       		.byte	0
+ 1232 04dd 15       		.uleb128 0x15
+ 1233 04de 10000000 		.4byte	.LVL45
+ 1234 04e2 CD060000 		.4byte	0x6cd
+ 1235 04e6 14       		.uleb128 0x14
+ 1236 04e7 01       		.uleb128 0x1
+ 1237 04e8 50       		.byte	0x50
+ 1238 04e9 02       		.uleb128 0x2
+ 1239 04ea 08       		.byte	0x8
+ 1240 04eb 25       		.byte	0x25
+ 1241 04ec 00       		.byte	0
+ 1242 04ed 00       		.byte	0
+ 1243 04ee 16       		.uleb128 0x16
+ 1244 04ef 00030000 		.4byte	.LASF50
+ 1245 04f3 01       		.byte	0x1
+ 1246 04f4 26       		.byte	0x26
+ 1247 04f5 89000000 		.4byte	0x89
+ 1248 04f9 00000000 		.4byte	.LFB65
+ 1249 04fd 5C000000 		.4byte	.LFE65-.LFB65
+ 1250 0501 01       		.uleb128 0x1
+ 1251 0502 9C       		.byte	0x9c
+ 1252 0503 8D050000 		.4byte	0x58d
+ 1253 0507 17       		.uleb128 0x17
+ 1254 0508 2B030000 		.4byte	.LASF31
+ 1255 050c 01       		.byte	0x1
+ 1256 050d 26       		.byte	0x26
+ 1257 050e 36020000 		.4byte	0x236
+ 1258 0512 DC010000 		.4byte	.LLST11
+ 1259 0516 1A       		.uleb128 0x1a
+ 1260 0517 44020000 		.4byte	.LASF51
+ 1261 051b 01       		.byte	0x1
+ 1262 051c 27       		.byte	0x27
+ 1263 051d 89000000 		.4byte	0x89
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 27
+
+
+ 1264 0521 69020000 		.4byte	.LLST12
+ 1265 0525 13       		.uleb128 0x13
+ 1266 0526 1E000000 		.4byte	.LVL49
+ 1267 052a C3020000 		.4byte	0x2c3
+ 1268 052e 43050000 		.4byte	0x543
+ 1269 0532 14       		.uleb128 0x14
+ 1270 0533 01       		.uleb128 0x1
+ 1271 0534 51       		.byte	0x51
+ 1272 0535 03       		.uleb128 0x3
+ 1273 0536 F3       		.byte	0xf3
+ 1274 0537 01       		.uleb128 0x1
+ 1275 0538 50       		.byte	0x50
+ 1276 0539 14       		.uleb128 0x14
+ 1277 053a 01       		.uleb128 0x1
+ 1278 053b 50       		.byte	0x50
+ 1279 053c 05       		.uleb128 0x5
+ 1280 053d 03       		.byte	0x3
+ 1281 053e 00000000 		.4byte	BMS_STATUS
+ 1282 0542 00       		.byte	0
+ 1283 0543 12       		.uleb128 0x12
+ 1284 0544 26000000 		.4byte	.LVL50
+ 1285 0548 2D030000 		.4byte	0x32d
+ 1286 054c 13       		.uleb128 0x13
+ 1287 054d 2E000000 		.4byte	.LVL53
+ 1288 0551 C3020000 		.4byte	0x2c3
+ 1289 0555 63050000 		.4byte	0x563
+ 1290 0559 14       		.uleb128 0x14
+ 1291 055a 01       		.uleb128 0x1
+ 1292 055b 50       		.byte	0x50
+ 1293 055c 05       		.uleb128 0x5
+ 1294 055d 03       		.byte	0x3
+ 1295 055e 00000000 		.4byte	BMS_VOLTAGE
+ 1296 0562 00       		.byte	0
+ 1297 0563 12       		.uleb128 0x12
+ 1298 0564 36000000 		.4byte	.LVL54
+ 1299 0568 D5030000 		.4byte	0x3d5
+ 1300 056c 13       		.uleb128 0x13
+ 1301 056d 3E000000 		.4byte	.LVL57
+ 1302 0571 C3020000 		.4byte	0x2c3
+ 1303 0575 83050000 		.4byte	0x583
+ 1304 0579 14       		.uleb128 0x14
+ 1305 057a 01       		.uleb128 0x1
+ 1306 057b 50       		.byte	0x50
+ 1307 057c 05       		.uleb128 0x5
+ 1308 057d 03       		.byte	0x3
+ 1309 057e 00000000 		.4byte	BMS_TEMP
+ 1310 0582 00       		.byte	0
+ 1311 0583 12       		.uleb128 0x12
+ 1312 0584 46000000 		.4byte	.LVL58
+ 1313 0588 A4040000 		.4byte	0x4a4
+ 1314 058c 00       		.byte	0
+ 1315 058d 11       		.uleb128 0x11
+ 1316 058e 09000000 		.4byte	.LASF52
+ 1317 0592 01       		.byte	0x1
+ 1318 0593 8F       		.byte	0x8f
+ 1319 0594 00000000 		.4byte	.LFB70
+ 1320 0598 44000000 		.4byte	.LFE70-.LFB70
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 28
+
+
+ 1321 059c 01       		.uleb128 0x1
+ 1322 059d 9C       		.byte	0x9c
+ 1323 059e DC050000 		.4byte	0x5dc
+ 1324 05a2 10       		.uleb128 0x10
+ 1325 05a3 6900     		.ascii	"i\000"
+ 1326 05a5 01       		.byte	0x1
+ 1327 05a6 90       		.byte	0x90
+ 1328 05a7 97000000 		.4byte	0x97
+ 1329 05ab F9020000 		.4byte	.LLST13
+ 1330 05af 19       		.uleb128 0x19
+ 1331 05b0 23030000 		.4byte	.LASF53
+ 1332 05b4 01       		.byte	0x1
+ 1333 05b5 91       		.byte	0x91
+ 1334 05b6 9A010000 		.4byte	0x19a
+ 1335 05ba 02       		.uleb128 0x2
+ 1336 05bb 91       		.byte	0x91
+ 1337 05bc 6C       		.sleb128 -20
+ 1338 05bd 19       		.uleb128 0x19
+ 1339 05be CB030000 		.4byte	.LASF54
+ 1340 05c2 01       		.byte	0x1
+ 1341 05c3 92       		.byte	0x92
+ 1342 05c4 39010000 		.4byte	0x139
+ 1343 05c8 02       		.uleb128 0x2
+ 1344 05c9 91       		.byte	0x91
+ 1345 05ca 64       		.sleb128 -28
+ 1346 05cb 15       		.uleb128 0x15
+ 1347 05cc 3E000000 		.4byte	.LVL66
+ 1348 05d0 DE060000 		.4byte	0x6de
+ 1349 05d4 14       		.uleb128 0x14
+ 1350 05d5 01       		.uleb128 0x1
+ 1351 05d6 50       		.byte	0x50
+ 1352 05d7 02       		.uleb128 0x2
+ 1353 05d8 91       		.byte	0x91
+ 1354 05d9 6C       		.sleb128 -20
+ 1355 05da 00       		.byte	0
+ 1356 05db 00       		.byte	0
+ 1357 05dc 11       		.uleb128 0x11
+ 1358 05dd 17000000 		.4byte	.LASF55
+ 1359 05e1 01       		.byte	0x1
+ 1360 05e2 A2       		.byte	0xa2
+ 1361 05e3 00000000 		.4byte	.LFB71
+ 1362 05e7 0E000000 		.4byte	.LFE71-.LFB71
+ 1363 05eb 01       		.uleb128 0x1
+ 1364 05ec 9C       		.byte	0x9c
+ 1365 05ed 0A060000 		.4byte	0x60a
+ 1366 05f1 1C       		.uleb128 0x1c
+ 1367 05f2 94000000 		.4byte	.LASF73
+ 1368 05f6 01       		.byte	0x1
+ 1369 05f7 A3       		.byte	0xa3
+ 1370 05f8 ED010000 		.4byte	0x1ed
+ 1371 05fc 10       		.uleb128 0x10
+ 1372 05fd 6900     		.ascii	"i\000"
+ 1373 05ff 01       		.byte	0x1
+ 1374 0600 A4       		.byte	0xa4
+ 1375 0601 C3000000 		.4byte	0xc3
+ 1376 0605 23030000 		.4byte	.LLST14
+ 1377 0609 00       		.byte	0
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 29
+
+
+ 1378 060a 1D       		.uleb128 0x1d
+ 1379 060b B2030000 		.4byte	.LASF56
+ 1380 060f 07       		.byte	0x7
+ 1381 0610 9606     		.2byte	0x696
+ 1382 0612 16060000 		.4byte	0x616
+ 1383 0616 1E       		.uleb128 0x1e
+ 1384 0617 AD000000 		.4byte	0xad
+ 1385 061b 1F       		.uleb128 0x1f
+ 1386 061c 39020000 		.4byte	.LASF57
+ 1387 0620 01       		.byte	0x1
+ 1388 0621 08       		.byte	0x8
+ 1389 0622 ED010000 		.4byte	0x1ed
+ 1390 0626 05       		.uleb128 0x5
+ 1391 0627 03       		.byte	0x3
+ 1392 0628 00000000 		.4byte	BMS_STATUS
+ 1393 062c 1F       		.uleb128 0x1f
+ 1394 062d 4A030000 		.4byte	.LASF58
+ 1395 0631 01       		.byte	0x1
+ 1396 0632 09       		.byte	0x9
+ 1397 0633 ED010000 		.4byte	0x1ed
+ 1398 0637 05       		.uleb128 0x5
+ 1399 0638 03       		.byte	0x3
+ 1400 0639 00000000 		.4byte	BMS_CURRENT
+ 1401 063d 1F       		.uleb128 0x1f
+ 1402 063e 09020000 		.4byte	.LASF59
+ 1403 0642 01       		.byte	0x1
+ 1404 0643 0A       		.byte	0xa
+ 1405 0644 ED010000 		.4byte	0x1ed
+ 1406 0648 05       		.uleb128 0x5
+ 1407 0649 03       		.byte	0x3
+ 1408 064a 00000000 		.4byte	BMS_VOLTAGE
+ 1409 064e 1F       		.uleb128 0x1f
+ 1410 064f 00000000 		.4byte	.LASF60
+ 1411 0653 01       		.byte	0x1
+ 1412 0654 0B       		.byte	0xb
+ 1413 0655 ED010000 		.4byte	0x1ed
+ 1414 0659 05       		.uleb128 0x5
+ 1415 065a 03       		.byte	0x3
+ 1416 065b 00000000 		.4byte	BMS_TEMP
+ 1417 065f 20       		.uleb128 0x20
+ 1418 0660 56030000 		.4byte	.LASF61
+ 1419 0664 05       		.byte	0x5
+ 1420 0665 C8       		.byte	0xc8
+ 1421 0666 C3000000 		.4byte	0xc3
+ 1422 066a 20       		.uleb128 0x20
+ 1423 066b 1D020000 		.4byte	.LASF62
+ 1424 066f 05       		.byte	0x5
+ 1425 0670 C4       		.byte	0xc4
+ 1426 0671 C3000000 		.4byte	0xc3
+ 1427 0675 20       		.uleb128 0x20
+ 1428 0676 6F000000 		.4byte	.LASF63
+ 1429 067a 05       		.byte	0x5
+ 1430 067b C5       		.byte	0xc5
+ 1431 067c C3000000 		.4byte	0xc3
+ 1432 0680 21       		.uleb128 0x21
+ 1433 0681 16010000 		.4byte	.LASF67
+ 1434 0685 09       		.byte	0x9
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 30
+
+
+ 1435 0686 DE       		.byte	0xde
+ 1436 0687 89000000 		.4byte	0x89
+ 1437 068b 9B060000 		.4byte	0x69b
+ 1438 068f 22       		.uleb128 0x22
+ 1439 0690 03010000 		.4byte	0x103
+ 1440 0694 22       		.uleb128 0x22
+ 1441 0695 09010000 		.4byte	0x109
+ 1442 0699 23       		.uleb128 0x23
+ 1443 069a 00       		.byte	0
+ 1444 069b 24       		.uleb128 0x24
+ 1445 069c 9E030000 		.4byte	.LASF64
+ 1446 06a0 08       		.byte	0x8
+ 1447 06a1 3D       		.byte	0x3d
+ 1448 06a2 B1060000 		.4byte	0x6b1
+ 1449 06a6 22       		.uleb128 0x22
+ 1450 06a7 C3000000 		.4byte	0xc3
+ 1451 06ab 22       		.uleb128 0x22
+ 1452 06ac C3000000 		.4byte	0xc3
+ 1453 06b0 00       		.byte	0
+ 1454 06b1 24       		.uleb128 0x24
+ 1455 06b2 DB010000 		.4byte	.LASF65
+ 1456 06b6 08       		.byte	0x8
+ 1457 06b7 3C       		.byte	0x3c
+ 1458 06b8 C2060000 		.4byte	0x6c2
+ 1459 06bc 22       		.uleb128 0x22
+ 1460 06bd C2060000 		.4byte	0x6c2
+ 1461 06c1 00       		.byte	0
+ 1462 06c2 06       		.uleb128 0x6
+ 1463 06c3 04       		.byte	0x4
+ 1464 06c4 C8060000 		.4byte	0x6c8
+ 1465 06c8 07       		.uleb128 0x7
+ 1466 06c9 E9000000 		.4byte	0xe9
+ 1467 06cd 24       		.uleb128 0x24
+ 1468 06ce DE020000 		.4byte	.LASF66
+ 1469 06d2 08       		.byte	0x8
+ 1470 06d3 5D       		.byte	0x5d
+ 1471 06d4 DE060000 		.4byte	0x6de
+ 1472 06d8 22       		.uleb128 0x22
+ 1473 06d9 C3000000 		.4byte	0xc3
+ 1474 06dd 00       		.byte	0
+ 1475 06de 25       		.uleb128 0x25
+ 1476 06df 3E030000 		.4byte	.LASF68
+ 1477 06e3 05       		.byte	0x5
+ 1478 06e4 1801     		.2byte	0x118
+ 1479 06e6 C3000000 		.4byte	0xc3
+ 1480 06ea F4060000 		.4byte	0x6f4
+ 1481 06ee 22       		.uleb128 0x22
+ 1482 06ef F4060000 		.4byte	0x6f4
+ 1483 06f3 00       		.byte	0
+ 1484 06f4 06       		.uleb128 0x6
+ 1485 06f5 04       		.byte	0x4
+ 1486 06f6 FA060000 		.4byte	0x6fa
+ 1487 06fa 07       		.uleb128 0x7
+ 1488 06fb 9A010000 		.4byte	0x19a
+ 1489 06ff 00       		.byte	0
+ 1490              		.section	.debug_abbrev,"",%progbits
+ 1491              	.Ldebug_abbrev0:
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 31
+
+
+ 1492 0000 01       		.uleb128 0x1
+ 1493 0001 11       		.uleb128 0x11
+ 1494 0002 01       		.byte	0x1
+ 1495 0003 25       		.uleb128 0x25
+ 1496 0004 0E       		.uleb128 0xe
+ 1497 0005 13       		.uleb128 0x13
+ 1498 0006 0B       		.uleb128 0xb
+ 1499 0007 03       		.uleb128 0x3
+ 1500 0008 0E       		.uleb128 0xe
+ 1501 0009 1B       		.uleb128 0x1b
+ 1502 000a 0E       		.uleb128 0xe
+ 1503 000b 55       		.uleb128 0x55
+ 1504 000c 17       		.uleb128 0x17
+ 1505 000d 11       		.uleb128 0x11
+ 1506 000e 01       		.uleb128 0x1
+ 1507 000f 10       		.uleb128 0x10
+ 1508 0010 17       		.uleb128 0x17
+ 1509 0011 00       		.byte	0
+ 1510 0012 00       		.byte	0
+ 1511 0013 02       		.uleb128 0x2
+ 1512 0014 24       		.uleb128 0x24
+ 1513 0015 00       		.byte	0
+ 1514 0016 0B       		.uleb128 0xb
+ 1515 0017 0B       		.uleb128 0xb
+ 1516 0018 3E       		.uleb128 0x3e
+ 1517 0019 0B       		.uleb128 0xb
+ 1518 001a 03       		.uleb128 0x3
+ 1519 001b 0E       		.uleb128 0xe
+ 1520 001c 00       		.byte	0
+ 1521 001d 00       		.byte	0
+ 1522 001e 03       		.uleb128 0x3
+ 1523 001f 16       		.uleb128 0x16
+ 1524 0020 00       		.byte	0
+ 1525 0021 03       		.uleb128 0x3
+ 1526 0022 0E       		.uleb128 0xe
+ 1527 0023 3A       		.uleb128 0x3a
+ 1528 0024 0B       		.uleb128 0xb
+ 1529 0025 3B       		.uleb128 0x3b
+ 1530 0026 0B       		.uleb128 0xb
+ 1531 0027 49       		.uleb128 0x49
+ 1532 0028 13       		.uleb128 0x13
+ 1533 0029 00       		.byte	0
+ 1534 002a 00       		.byte	0
+ 1535 002b 04       		.uleb128 0x4
+ 1536 002c 24       		.uleb128 0x24
+ 1537 002d 00       		.byte	0
+ 1538 002e 0B       		.uleb128 0xb
+ 1539 002f 0B       		.uleb128 0xb
+ 1540 0030 3E       		.uleb128 0x3e
+ 1541 0031 0B       		.uleb128 0xb
+ 1542 0032 03       		.uleb128 0x3
+ 1543 0033 08       		.uleb128 0x8
+ 1544 0034 00       		.byte	0
+ 1545 0035 00       		.byte	0
+ 1546 0036 05       		.uleb128 0x5
+ 1547 0037 16       		.uleb128 0x16
+ 1548 0038 00       		.byte	0
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 32
+
+
+ 1549 0039 03       		.uleb128 0x3
+ 1550 003a 0E       		.uleb128 0xe
+ 1551 003b 3A       		.uleb128 0x3a
+ 1552 003c 0B       		.uleb128 0xb
+ 1553 003d 3B       		.uleb128 0x3b
+ 1554 003e 05       		.uleb128 0x5
+ 1555 003f 49       		.uleb128 0x49
+ 1556 0040 13       		.uleb128 0x13
+ 1557 0041 00       		.byte	0
+ 1558 0042 00       		.byte	0
+ 1559 0043 06       		.uleb128 0x6
+ 1560 0044 0F       		.uleb128 0xf
+ 1561 0045 00       		.byte	0
+ 1562 0046 0B       		.uleb128 0xb
+ 1563 0047 0B       		.uleb128 0xb
+ 1564 0048 49       		.uleb128 0x49
+ 1565 0049 13       		.uleb128 0x13
+ 1566 004a 00       		.byte	0
+ 1567 004b 00       		.byte	0
+ 1568 004c 07       		.uleb128 0x7
+ 1569 004d 26       		.uleb128 0x26
+ 1570 004e 00       		.byte	0
+ 1571 004f 49       		.uleb128 0x49
+ 1572 0050 13       		.uleb128 0x13
+ 1573 0051 00       		.byte	0
+ 1574 0052 00       		.byte	0
+ 1575 0053 08       		.uleb128 0x8
+ 1576 0054 13       		.uleb128 0x13
+ 1577 0055 01       		.byte	0x1
+ 1578 0056 0B       		.uleb128 0xb
+ 1579 0057 0B       		.uleb128 0xb
+ 1580 0058 3A       		.uleb128 0x3a
+ 1581 0059 0B       		.uleb128 0xb
+ 1582 005a 3B       		.uleb128 0x3b
+ 1583 005b 0B       		.uleb128 0xb
+ 1584 005c 01       		.uleb128 0x1
+ 1585 005d 13       		.uleb128 0x13
+ 1586 005e 00       		.byte	0
+ 1587 005f 00       		.byte	0
+ 1588 0060 09       		.uleb128 0x9
+ 1589 0061 0D       		.uleb128 0xd
+ 1590 0062 00       		.byte	0
+ 1591 0063 03       		.uleb128 0x3
+ 1592 0064 0E       		.uleb128 0xe
+ 1593 0065 3A       		.uleb128 0x3a
+ 1594 0066 0B       		.uleb128 0xb
+ 1595 0067 3B       		.uleb128 0x3b
+ 1596 0068 0B       		.uleb128 0xb
+ 1597 0069 49       		.uleb128 0x49
+ 1598 006a 13       		.uleb128 0x13
+ 1599 006b 38       		.uleb128 0x38
+ 1600 006c 0B       		.uleb128 0xb
+ 1601 006d 00       		.byte	0
+ 1602 006e 00       		.byte	0
+ 1603 006f 0A       		.uleb128 0xa
+ 1604 0070 01       		.uleb128 0x1
+ 1605 0071 01       		.byte	0x1
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 33
+
+
+ 1606 0072 49       		.uleb128 0x49
+ 1607 0073 13       		.uleb128 0x13
+ 1608 0074 01       		.uleb128 0x1
+ 1609 0075 13       		.uleb128 0x13
+ 1610 0076 00       		.byte	0
+ 1611 0077 00       		.byte	0
+ 1612 0078 0B       		.uleb128 0xb
+ 1613 0079 21       		.uleb128 0x21
+ 1614 007a 00       		.byte	0
+ 1615 007b 49       		.uleb128 0x49
+ 1616 007c 13       		.uleb128 0x13
+ 1617 007d 2F       		.uleb128 0x2f
+ 1618 007e 0B       		.uleb128 0xb
+ 1619 007f 00       		.byte	0
+ 1620 0080 00       		.byte	0
+ 1621 0081 0C       		.uleb128 0xc
+ 1622 0082 0D       		.uleb128 0xd
+ 1623 0083 00       		.byte	0
+ 1624 0084 03       		.uleb128 0x3
+ 1625 0085 08       		.uleb128 0x8
+ 1626 0086 3A       		.uleb128 0x3a
+ 1627 0087 0B       		.uleb128 0xb
+ 1628 0088 3B       		.uleb128 0x3b
+ 1629 0089 0B       		.uleb128 0xb
+ 1630 008a 49       		.uleb128 0x49
+ 1631 008b 13       		.uleb128 0x13
+ 1632 008c 38       		.uleb128 0x38
+ 1633 008d 0B       		.uleb128 0xb
+ 1634 008e 00       		.byte	0
+ 1635 008f 00       		.byte	0
+ 1636 0090 0D       		.uleb128 0xd
+ 1637 0091 2E       		.uleb128 0x2e
+ 1638 0092 01       		.byte	0x1
+ 1639 0093 3F       		.uleb128 0x3f
+ 1640 0094 19       		.uleb128 0x19
+ 1641 0095 03       		.uleb128 0x3
+ 1642 0096 0E       		.uleb128 0xe
+ 1643 0097 3A       		.uleb128 0x3a
+ 1644 0098 0B       		.uleb128 0xb
+ 1645 0099 3B       		.uleb128 0x3b
+ 1646 009a 0B       		.uleb128 0xb
+ 1647 009b 27       		.uleb128 0x27
+ 1648 009c 19       		.uleb128 0x19
+ 1649 009d 11       		.uleb128 0x11
+ 1650 009e 01       		.uleb128 0x1
+ 1651 009f 12       		.uleb128 0x12
+ 1652 00a0 06       		.uleb128 0x6
+ 1653 00a1 40       		.uleb128 0x40
+ 1654 00a2 18       		.uleb128 0x18
+ 1655 00a3 9742     		.uleb128 0x2117
+ 1656 00a5 19       		.uleb128 0x19
+ 1657 00a6 01       		.uleb128 0x1
+ 1658 00a7 13       		.uleb128 0x13
+ 1659 00a8 00       		.byte	0
+ 1660 00a9 00       		.byte	0
+ 1661 00aa 0E       		.uleb128 0xe
+ 1662 00ab 05       		.uleb128 0x5
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 34
+
+
+ 1663 00ac 00       		.byte	0
+ 1664 00ad 03       		.uleb128 0x3
+ 1665 00ae 0E       		.uleb128 0xe
+ 1666 00af 3A       		.uleb128 0x3a
+ 1667 00b0 0B       		.uleb128 0xb
+ 1668 00b1 3B       		.uleb128 0x3b
+ 1669 00b2 0B       		.uleb128 0xb
+ 1670 00b3 49       		.uleb128 0x49
+ 1671 00b4 13       		.uleb128 0x13
+ 1672 00b5 02       		.uleb128 0x2
+ 1673 00b6 18       		.uleb128 0x18
+ 1674 00b7 00       		.byte	0
+ 1675 00b8 00       		.byte	0
+ 1676 00b9 0F       		.uleb128 0xf
+ 1677 00ba 05       		.uleb128 0x5
+ 1678 00bb 00       		.byte	0
+ 1679 00bc 03       		.uleb128 0x3
+ 1680 00bd 08       		.uleb128 0x8
+ 1681 00be 3A       		.uleb128 0x3a
+ 1682 00bf 0B       		.uleb128 0xb
+ 1683 00c0 3B       		.uleb128 0x3b
+ 1684 00c1 0B       		.uleb128 0xb
+ 1685 00c2 49       		.uleb128 0x49
+ 1686 00c3 13       		.uleb128 0x13
+ 1687 00c4 02       		.uleb128 0x2
+ 1688 00c5 17       		.uleb128 0x17
+ 1689 00c6 00       		.byte	0
+ 1690 00c7 00       		.byte	0
+ 1691 00c8 10       		.uleb128 0x10
+ 1692 00c9 34       		.uleb128 0x34
+ 1693 00ca 00       		.byte	0
+ 1694 00cb 03       		.uleb128 0x3
+ 1695 00cc 08       		.uleb128 0x8
+ 1696 00cd 3A       		.uleb128 0x3a
+ 1697 00ce 0B       		.uleb128 0xb
+ 1698 00cf 3B       		.uleb128 0x3b
+ 1699 00d0 0B       		.uleb128 0xb
+ 1700 00d1 49       		.uleb128 0x49
+ 1701 00d2 13       		.uleb128 0x13
+ 1702 00d3 02       		.uleb128 0x2
+ 1703 00d4 17       		.uleb128 0x17
+ 1704 00d5 00       		.byte	0
+ 1705 00d6 00       		.byte	0
+ 1706 00d7 11       		.uleb128 0x11
+ 1707 00d8 2E       		.uleb128 0x2e
+ 1708 00d9 01       		.byte	0x1
+ 1709 00da 3F       		.uleb128 0x3f
+ 1710 00db 19       		.uleb128 0x19
+ 1711 00dc 03       		.uleb128 0x3
+ 1712 00dd 0E       		.uleb128 0xe
+ 1713 00de 3A       		.uleb128 0x3a
+ 1714 00df 0B       		.uleb128 0xb
+ 1715 00e0 3B       		.uleb128 0x3b
+ 1716 00e1 0B       		.uleb128 0xb
+ 1717 00e2 11       		.uleb128 0x11
+ 1718 00e3 01       		.uleb128 0x1
+ 1719 00e4 12       		.uleb128 0x12
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 35
+
+
+ 1720 00e5 06       		.uleb128 0x6
+ 1721 00e6 40       		.uleb128 0x40
+ 1722 00e7 18       		.uleb128 0x18
+ 1723 00e8 9742     		.uleb128 0x2117
+ 1724 00ea 19       		.uleb128 0x19
+ 1725 00eb 01       		.uleb128 0x1
+ 1726 00ec 13       		.uleb128 0x13
+ 1727 00ed 00       		.byte	0
+ 1728 00ee 00       		.byte	0
+ 1729 00ef 12       		.uleb128 0x12
+ 1730 00f0 898201   		.uleb128 0x4109
+ 1731 00f3 00       		.byte	0
+ 1732 00f4 11       		.uleb128 0x11
+ 1733 00f5 01       		.uleb128 0x1
+ 1734 00f6 31       		.uleb128 0x31
+ 1735 00f7 13       		.uleb128 0x13
+ 1736 00f8 00       		.byte	0
+ 1737 00f9 00       		.byte	0
+ 1738 00fa 13       		.uleb128 0x13
+ 1739 00fb 898201   		.uleb128 0x4109
+ 1740 00fe 01       		.byte	0x1
+ 1741 00ff 11       		.uleb128 0x11
+ 1742 0100 01       		.uleb128 0x1
+ 1743 0101 31       		.uleb128 0x31
+ 1744 0102 13       		.uleb128 0x13
+ 1745 0103 01       		.uleb128 0x1
+ 1746 0104 13       		.uleb128 0x13
+ 1747 0105 00       		.byte	0
+ 1748 0106 00       		.byte	0
+ 1749 0107 14       		.uleb128 0x14
+ 1750 0108 8A8201   		.uleb128 0x410a
+ 1751 010b 00       		.byte	0
+ 1752 010c 02       		.uleb128 0x2
+ 1753 010d 18       		.uleb128 0x18
+ 1754 010e 9142     		.uleb128 0x2111
+ 1755 0110 18       		.uleb128 0x18
+ 1756 0111 00       		.byte	0
+ 1757 0112 00       		.byte	0
+ 1758 0113 15       		.uleb128 0x15
+ 1759 0114 898201   		.uleb128 0x4109
+ 1760 0117 01       		.byte	0x1
+ 1761 0118 11       		.uleb128 0x11
+ 1762 0119 01       		.uleb128 0x1
+ 1763 011a 31       		.uleb128 0x31
+ 1764 011b 13       		.uleb128 0x13
+ 1765 011c 00       		.byte	0
+ 1766 011d 00       		.byte	0
+ 1767 011e 16       		.uleb128 0x16
+ 1768 011f 2E       		.uleb128 0x2e
+ 1769 0120 01       		.byte	0x1
+ 1770 0121 3F       		.uleb128 0x3f
+ 1771 0122 19       		.uleb128 0x19
+ 1772 0123 03       		.uleb128 0x3
+ 1773 0124 0E       		.uleb128 0xe
+ 1774 0125 3A       		.uleb128 0x3a
+ 1775 0126 0B       		.uleb128 0xb
+ 1776 0127 3B       		.uleb128 0x3b
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 36
+
+
+ 1777 0128 0B       		.uleb128 0xb
+ 1778 0129 27       		.uleb128 0x27
+ 1779 012a 19       		.uleb128 0x19
+ 1780 012b 49       		.uleb128 0x49
+ 1781 012c 13       		.uleb128 0x13
+ 1782 012d 11       		.uleb128 0x11
+ 1783 012e 01       		.uleb128 0x1
+ 1784 012f 12       		.uleb128 0x12
+ 1785 0130 06       		.uleb128 0x6
+ 1786 0131 40       		.uleb128 0x40
+ 1787 0132 18       		.uleb128 0x18
+ 1788 0133 9742     		.uleb128 0x2117
+ 1789 0135 19       		.uleb128 0x19
+ 1790 0136 01       		.uleb128 0x1
+ 1791 0137 13       		.uleb128 0x13
+ 1792 0138 00       		.byte	0
+ 1793 0139 00       		.byte	0
+ 1794 013a 17       		.uleb128 0x17
+ 1795 013b 05       		.uleb128 0x5
+ 1796 013c 00       		.byte	0
+ 1797 013d 03       		.uleb128 0x3
+ 1798 013e 0E       		.uleb128 0xe
+ 1799 013f 3A       		.uleb128 0x3a
+ 1800 0140 0B       		.uleb128 0xb
+ 1801 0141 3B       		.uleb128 0x3b
+ 1802 0142 0B       		.uleb128 0xb
+ 1803 0143 49       		.uleb128 0x49
+ 1804 0144 13       		.uleb128 0x13
+ 1805 0145 02       		.uleb128 0x2
+ 1806 0146 17       		.uleb128 0x17
+ 1807 0147 00       		.byte	0
+ 1808 0148 00       		.byte	0
+ 1809 0149 18       		.uleb128 0x18
+ 1810 014a 34       		.uleb128 0x34
+ 1811 014b 00       		.byte	0
+ 1812 014c 03       		.uleb128 0x3
+ 1813 014d 0E       		.uleb128 0xe
+ 1814 014e 3A       		.uleb128 0x3a
+ 1815 014f 0B       		.uleb128 0xb
+ 1816 0150 3B       		.uleb128 0x3b
+ 1817 0151 0B       		.uleb128 0xb
+ 1818 0152 49       		.uleb128 0x49
+ 1819 0153 13       		.uleb128 0x13
+ 1820 0154 1C       		.uleb128 0x1c
+ 1821 0155 0B       		.uleb128 0xb
+ 1822 0156 00       		.byte	0
+ 1823 0157 00       		.byte	0
+ 1824 0158 19       		.uleb128 0x19
+ 1825 0159 34       		.uleb128 0x34
+ 1826 015a 00       		.byte	0
+ 1827 015b 03       		.uleb128 0x3
+ 1828 015c 0E       		.uleb128 0xe
+ 1829 015d 3A       		.uleb128 0x3a
+ 1830 015e 0B       		.uleb128 0xb
+ 1831 015f 3B       		.uleb128 0x3b
+ 1832 0160 0B       		.uleb128 0xb
+ 1833 0161 49       		.uleb128 0x49
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 37
+
+
+ 1834 0162 13       		.uleb128 0x13
+ 1835 0163 02       		.uleb128 0x2
+ 1836 0164 18       		.uleb128 0x18
+ 1837 0165 00       		.byte	0
+ 1838 0166 00       		.byte	0
+ 1839 0167 1A       		.uleb128 0x1a
+ 1840 0168 34       		.uleb128 0x34
+ 1841 0169 00       		.byte	0
+ 1842 016a 03       		.uleb128 0x3
+ 1843 016b 0E       		.uleb128 0xe
+ 1844 016c 3A       		.uleb128 0x3a
+ 1845 016d 0B       		.uleb128 0xb
+ 1846 016e 3B       		.uleb128 0x3b
+ 1847 016f 0B       		.uleb128 0xb
+ 1848 0170 49       		.uleb128 0x49
+ 1849 0171 13       		.uleb128 0x13
+ 1850 0172 02       		.uleb128 0x2
+ 1851 0173 17       		.uleb128 0x17
+ 1852 0174 00       		.byte	0
+ 1853 0175 00       		.byte	0
+ 1854 0176 1B       		.uleb128 0x1b
+ 1855 0177 34       		.uleb128 0x34
+ 1856 0178 00       		.byte	0
+ 1857 0179 03       		.uleb128 0x3
+ 1858 017a 0E       		.uleb128 0xe
+ 1859 017b 3A       		.uleb128 0x3a
+ 1860 017c 0B       		.uleb128 0xb
+ 1861 017d 3B       		.uleb128 0x3b
+ 1862 017e 0B       		.uleb128 0xb
+ 1863 017f 49       		.uleb128 0x49
+ 1864 0180 13       		.uleb128 0x13
+ 1865 0181 1C       		.uleb128 0x1c
+ 1866 0182 06       		.uleb128 0x6
+ 1867 0183 00       		.byte	0
+ 1868 0184 00       		.byte	0
+ 1869 0185 1C       		.uleb128 0x1c
+ 1870 0186 34       		.uleb128 0x34
+ 1871 0187 00       		.byte	0
+ 1872 0188 03       		.uleb128 0x3
+ 1873 0189 0E       		.uleb128 0xe
+ 1874 018a 3A       		.uleb128 0x3a
+ 1875 018b 0B       		.uleb128 0xb
+ 1876 018c 3B       		.uleb128 0x3b
+ 1877 018d 0B       		.uleb128 0xb
+ 1878 018e 49       		.uleb128 0x49
+ 1879 018f 13       		.uleb128 0x13
+ 1880 0190 00       		.byte	0
+ 1881 0191 00       		.byte	0
+ 1882 0192 1D       		.uleb128 0x1d
+ 1883 0193 34       		.uleb128 0x34
+ 1884 0194 00       		.byte	0
+ 1885 0195 03       		.uleb128 0x3
+ 1886 0196 0E       		.uleb128 0xe
+ 1887 0197 3A       		.uleb128 0x3a
+ 1888 0198 0B       		.uleb128 0xb
+ 1889 0199 3B       		.uleb128 0x3b
+ 1890 019a 05       		.uleb128 0x5
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 38
+
+
+ 1891 019b 49       		.uleb128 0x49
+ 1892 019c 13       		.uleb128 0x13
+ 1893 019d 3F       		.uleb128 0x3f
+ 1894 019e 19       		.uleb128 0x19
+ 1895 019f 3C       		.uleb128 0x3c
+ 1896 01a0 19       		.uleb128 0x19
+ 1897 01a1 00       		.byte	0
+ 1898 01a2 00       		.byte	0
+ 1899 01a3 1E       		.uleb128 0x1e
+ 1900 01a4 35       		.uleb128 0x35
+ 1901 01a5 00       		.byte	0
+ 1902 01a6 49       		.uleb128 0x49
+ 1903 01a7 13       		.uleb128 0x13
+ 1904 01a8 00       		.byte	0
+ 1905 01a9 00       		.byte	0
+ 1906 01aa 1F       		.uleb128 0x1f
+ 1907 01ab 34       		.uleb128 0x34
+ 1908 01ac 00       		.byte	0
+ 1909 01ad 03       		.uleb128 0x3
+ 1910 01ae 0E       		.uleb128 0xe
+ 1911 01af 3A       		.uleb128 0x3a
+ 1912 01b0 0B       		.uleb128 0xb
+ 1913 01b1 3B       		.uleb128 0x3b
+ 1914 01b2 0B       		.uleb128 0xb
+ 1915 01b3 49       		.uleb128 0x49
+ 1916 01b4 13       		.uleb128 0x13
+ 1917 01b5 3F       		.uleb128 0x3f
+ 1918 01b6 19       		.uleb128 0x19
+ 1919 01b7 02       		.uleb128 0x2
+ 1920 01b8 18       		.uleb128 0x18
+ 1921 01b9 00       		.byte	0
+ 1922 01ba 00       		.byte	0
+ 1923 01bb 20       		.uleb128 0x20
+ 1924 01bc 2E       		.uleb128 0x2e
+ 1925 01bd 00       		.byte	0
+ 1926 01be 3F       		.uleb128 0x3f
+ 1927 01bf 19       		.uleb128 0x19
+ 1928 01c0 03       		.uleb128 0x3
+ 1929 01c1 0E       		.uleb128 0xe
+ 1930 01c2 3A       		.uleb128 0x3a
+ 1931 01c3 0B       		.uleb128 0xb
+ 1932 01c4 3B       		.uleb128 0x3b
+ 1933 01c5 0B       		.uleb128 0xb
+ 1934 01c6 27       		.uleb128 0x27
+ 1935 01c7 19       		.uleb128 0x19
+ 1936 01c8 49       		.uleb128 0x49
+ 1937 01c9 13       		.uleb128 0x13
+ 1938 01ca 3C       		.uleb128 0x3c
+ 1939 01cb 19       		.uleb128 0x19
+ 1940 01cc 00       		.byte	0
+ 1941 01cd 00       		.byte	0
+ 1942 01ce 21       		.uleb128 0x21
+ 1943 01cf 2E       		.uleb128 0x2e
+ 1944 01d0 01       		.byte	0x1
+ 1945 01d1 3F       		.uleb128 0x3f
+ 1946 01d2 19       		.uleb128 0x19
+ 1947 01d3 03       		.uleb128 0x3
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 39
+
+
+ 1948 01d4 0E       		.uleb128 0xe
+ 1949 01d5 3A       		.uleb128 0x3a
+ 1950 01d6 0B       		.uleb128 0xb
+ 1951 01d7 3B       		.uleb128 0x3b
+ 1952 01d8 0B       		.uleb128 0xb
+ 1953 01d9 27       		.uleb128 0x27
+ 1954 01da 19       		.uleb128 0x19
+ 1955 01db 49       		.uleb128 0x49
+ 1956 01dc 13       		.uleb128 0x13
+ 1957 01dd 3C       		.uleb128 0x3c
+ 1958 01de 19       		.uleb128 0x19
+ 1959 01df 01       		.uleb128 0x1
+ 1960 01e0 13       		.uleb128 0x13
+ 1961 01e1 00       		.byte	0
+ 1962 01e2 00       		.byte	0
+ 1963 01e3 22       		.uleb128 0x22
+ 1964 01e4 05       		.uleb128 0x5
+ 1965 01e5 00       		.byte	0
+ 1966 01e6 49       		.uleb128 0x49
+ 1967 01e7 13       		.uleb128 0x13
+ 1968 01e8 00       		.byte	0
+ 1969 01e9 00       		.byte	0
+ 1970 01ea 23       		.uleb128 0x23
+ 1971 01eb 18       		.uleb128 0x18
+ 1972 01ec 00       		.byte	0
+ 1973 01ed 00       		.byte	0
+ 1974 01ee 00       		.byte	0
+ 1975 01ef 24       		.uleb128 0x24
+ 1976 01f0 2E       		.uleb128 0x2e
+ 1977 01f1 01       		.byte	0x1
+ 1978 01f2 3F       		.uleb128 0x3f
+ 1979 01f3 19       		.uleb128 0x19
+ 1980 01f4 03       		.uleb128 0x3
+ 1981 01f5 0E       		.uleb128 0xe
+ 1982 01f6 3A       		.uleb128 0x3a
+ 1983 01f7 0B       		.uleb128 0xb
+ 1984 01f8 3B       		.uleb128 0x3b
+ 1985 01f9 0B       		.uleb128 0xb
+ 1986 01fa 27       		.uleb128 0x27
+ 1987 01fb 19       		.uleb128 0x19
+ 1988 01fc 3C       		.uleb128 0x3c
+ 1989 01fd 19       		.uleb128 0x19
+ 1990 01fe 01       		.uleb128 0x1
+ 1991 01ff 13       		.uleb128 0x13
+ 1992 0200 00       		.byte	0
+ 1993 0201 00       		.byte	0
+ 1994 0202 25       		.uleb128 0x25
+ 1995 0203 2E       		.uleb128 0x2e
+ 1996 0204 01       		.byte	0x1
+ 1997 0205 3F       		.uleb128 0x3f
+ 1998 0206 19       		.uleb128 0x19
+ 1999 0207 03       		.uleb128 0x3
+ 2000 0208 0E       		.uleb128 0xe
+ 2001 0209 3A       		.uleb128 0x3a
+ 2002 020a 0B       		.uleb128 0xb
+ 2003 020b 3B       		.uleb128 0x3b
+ 2004 020c 05       		.uleb128 0x5
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 40
+
+
+ 2005 020d 27       		.uleb128 0x27
+ 2006 020e 19       		.uleb128 0x19
+ 2007 020f 49       		.uleb128 0x49
+ 2008 0210 13       		.uleb128 0x13
+ 2009 0211 3C       		.uleb128 0x3c
+ 2010 0212 19       		.uleb128 0x19
+ 2011 0213 01       		.uleb128 0x1
+ 2012 0214 13       		.uleb128 0x13
+ 2013 0215 00       		.byte	0
+ 2014 0216 00       		.byte	0
+ 2015 0217 00       		.byte	0
+ 2016              		.section	.debug_loc,"",%progbits
+ 2017              	.Ldebug_loc0:
+ 2018              	.LLST0:
+ 2019 0000 00000000 		.4byte	.LVL0
+ 2020 0004 0C000000 		.4byte	.LVL2
+ 2021 0008 0100     		.2byte	0x1
+ 2022 000a 51       		.byte	0x51
+ 2023 000b 0C000000 		.4byte	.LVL2
+ 2024 000f 1C000000 		.4byte	.LFE64
+ 2025 0013 0400     		.2byte	0x4
+ 2026 0015 F3       		.byte	0xf3
+ 2027 0016 01       		.uleb128 0x1
+ 2028 0017 51       		.byte	0x51
+ 2029 0018 9F       		.byte	0x9f
+ 2030 0019 00000000 		.4byte	0
+ 2031 001d 00000000 		.4byte	0
+ 2032              	.LLST1:
+ 2033 0021 0A000000 		.4byte	.LVL1
+ 2034 0025 0C000000 		.4byte	.LVL2
+ 2035 0029 0200     		.2byte	0x2
+ 2036 002b 30       		.byte	0x30
+ 2037 002c 9F       		.byte	0x9f
+ 2038 002d 0C000000 		.4byte	.LVL2
+ 2039 0031 14000000 		.4byte	.LVL3
+ 2040 0035 0100     		.2byte	0x1
+ 2041 0037 53       		.byte	0x53
+ 2042 0038 16000000 		.4byte	.LVL4
+ 2043 003c 1C000000 		.4byte	.LFE64
+ 2044 0040 0100     		.2byte	0x1
+ 2045 0042 53       		.byte	0x53
+ 2046 0043 00000000 		.4byte	0
+ 2047 0047 00000000 		.4byte	0
+ 2048              	.LLST2:
+ 2049 004b 00000000 		.4byte	.LVL11
+ 2050 004f 88000000 		.4byte	.LVL30
+ 2051 0053 0100     		.2byte	0x1
+ 2052 0055 50       		.byte	0x50
+ 2053 0056 88000000 		.4byte	.LVL30
+ 2054 005a 8A000000 		.4byte	.LVL31
+ 2055 005e 0400     		.2byte	0x4
+ 2056 0060 F3       		.byte	0xf3
+ 2057 0061 01       		.uleb128 0x1
+ 2058 0062 50       		.byte	0x50
+ 2059 0063 9F       		.byte	0x9f
+ 2060 0064 8A000000 		.4byte	.LVL31
+ 2061 0068 94000000 		.4byte	.LVL34
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 41
+
+
+ 2062 006c 0100     		.2byte	0x1
+ 2063 006e 50       		.byte	0x50
+ 2064 006f 94000000 		.4byte	.LVL34
+ 2065 0073 9A000000 		.4byte	.LFE66
+ 2066 0077 0400     		.2byte	0x4
+ 2067 0079 F3       		.byte	0xf3
+ 2068 007a 01       		.uleb128 0x1
+ 2069 007b 50       		.byte	0x50
+ 2070 007c 9F       		.byte	0x9f
+ 2071 007d 00000000 		.4byte	0
+ 2072 0081 00000000 		.4byte	0
+ 2073              	.LLST3:
+ 2074 0085 08000000 		.4byte	.LVL13
+ 2075 0089 0C000000 		.4byte	.LVL14
+ 2076 008d 0200     		.2byte	0x2
+ 2077 008f 30       		.byte	0x30
+ 2078 0090 9F       		.byte	0x9f
+ 2079 0091 0C000000 		.4byte	.LVL14
+ 2080 0095 1A000000 		.4byte	.LVL15
+ 2081 0099 0100     		.2byte	0x1
+ 2082 009b 53       		.byte	0x53
+ 2083 009c 1C000000 		.4byte	.LVL16
+ 2084 00a0 24000000 		.4byte	.LVL17
+ 2085 00a4 0100     		.2byte	0x1
+ 2086 00a6 53       		.byte	0x53
+ 2087 00a7 24000000 		.4byte	.LVL17
+ 2088 00ab 34000000 		.4byte	.LVL18
+ 2089 00af 0100     		.2byte	0x1
+ 2090 00b1 52       		.byte	0x52
+ 2091 00b2 36000000 		.4byte	.LVL19
+ 2092 00b6 3E000000 		.4byte	.LVL20
+ 2093 00ba 0100     		.2byte	0x1
+ 2094 00bc 52       		.byte	0x52
+ 2095 00bd 40000000 		.4byte	.LVL21
+ 2096 00c1 50000000 		.4byte	.LVL22
+ 2097 00c5 0100     		.2byte	0x1
+ 2098 00c7 52       		.byte	0x52
+ 2099 00c8 52000000 		.4byte	.LVL23
+ 2100 00cc 5A000000 		.4byte	.LVL24
+ 2101 00d0 0100     		.2byte	0x1
+ 2102 00d2 52       		.byte	0x52
+ 2103 00d3 5A000000 		.4byte	.LVL24
+ 2104 00d7 6A000000 		.4byte	.LVL25
+ 2105 00db 0100     		.2byte	0x1
+ 2106 00dd 53       		.byte	0x53
+ 2107 00de 8A000000 		.4byte	.LVL31
+ 2108 00e2 8C000000 		.4byte	.LVL32
+ 2109 00e6 0100     		.2byte	0x1
+ 2110 00e8 53       		.byte	0x53
+ 2111 00e9 8E000000 		.4byte	.LVL33
+ 2112 00ed 94000000 		.4byte	.LVL34
+ 2113 00f1 0100     		.2byte	0x1
+ 2114 00f3 53       		.byte	0x53
+ 2115 00f4 00000000 		.4byte	0
+ 2116 00f8 00000000 		.4byte	0
+ 2117              	.LLST4:
+ 2118 00fc 70000000 		.4byte	.LVL26
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 42
+
+
+ 2119 0100 74000000 		.4byte	.LVL27
+ 2120 0104 0200     		.2byte	0x2
+ 2121 0106 30       		.byte	0x30
+ 2122 0107 9F       		.byte	0x9f
+ 2123 0108 74000000 		.4byte	.LVL27
+ 2124 010c 7E000000 		.4byte	.LVL28
+ 2125 0110 0100     		.2byte	0x1
+ 2126 0112 53       		.byte	0x53
+ 2127 0113 80000000 		.4byte	.LVL29
+ 2128 0117 8A000000 		.4byte	.LVL31
+ 2129 011b 0100     		.2byte	0x1
+ 2130 011d 53       		.byte	0x53
+ 2131 011e 00000000 		.4byte	0
+ 2132 0122 00000000 		.4byte	0
+ 2133              	.LLST5:
+ 2134 0126 04000000 		.4byte	.LVL35
+ 2135 012a 0D000000 		.4byte	.LVL36-1
+ 2136 012e 0D00     		.2byte	0xd
+ 2137 0130 03       		.byte	0x3
+ 2138 0131 08000000 		.4byte	BMS_CURRENT+8
+ 2139 0135 94       		.byte	0x94
+ 2140 0136 01       		.byte	0x1
+ 2141 0137 08       		.byte	0x8
+ 2142 0138 FF       		.byte	0xff
+ 2143 0139 1A       		.byte	0x1a
+ 2144 013a 38       		.byte	0x38
+ 2145 013b 24       		.byte	0x24
+ 2146 013c 9F       		.byte	0x9f
+ 2147 013d 00000000 		.4byte	0
+ 2148 0141 00000000 		.4byte	0
+ 2149              	.LLST6:
+ 2150 0145 04000000 		.4byte	.LVL35
+ 2151 0149 0D000000 		.4byte	.LVL36-1
+ 2152 014d 0B00     		.2byte	0xb
+ 2153 014f 03       		.byte	0x3
+ 2154 0150 09000000 		.4byte	BMS_CURRENT+9
+ 2155 0154 94       		.byte	0x94
+ 2156 0155 01       		.byte	0x1
+ 2157 0156 08       		.byte	0x8
+ 2158 0157 FF       		.byte	0xff
+ 2159 0158 1A       		.byte	0x1a
+ 2160 0159 9F       		.byte	0x9f
+ 2161 015a 00000000 		.4byte	0
+ 2162 015e 00000000 		.4byte	0
+ 2163              	.LLST7:
+ 2164 0162 04000000 		.4byte	.LVL39
+ 2165 0166 0F000000 		.4byte	.LVL40-1
+ 2166 016a 0D00     		.2byte	0xd
+ 2167 016c 03       		.byte	0x3
+ 2168 016d 0E000000 		.4byte	BMS_VOLTAGE+14
+ 2169 0171 94       		.byte	0x94
+ 2170 0172 01       		.byte	0x1
+ 2171 0173 08       		.byte	0x8
+ 2172 0174 FF       		.byte	0xff
+ 2173 0175 1A       		.byte	0x1a
+ 2174 0176 48       		.byte	0x48
+ 2175 0177 24       		.byte	0x24
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 43
+
+
+ 2176 0178 9F       		.byte	0x9f
+ 2177 0179 00000000 		.4byte	0
+ 2178 017d 00000000 		.4byte	0
+ 2179              	.LLST8:
+ 2180 0181 04000000 		.4byte	.LVL39
+ 2181 0185 0F000000 		.4byte	.LVL40-1
+ 2182 0189 0D00     		.2byte	0xd
+ 2183 018b 03       		.byte	0x3
+ 2184 018c 0D000000 		.4byte	BMS_VOLTAGE+13
+ 2185 0190 94       		.byte	0x94
+ 2186 0191 01       		.byte	0x1
+ 2187 0192 08       		.byte	0x8
+ 2188 0193 FF       		.byte	0xff
+ 2189 0194 1A       		.byte	0x1a
+ 2190 0195 40       		.byte	0x40
+ 2191 0196 24       		.byte	0x24
+ 2192 0197 9F       		.byte	0x9f
+ 2193 0198 00000000 		.4byte	0
+ 2194 019c 00000000 		.4byte	0
+ 2195              	.LLST9:
+ 2196 01a0 04000000 		.4byte	.LVL39
+ 2197 01a4 0F000000 		.4byte	.LVL40-1
+ 2198 01a8 0D00     		.2byte	0xd
+ 2199 01aa 03       		.byte	0x3
+ 2200 01ab 0C000000 		.4byte	BMS_VOLTAGE+12
+ 2201 01af 94       		.byte	0x94
+ 2202 01b0 01       		.byte	0x1
+ 2203 01b1 08       		.byte	0x8
+ 2204 01b2 FF       		.byte	0xff
+ 2205 01b3 1A       		.byte	0x1a
+ 2206 01b4 38       		.byte	0x38
+ 2207 01b5 24       		.byte	0x24
+ 2208 01b6 9F       		.byte	0x9f
+ 2209 01b7 00000000 		.4byte	0
+ 2210 01bb 00000000 		.4byte	0
+ 2211              	.LLST10:
+ 2212 01bf 04000000 		.4byte	.LVL39
+ 2213 01c3 0F000000 		.4byte	.LVL40-1
+ 2214 01c7 0B00     		.2byte	0xb
+ 2215 01c9 03       		.byte	0x3
+ 2216 01ca 0B000000 		.4byte	BMS_VOLTAGE+11
+ 2217 01ce 94       		.byte	0x94
+ 2218 01cf 01       		.byte	0x1
+ 2219 01d0 08       		.byte	0x8
+ 2220 01d1 FF       		.byte	0xff
+ 2221 01d2 1A       		.byte	0x1a
+ 2222 01d3 9F       		.byte	0x9f
+ 2223 01d4 00000000 		.4byte	0
+ 2224 01d8 00000000 		.4byte	0
+ 2225              	.LLST11:
+ 2226 01dc 00000000 		.4byte	.LVL46
+ 2227 01e0 1A000000 		.4byte	.LVL48
+ 2228 01e4 0100     		.2byte	0x1
+ 2229 01e6 50       		.byte	0x50
+ 2230 01e7 1A000000 		.4byte	.LVL48
+ 2231 01eb 1D000000 		.4byte	.LVL49-1
+ 2232 01ef 0100     		.2byte	0x1
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 44
+
+
+ 2233 01f1 51       		.byte	0x51
+ 2234 01f2 1D000000 		.4byte	.LVL49-1
+ 2235 01f6 28000000 		.4byte	.LVL51
+ 2236 01fa 0400     		.2byte	0x4
+ 2237 01fc F3       		.byte	0xf3
+ 2238 01fd 01       		.uleb128 0x1
+ 2239 01fe 50       		.byte	0x50
+ 2240 01ff 9F       		.byte	0x9f
+ 2241 0200 28000000 		.4byte	.LVL51
+ 2242 0204 2A000000 		.4byte	.LVL52
+ 2243 0208 0100     		.2byte	0x1
+ 2244 020a 50       		.byte	0x50
+ 2245 020b 2A000000 		.4byte	.LVL52
+ 2246 020f 2D000000 		.4byte	.LVL53-1
+ 2247 0213 0100     		.2byte	0x1
+ 2248 0215 51       		.byte	0x51
+ 2249 0216 2D000000 		.4byte	.LVL53-1
+ 2250 021a 38000000 		.4byte	.LVL55
+ 2251 021e 0400     		.2byte	0x4
+ 2252 0220 F3       		.byte	0xf3
+ 2253 0221 01       		.uleb128 0x1
+ 2254 0222 50       		.byte	0x50
+ 2255 0223 9F       		.byte	0x9f
+ 2256 0224 38000000 		.4byte	.LVL55
+ 2257 0228 3A000000 		.4byte	.LVL56
+ 2258 022c 0100     		.2byte	0x1
+ 2259 022e 50       		.byte	0x50
+ 2260 022f 3A000000 		.4byte	.LVL56
+ 2261 0233 3D000000 		.4byte	.LVL57-1
+ 2262 0237 0100     		.2byte	0x1
+ 2263 0239 51       		.byte	0x51
+ 2264 023a 3D000000 		.4byte	.LVL57-1
+ 2265 023e 48000000 		.4byte	.LVL59
+ 2266 0242 0400     		.2byte	0x4
+ 2267 0244 F3       		.byte	0xf3
+ 2268 0245 01       		.uleb128 0x1
+ 2269 0246 50       		.byte	0x50
+ 2270 0247 9F       		.byte	0x9f
+ 2271 0248 48000000 		.4byte	.LVL59
+ 2272 024c 4A000000 		.4byte	.LVL60
+ 2273 0250 0100     		.2byte	0x1
+ 2274 0252 50       		.byte	0x50
+ 2275 0253 4A000000 		.4byte	.LVL60
+ 2276 0257 5C000000 		.4byte	.LFE65
+ 2277 025b 0400     		.2byte	0x4
+ 2278 025d F3       		.byte	0xf3
+ 2279 025e 01       		.uleb128 0x1
+ 2280 025f 50       		.byte	0x50
+ 2281 0260 9F       		.byte	0x9f
+ 2282 0261 00000000 		.4byte	0
+ 2283 0265 00000000 		.4byte	0
+ 2284              	.LLST12:
+ 2285 0269 04000000 		.4byte	.LVL47
+ 2286 026d 1E000000 		.4byte	.LVL49
+ 2287 0271 0200     		.2byte	0x2
+ 2288 0273 30       		.byte	0x30
+ 2289 0274 9F       		.byte	0x9f
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 45
+
+
+ 2290 0275 1E000000 		.4byte	.LVL49
+ 2291 0279 25000000 		.4byte	.LVL50-1
+ 2292 027d 0100     		.2byte	0x1
+ 2293 027f 50       		.byte	0x50
+ 2294 0280 25000000 		.4byte	.LVL50-1
+ 2295 0284 28000000 		.4byte	.LVL51
+ 2296 0288 0100     		.2byte	0x1
+ 2297 028a 54       		.byte	0x54
+ 2298 028b 28000000 		.4byte	.LVL51
+ 2299 028f 2E000000 		.4byte	.LVL53
+ 2300 0293 0200     		.2byte	0x2
+ 2301 0295 30       		.byte	0x30
+ 2302 0296 9F       		.byte	0x9f
+ 2303 0297 2E000000 		.4byte	.LVL53
+ 2304 029b 35000000 		.4byte	.LVL54-1
+ 2305 029f 0100     		.2byte	0x1
+ 2306 02a1 50       		.byte	0x50
+ 2307 02a2 35000000 		.4byte	.LVL54-1
+ 2308 02a6 38000000 		.4byte	.LVL55
+ 2309 02aa 0100     		.2byte	0x1
+ 2310 02ac 54       		.byte	0x54
+ 2311 02ad 38000000 		.4byte	.LVL55
+ 2312 02b1 3E000000 		.4byte	.LVL57
+ 2313 02b5 0200     		.2byte	0x2
+ 2314 02b7 30       		.byte	0x30
+ 2315 02b8 9F       		.byte	0x9f
+ 2316 02b9 3E000000 		.4byte	.LVL57
+ 2317 02bd 45000000 		.4byte	.LVL58-1
+ 2318 02c1 0100     		.2byte	0x1
+ 2319 02c3 50       		.byte	0x50
+ 2320 02c4 45000000 		.4byte	.LVL58-1
+ 2321 02c8 48000000 		.4byte	.LVL59
+ 2322 02cc 0100     		.2byte	0x1
+ 2323 02ce 54       		.byte	0x54
+ 2324 02cf 48000000 		.4byte	.LVL59
+ 2325 02d3 4A000000 		.4byte	.LVL60
+ 2326 02d7 0200     		.2byte	0x2
+ 2327 02d9 30       		.byte	0x30
+ 2328 02da 9F       		.byte	0x9f
+ 2329 02db 4A000000 		.4byte	.LVL60
+ 2330 02df 4E000000 		.4byte	.LVL61
+ 2331 02e3 0100     		.2byte	0x1
+ 2332 02e5 54       		.byte	0x54
+ 2333 02e6 4E000000 		.4byte	.LVL61
+ 2334 02ea 5C000000 		.4byte	.LFE65
+ 2335 02ee 0100     		.2byte	0x1
+ 2336 02f0 50       		.byte	0x50
+ 2337 02f1 00000000 		.4byte	0
+ 2338 02f5 00000000 		.4byte	0
+ 2339              	.LLST13:
+ 2340 02f9 24000000 		.4byte	.LVL62
+ 2341 02fd 26000000 		.4byte	.LVL63
+ 2342 0301 0200     		.2byte	0x2
+ 2343 0303 30       		.byte	0x30
+ 2344 0304 9F       		.byte	0x9f
+ 2345 0305 26000000 		.4byte	.LVL63
+ 2346 0309 32000000 		.4byte	.LVL64
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 46
+
+
+ 2347 030d 0100     		.2byte	0x1
+ 2348 030f 53       		.byte	0x53
+ 2349 0310 34000000 		.4byte	.LVL65
+ 2350 0314 3D000000 		.4byte	.LVL66-1
+ 2351 0318 0100     		.2byte	0x1
+ 2352 031a 53       		.byte	0x53
+ 2353 031b 00000000 		.4byte	0
+ 2354 031f 00000000 		.4byte	0
+ 2355              	.LLST14:
+ 2356 0323 00000000 		.4byte	.LVL67
+ 2357 0327 04000000 		.4byte	.LVL68
+ 2358 032b 0300     		.2byte	0x3
+ 2359 032d 08       		.byte	0x8
+ 2360 032e 64       		.byte	0x64
+ 2361 032f 9F       		.byte	0x9f
+ 2362 0330 04000000 		.4byte	.LVL68
+ 2363 0334 06000000 		.4byte	.LVL69
+ 2364 0338 0100     		.2byte	0x1
+ 2365 033a 53       		.byte	0x53
+ 2366 033b 08000000 		.4byte	.LVL70
+ 2367 033f 0E000000 		.4byte	.LFE71
+ 2368 0343 0100     		.2byte	0x1
+ 2369 0345 53       		.byte	0x53
+ 2370 0346 00000000 		.4byte	0
+ 2371 034a 00000000 		.4byte	0
+ 2372              		.section	.debug_aranges,"",%progbits
+ 2373 0000 5C000000 		.4byte	0x5c
+ 2374 0004 0200     		.2byte	0x2
+ 2375 0006 00000000 		.4byte	.Ldebug_info0
+ 2376 000a 04       		.byte	0x4
+ 2377 000b 00       		.byte	0
+ 2378 000c 0000     		.2byte	0
+ 2379 000e 0000     		.2byte	0
+ 2380 0010 00000000 		.4byte	.LFB64
+ 2381 0014 1C000000 		.4byte	.LFE64-.LFB64
+ 2382 0018 00000000 		.4byte	.LFB63
+ 2383 001c 3C000000 		.4byte	.LFE63-.LFB63
+ 2384 0020 00000000 		.4byte	.LFB66
+ 2385 0024 9A000000 		.4byte	.LFE66-.LFB66
+ 2386 0028 00000000 		.4byte	.LFB67
+ 2387 002c 28000000 		.4byte	.LFE67-.LFB67
+ 2388 0030 00000000 		.4byte	.LFB68
+ 2389 0034 28000000 		.4byte	.LFE68-.LFB68
+ 2390 0038 00000000 		.4byte	.LFB69
+ 2391 003c 12000000 		.4byte	.LFE69-.LFB69
+ 2392 0040 00000000 		.4byte	.LFB65
+ 2393 0044 5C000000 		.4byte	.LFE65-.LFB65
+ 2394 0048 00000000 		.4byte	.LFB70
+ 2395 004c 44000000 		.4byte	.LFE70-.LFB70
+ 2396 0050 00000000 		.4byte	.LFB71
+ 2397 0054 0E000000 		.4byte	.LFE71-.LFB71
+ 2398 0058 00000000 		.4byte	0
+ 2399 005c 00000000 		.4byte	0
+ 2400              		.section	.debug_ranges,"",%progbits
+ 2401              	.Ldebug_ranges0:
+ 2402 0000 00000000 		.4byte	.LFB64
+ 2403 0004 1C000000 		.4byte	.LFE64
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 47
+
+
+ 2404 0008 00000000 		.4byte	.LFB63
+ 2405 000c 3C000000 		.4byte	.LFE63
+ 2406 0010 00000000 		.4byte	.LFB66
+ 2407 0014 9A000000 		.4byte	.LFE66
+ 2408 0018 00000000 		.4byte	.LFB67
+ 2409 001c 28000000 		.4byte	.LFE67
+ 2410 0020 00000000 		.4byte	.LFB68
+ 2411 0024 28000000 		.4byte	.LFE68
+ 2412 0028 00000000 		.4byte	.LFB69
+ 2413 002c 12000000 		.4byte	.LFE69
+ 2414 0030 00000000 		.4byte	.LFB65
+ 2415 0034 5C000000 		.4byte	.LFE65
+ 2416 0038 00000000 		.4byte	.LFB70
+ 2417 003c 44000000 		.4byte	.LFE70
+ 2418 0040 00000000 		.4byte	.LFB71
+ 2419 0044 0E000000 		.4byte	.LFE71
+ 2420 0048 00000000 		.4byte	0
+ 2421 004c 00000000 		.4byte	0
+ 2422              		.section	.debug_line,"",%progbits
+ 2423              	.Ldebug_line0:
+ 2424 0000 B7020000 		.section	.debug_str,"MS",%progbits,1
+ 2424      02006501 
+ 2424      00000201 
+ 2424      FB0E0D00 
+ 2424      01010101 
+ 2425              	.LASF60:
+ 2426 0000 424D535F 		.ascii	"BMS_TEMP\000"
+ 2426      54454D50 
+ 2426      00
+ 2427              	.LASF52:
+ 2428 0009 63616E5F 		.ascii	"can_test_send\000"
+ 2428      74657374 
+ 2428      5F73656E 
+ 2428      6400
+ 2429              	.LASF55:
+ 2430 0017 63616E5F 		.ascii	"can_test_receive\000"
+ 2430      74657374 
+ 2430      5F726563 
+ 2430      65697665 
+ 2430      00
+ 2431              	.LASF35:
+ 2432 0028 74656D70 		.ascii	"temp\000"
+ 2432      00
+ 2433              	.LASF2:
+ 2434 002d 73686F72 		.ascii	"short int\000"
+ 2434      7420696E 
+ 2434      7400
+ 2435              	.LASF23:
+ 2436 0037 73697A65 		.ascii	"sizetype\000"
+ 2436      74797065 
+ 2436      00
+ 2437              	.LASF24:
+ 2438 0040 43414E5F 		.ascii	"CAN_DATA_BYTES_MSG\000"
+ 2438      44415441 
+ 2438      5F425954 
+ 2438      45535F4D 
+ 2438      534700
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 48
+
+
+ 2439              	.LASF21:
+ 2440 0053 63686172 		.ascii	"char8\000"
+ 2440      3800
+ 2441              	.LASF8:
+ 2442 0059 5F5F7569 		.ascii	"__uint32_t\000"
+ 2442      6E743332 
+ 2442      5F7400
+ 2443              	.LASF4:
+ 2444 0064 5F5F7569 		.ascii	"__uint16_t\000"
+ 2444      6E743136 
+ 2444      5F7400
+ 2445              	.LASF63:
+ 2446 006f 43414E5F 		.ascii	"CAN_Start\000"
+ 2446      53746172 
+ 2446      7400
+ 2447              	.LASF27:
+ 2448 0079 6D696C6C 		.ascii	"millicounter\000"
+ 2448      69636F75 
+ 2448      6E746572 
+ 2448      00
+ 2449              	.LASF13:
+ 2450 0086 75696E74 		.ascii	"uint8_t\000"
+ 2450      385F7400 
+ 2451              	.LASF17:
+ 2452 008e 75696E74 		.ascii	"uint8\000"
+ 2452      3800
+ 2453              	.LASF73:
+ 2454 0094 74657374 		.ascii	"test_msg\000"
+ 2454      5F6D7367 
+ 2454      00
+ 2455              	.LASF19:
+ 2456 009d 666C6F61 		.ascii	"float\000"
+ 2456      7400
+ 2457              	.LASF32:
+ 2458 00a3 70726576 		.ascii	"prev_msg\000"
+ 2458      5F6D7367 
+ 2458      00
+ 2459              	.LASF10:
+ 2460 00ac 6C6F6E67 		.ascii	"long long int\000"
+ 2460      206C6F6E 
+ 2460      6720696E 
+ 2460      7400
+ 2461              	.LASF7:
+ 2462 00ba 6C6F6E67 		.ascii	"long int\000"
+ 2462      20696E74 
+ 2462      00
+ 2463              	.LASF43:
+ 2464 00c3 766F6C74 		.ascii	"voltage\000"
+ 2464      61676500 
+ 2465              	.LASF34:
+ 2466 00cb 6F666673 		.ascii	"offset\000"
+ 2466      657400
+ 2467              	.LASF9:
+ 2468 00d2 6C6F6E67 		.ascii	"long unsigned int\000"
+ 2468      20756E73 
+ 2468      69676E65 
+ 2468      6420696E 
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 49
+
+
+ 2468      7400
+ 2469              	.LASF3:
+ 2470 00e4 5F5F7569 		.ascii	"__uint8_t\000"
+ 2470      6E74385F 
+ 2470      7400
+ 2471              	.LASF25:
+ 2472 00ee 62797465 		.ascii	"byte\000"
+ 2472      00
+ 2473              	.LASF70:
+ 2474 00f3 63616E5F 		.ascii	"can_manager.c\000"
+ 2474      6D616E61 
+ 2474      6765722E 
+ 2474      6300
+ 2475              	.LASF47:
+ 2476 0101 63616E5F 		.ascii	"can_process_BMS_TEMP\000"
+ 2476      70726F63 
+ 2476      6573735F 
+ 2476      424D535F 
+ 2476      54454D50 
+ 2477              	.LASF67:
+ 2478 0116 73707269 		.ascii	"sprintf\000"
+ 2478      6E746600 
+ 2479              	.LASF1:
+ 2480 011e 756E7369 		.ascii	"unsigned char\000"
+ 2480      676E6564 
+ 2480      20636861 
+ 2480      7200
+ 2481              	.LASF41:
+ 2482 012c 62797465 		.ascii	"byte1\000"
+ 2482      3100
+ 2483              	.LASF40:
+ 2484 0132 62797465 		.ascii	"byte2\000"
+ 2484      3200
+ 2485              	.LASF46:
+ 2486 0138 62797465 		.ascii	"byte3\000"
+ 2486      3300
+ 2487              	.LASF45:
+ 2488 013e 62797465 		.ascii	"byte4\000"
+ 2488      3400
+ 2489              	.LASF71:
+ 2490 0144 443A5C44 		.ascii	"D:\\Downloads\\FRUCD\\Node-Rhinoceros\\Node-Rhinoce"
+ 2490      6F776E6C 
+ 2490      6F616473 
+ 2490      5C465255 
+ 2490      43445C4E 
+ 2491 0173 726F735C 		.ascii	"ros\\Node-Rhinoceros.cydsn\000"
+ 2491      4E6F6465 
+ 2491      2D526869 
+ 2491      6E6F6365 
+ 2491      726F732E 
+ 2492              	.LASF0:
+ 2493 018d 7369676E 		.ascii	"signed char\000"
+ 2493      65642063 
+ 2493      68617200 
+ 2494              	.LASF11:
+ 2495 0199 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 2495      206C6F6E 
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 50
+
+
+ 2495      6720756E 
+ 2495      7369676E 
+ 2495      65642069 
+ 2496              	.LASF16:
+ 2497 01b0 75696E74 		.ascii	"uint32_t\000"
+ 2497      33325F74 
+ 2497      00
+ 2498              	.LASF37:
+ 2499 01b9 63616E5F 		.ascii	"can_process_BMS_CURR\000"
+ 2499      70726F63 
+ 2499      6573735F 
+ 2499      424D535F 
+ 2499      43555252 
+ 2500              	.LASF12:
+ 2501 01ce 756E7369 		.ascii	"unsigned int\000"
+ 2501      676E6564 
+ 2501      20696E74 
+ 2501      00
+ 2502              	.LASF65:
+ 2503 01db 4C43445F 		.ascii	"LCD_PrintString\000"
+ 2503      5072696E 
+ 2503      74537472 
+ 2503      696E6700 
+ 2504              	.LASF14:
+ 2505 01eb 75696E74 		.ascii	"uint16_t\000"
+ 2505      31365F74 
+ 2505      00
+ 2506              	.LASF42:
+ 2507 01f4 63616E5F 		.ascii	"can_process_BMS_VOLT\000"
+ 2507      70726F63 
+ 2507      6573735F 
+ 2507      424D535F 
+ 2507      564F4C54 
+ 2508              	.LASF59:
+ 2509 0209 424D535F 		.ascii	"BMS_VOLTAGE\000"
+ 2509      564F4C54 
+ 2509      41474500 
+ 2510              	.LASF38:
+ 2511 0215 63757272 		.ascii	"current\000"
+ 2511      656E7400 
+ 2512              	.LASF62:
+ 2513 021d 43414E5F 		.ascii	"CAN_Init\000"
+ 2513      496E6974 
+ 2513      00
+ 2514              	.LASF5:
+ 2515 0226 73686F72 		.ascii	"short unsigned int\000"
+ 2515      7420756E 
+ 2515      7369676E 
+ 2515      65642069 
+ 2515      6E7400
+ 2516              	.LASF57:
+ 2517 0239 424D535F 		.ascii	"BMS_STATUS\000"
+ 2517      53544154 
+ 2517      555300
+ 2518              	.LASF51:
+ 2519 0244 73746174 		.ascii	"status\000"
+ 2519      757300
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 51
+
+
+ 2520              	.LASF22:
+ 2521 024b 63686172 		.ascii	"char\000"
+ 2521      00
+ 2522              	.LASF69:
+ 2523 0250 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 2523      4320342E 
+ 2523      392E3320 
+ 2523      32303135 
+ 2523      30333033 
+ 2524 0283 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 2524      20726576 
+ 2524      6973696F 
+ 2524      6E203232 
+ 2524      31323230 
+ 2525 02b6 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 2525      66756E63 
+ 2525      74696F6E 
+ 2525      2D736563 
+ 2525      74696F6E 
+ 2526              	.LASF66:
+ 2527 02de 4C43445F 		.ascii	"LCD_PrintInt8\000"
+ 2527      5072696E 
+ 2527      74496E74 
+ 2527      3800
+ 2528              	.LASF15:
+ 2529 02ec 696E7433 		.ascii	"int32_t\000"
+ 2529      325F7400 
+ 2530              	.LASF44:
+ 2531 02f4 766F6C74 		.ascii	"volt_string\000"
+ 2531      5F737472 
+ 2531      696E6700 
+ 2532              	.LASF50:
+ 2533 0300 63616E5F 		.ascii	"can_process\000"
+ 2533      70726F63 
+ 2533      65737300 
+ 2534              	.LASF30:
+ 2535 030c 44617461 		.ascii	"DataPacket\000"
+ 2535      5061636B 
+ 2535      657400
+ 2536              	.LASF29:
+ 2537 0317 64617461 		.ascii	"data\000"
+ 2537      00
+ 2538              	.LASF18:
+ 2539 031c 75696E74 		.ascii	"uint32\000"
+ 2539      333200
+ 2540              	.LASF53:
+ 2541 0323 6D657373 		.ascii	"message\000"
+ 2541      61676500 
+ 2542              	.LASF31:
+ 2543 032b 63616E5F 		.ascii	"can_msg\000"
+ 2543      6D736700 
+ 2544              	.LASF26:
+ 2545 0333 43414E5F 		.ascii	"CAN_TX_MSG\000"
+ 2545      54585F4D 
+ 2545      534700
+ 2546              	.LASF68:
+ 2547 033e 43414E5F 		.ascii	"CAN_SendMsg\000"
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 52
+
+
+ 2547      53656E64 
+ 2547      4D736700 
+ 2548              	.LASF58:
+ 2549 034a 424D535F 		.ascii	"BMS_CURRENT\000"
+ 2549      43555252 
+ 2549      454E5400 
+ 2550              	.LASF61:
+ 2551 0356 43414E5F 		.ascii	"CAN_GlobalIntEnable\000"
+ 2551      476C6F62 
+ 2551      616C496E 
+ 2551      74456E61 
+ 2551      626C6500 
+ 2552              	.LASF48:
+ 2553 036a 74656D70 		.ascii	"temperature\000"
+ 2553      65726174 
+ 2553      75726500 
+ 2554              	.LASF6:
+ 2555 0376 5F5F696E 		.ascii	"__int32_t\000"
+ 2555      7433325F 
+ 2555      7400
+ 2556              	.LASF72:
+ 2557 0380 63616E5F 		.ascii	"can_msg_init\000"
+ 2557      6D73675F 
+ 2557      696E6974 
+ 2557      00
+ 2558              	.LASF33:
+ 2559 038d 6E65775F 		.ascii	"new_msg\000"
+ 2559      6D736700 
+ 2560              	.LASF36:
+ 2561 0395 63616E5F 		.ascii	"can_init\000"
+ 2561      696E6974 
+ 2561      00
+ 2562              	.LASF64:
+ 2563 039e 4C43445F 		.ascii	"LCD_Position\000"
+ 2563      506F7369 
+ 2563      74696F6E 
+ 2563      00
+ 2564              	.LASF20:
+ 2565 03ab 646F7562 		.ascii	"double\000"
+ 2565      6C6500
+ 2566              	.LASF56:
+ 2567 03b2 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 2567      52784275 
+ 2567      66666572 
+ 2567      00
+ 2568              	.LASF39:
+ 2569 03bf 63757272 		.ascii	"curr_string\000"
+ 2569      5F737472 
+ 2569      696E6700 
+ 2570              	.LASF54:
+ 2571 03cb 74657374 		.ascii	"test_data\000"
+ 2571      5F646174 
+ 2571      6100
+ 2572              	.LASF49:
+ 2573 03d5 63616E5F 		.ascii	"can_compare\000"
+ 2573      636F6D70 
+ 2573      61726500 
+ARM GAS  D:\Windows\AppData\Local\Temp\ccWMFQPN.s 			page 53
+
+
+ 2574              	.LASF28:
+ 2575 03e1 6C656E67 		.ascii	"length\000"
+ 2575      746800
+ 2576              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br
