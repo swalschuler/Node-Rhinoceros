@@ -15,8 +15,8 @@ void lcd_init() {
 }
 	
 void lcd_print_bms() {
-	char8 BMS1[] = "V: 000.0V";
-	char8 BMS2[] = "C: 000A   T: 00C";  
+	char8 BMS1[] = "V: 000.0V E:0000";
+	char8 BMS2[] = "C: 000.0A T: 00C";  
 	
 	LCD_ClearDisplay();
 	LCD_Position(0, 0);
@@ -42,7 +42,7 @@ void lcd_test_print() {
 	uint32_t voltage = 0x00017475;	//095.349
 	char8 volt_string[5];
 	LCD_Position(0,3);
-	sprintf(volt_string, "%03d.%01d", voltage/1000, voltage/100%10);
+	//sprintf(volt_string, "%03d.%01d", voltage/1000, voltage/100%10);
 	LCD_PrintString(volt_string);
 	
 	//temp

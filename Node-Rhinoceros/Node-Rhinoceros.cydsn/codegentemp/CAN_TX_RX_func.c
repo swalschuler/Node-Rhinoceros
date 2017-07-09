@@ -25,7 +25,8 @@
 #include "cyapicallbacks.h"
 
 /* `#START TX_RX_FUNCTION` */
-
+#include "data.h"
+#include "can_manager.h"
 /* `#END` */
 
 
@@ -628,7 +629,15 @@ void CAN_ReceiveMsg(uint8 rxMailbox)
     #endif /* CY_PSOC3 || CY_PSOC5 */
         {
             /* `#START MESSAGE_BASIC_RECEIVED` */
-
+		uint8_t i;
+		DataPacket can_msg;
+        can_msg.id = CAN_GET_RX_ID(rxMailbox);
+        can_msg.length = CAN_GET_DLC(rxMailbox); //gets length of message, 8 bytes
+        for (i = 0; i < can_msg.length; i++)
+            can_msg.data[i] = CAN_RX[rxMailbox].rxdata.byte[i];
+				
+		DataPacket* can_msg_ptr = &can_msg;	  
+		can_process(can_msg_ptr);
             /* `#END` */
 
             #ifdef CAN_RECEIVE_MSG_CALLBACK

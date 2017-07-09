@@ -15,11 +15,12 @@ int main(void) {
 	uint8_t atomic_state = CyEnterCriticalSection(); // BEGIN ATOMIC
 	can_init();
 	lcd_init();
-	CyDelay(500);				//give some time to finish setup
+    lcd_print_bms();
+	CyDelay(10);				//give some time to finish setup
 	CyExitCriticalSection(atomic_state);               // END ATOMIC
 	
-	lcd_print_bms();
-	CyDelay(3000);
+	
+	//CyDelay(3000);
 	
 	for(;;)	{
 	    //can_test_send();
@@ -28,7 +29,7 @@ int main(void) {
 		//can_process_BMS_VOLT();
 		//can_process_BMS_TEMP();
 		//can_process_BMS_CURR();
-		CyDelay(1000);
+		//CyDelay(1000);
 	} // main loop
 
 	return 0;

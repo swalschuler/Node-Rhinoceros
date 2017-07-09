@@ -92,7 +92,7 @@ Discarded input sections
  .data          0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
  .bss           0x00000000        0x4 .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
  .text.lcd_test_print
-                0x00000000       0x5c .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
+                0x00000000       0x4c .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
  .text.lcd_print
                 0x00000000        0x8 .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
  .text          0x00000000        0x0 .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
@@ -527,7 +527,7 @@ END GROUP
                 0x00000800                ee_size = (CY_APPL_LOADABLE && ! (CY_EE_IN_BTLDR))?(CY_EE_SIZE / CY_APPL_MAX):CY_EE_SIZE
                 0x00000000                PROVIDE (CY_ECC_OFFSET, ecc_offset)
 
-.text           0x00000000     0x1714
+.text           0x00000000     0x17bc
  CREATE_OBJECT_SYMBOLS
                 0x00000000                PROVIDE (__cy_interrupt_vector, RomVectors)
  *(.romvectors)
@@ -544,204 +544,207 @@ END GROUP
                 0x00000001                ASSERT ((((appl_start + .) <= 0x10000) || 0x1), DMA Init must be within the first 64k of flash)
  *(.text .text.* .gnu.linkonce.t.*)
  .text          0x00000028       0x5c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
- .text.main     0x00000084       0x44 .\CortexM3\ARM_GCC_493\Debug\main.o
+ .text.main     0x00000084       0x24 .\CortexM3\ARM_GCC_493\Debug\main.o
                 0x00000084                main
  .text.can_msg_init
-                0x000000c8       0x1c .\CortexM3\ARM_GCC_493\Debug\can_manager.o
-                0x000000c8                can_msg_init
+                0x000000a8       0x1c .\CortexM3\ARM_GCC_493\Debug\can_manager.o
+                0x000000a8                can_msg_init
  .text.can_init
-                0x000000e4       0x3c .\CortexM3\ARM_GCC_493\Debug\can_manager.o
-                0x000000e4                can_init
+                0x000000c4       0x48 .\CortexM3\ARM_GCC_493\Debug\can_manager.o
+                0x000000c4                can_init
  .text.can_compare
-                0x00000120       0x9c .\CortexM3\ARM_GCC_493\Debug\can_manager.o
-                0x00000120                can_compare
+                0x0000010c       0x9c .\CortexM3\ARM_GCC_493\Debug\can_manager.o
+                0x0000010c                can_compare
+ .text.can_process_BMS_STATUS
+                0x000001a8       0x30 .\CortexM3\ARM_GCC_493\Debug\can_manager.o
+                0x000001a8                can_process_BMS_STATUS
  .text.can_process_BMS_CURR
-                0x000001bc       0x28 .\CortexM3\ARM_GCC_493\Debug\can_manager.o
-                0x000001bc                can_process_BMS_CURR
+                0x000001d8       0x48 .\CortexM3\ARM_GCC_493\Debug\can_manager.o
+                0x000001d8                can_process_BMS_CURR
  .text.can_process_BMS_VOLT
-                0x000001e4       0x28 .\CortexM3\ARM_GCC_493\Debug\can_manager.o
-                0x000001e4                can_process_BMS_VOLT
+                0x00000220       0x68 .\CortexM3\ARM_GCC_493\Debug\can_manager.o
+                0x00000220                can_process_BMS_VOLT
  .text.can_process_BMS_TEMP
-                0x0000020c       0x14 .\CortexM3\ARM_GCC_493\Debug\can_manager.o
-                0x0000020c                can_process_BMS_TEMP
+                0x00000288       0x1c .\CortexM3\ARM_GCC_493\Debug\can_manager.o
+                0x00000288                can_process_BMS_TEMP
  .text.can_process
-                0x00000220       0x5c .\CortexM3\ARM_GCC_493\Debug\can_manager.o
-                0x00000220                can_process
+                0x000002a4       0x7c .\CortexM3\ARM_GCC_493\Debug\can_manager.o
+                0x000002a4                can_process
  .text.lcd_init
-                0x0000027c       0x4c .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
-                0x0000027c                lcd_init
+                0x00000320       0x4c .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
+                0x00000320                lcd_init
  .text.lcd_print_bms
-                0x000002c8       0x48 .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
-                0x000002c8                lcd_print_bms
+                0x0000036c       0x4c .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
+                0x0000036c                lcd_print_bms
  .text.IntDefaultHandler
-                0x00000310       0x10 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
-                0x00000310                IntDefaultHandler
- .text._sbrk    0x00000320       0x30 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
-                0x00000320                _sbrk
- .text.Start_c  0x00000350       0x4c .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
-                0x00000350                Start_c
+                0x000003b8       0x10 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+                0x000003b8                IntDefaultHandler
+ .text._sbrk    0x000003c8       0x30 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+                0x000003c8                _sbrk
+ .text.Start_c  0x000003f8       0x4c .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+                0x000003f8                Start_c
  .text.initialize_psoc
-                0x0000039c       0x74 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
-                0x0000039c                initialize_psoc
+                0x00000444       0x74 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+                0x00000444                initialize_psoc
  .text.CyClockStartupError
-                0x00000410        0x4 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
+                0x000004b8        0x4 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
  .text.cfg_write_bytes32
-                0x00000414       0x34 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
+                0x000004bc       0x34 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
  .text.AnalogSetDefault
-                0x00000448       0x28 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
+                0x000004f0       0x28 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
  .text.CYMEMZERO
-                0x00000470        0xc .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
+                0x00000518        0xc .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
  .text.ClockSetup
-                0x0000047c       0x9c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
+                0x00000524       0x9c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
  .text.CYCONFIGCPY
-                0x00000518        0x8 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
+                0x000005c0        0x8 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
  .text.cyfitter_cfg
-                0x00000520      0x100 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
-                0x00000520                cyfitter_cfg
- .text.CyHalt   0x00000620        0x4 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
-                0x00000620                CyHalt
- .text.CyDelay  0x00000624       0x2c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
-                0x00000624                CyDelay
+                0x000005c8      0x100 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
+                0x000005c8                cyfitter_cfg
+ .text.CyHalt   0x000006c8        0x4 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
+                0x000006c8                CyHalt
+ .text.CyDelay  0x000006cc       0x2c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
+                0x000006cc                CyDelay
  .text.CyDelayUs
-                0x00000650       0x14 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
-                0x00000650                CyDelayUs
+                0x000006f8       0x14 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
+                0x000006f8                CyDelayUs
  .text.CyIntSetVector
-                0x00000664       0x28 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
-                0x00000664                CyIntSetVector
+                0x0000070c       0x28 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
+                0x0000070c                CyIntSetVector
  .text.CyIntSetPriority
-                0x0000068c       0x30 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
-                0x0000068c                CyIntSetPriority
+                0x00000734       0x30 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
+                0x00000734                CyIntSetPriority
  .text.LCD_WrCntrlNib
-                0x000006bc       0x34 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+                0x00000764       0x34 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
  .text.LCD_WrDatNib
-                0x000006f0       0x44 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+                0x00000798       0x44 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
  .text.LCD_IsReady
-                0x00000734       0xe4 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
-                0x00000734                LCD_IsReady
+                0x000007dc       0xe4 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+                0x000007dc                LCD_IsReady
  .text.LCD_WriteData
-                0x00000818       0x18 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
-                0x00000818                LCD_WriteData
+                0x000008c0       0x18 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+                0x000008c0                LCD_WriteData
  .text.LCD_PrintString
-                0x00000830       0x1c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
-                0x00000830                LCD_PrintString
+                0x000008d8       0x1c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+                0x000008d8                LCD_PrintString
  .text.LCD_PutChar
-                0x0000084c        0x8 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
-                0x0000084c                LCD_PutChar
+                0x000008f4        0x8 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+                0x000008f4                LCD_PutChar
  .text.LCD_WriteControl
-                0x00000854       0x18 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
-                0x00000854                LCD_WriteControl
+                0x000008fc       0x18 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+                0x000008fc                LCD_WriteControl
  .text.LCD_Init
-                0x0000086c       0x6c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
-                0x0000086c                LCD_Init
+                0x00000914       0x6c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+                0x00000914                LCD_Init
  .text.LCD_Enable
-                0x000008d8       0x14 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
-                0x000008d8                LCD_Enable
+                0x00000980       0x14 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+                0x00000980                LCD_Enable
  .text.LCD_Start
-                0x000008ec       0x1c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
-                0x000008ec                LCD_Start
+                0x00000994       0x1c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+                0x00000994                LCD_Start
  .text.LCD_Position
-                0x00000908       0x3c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
-                0x00000908                LCD_Position
+                0x000009b0       0x3c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+                0x000009b0                LCD_Position
  .text.LCD_PrintInt8
-                0x00000944       0x20 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
-                0x00000944                LCD_PrintInt8
+                0x000009ec       0x20 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+                0x000009ec                LCD_PrintInt8
  .text.CAN_GlobalIntEnable
-                0x00000964       0x20 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
-                0x00000964                CAN_GlobalIntEnable
+                0x00000a0c       0x20 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+                0x00000a0c                CAN_GlobalIntEnable
  .text.CAN_Enable
-                0x00000984       0x6c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
-                0x00000984                CAN_Enable
+                0x00000a2c       0x6c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+                0x00000a2c                CAN_Enable
  .text.CAN_SetPreScaler
-                0x000009f0       0x24 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
-                0x000009f0                CAN_SetPreScaler
+                0x00000a98       0x24 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+                0x00000a98                CAN_SetPreScaler
  .text.CAN_SetArbiter
-                0x00000a14       0x3c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
-                0x00000a14                CAN_SetArbiter
+                0x00000abc       0x3c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+                0x00000abc                CAN_SetArbiter
  .text.CAN_SetTsegSample
-                0x00000a50       0x84 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
-                0x00000a50                CAN_SetTsegSample
+                0x00000af8       0x84 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+                0x00000af8                CAN_SetTsegSample
  .text.CAN_SetRestartType
-                0x00000ad4       0x3c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
-                0x00000ad4                CAN_SetRestartType
+                0x00000b7c       0x3c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+                0x00000b7c                CAN_SetRestartType
  .text.CAN_SetEdgeMode
-                0x00000b10       0x3c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
-                0x00000b10                CAN_SetEdgeMode
+                0x00000bb8       0x3c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+                0x00000bb8                CAN_SetEdgeMode
  .text.CAN_SetIrqMask
-                0x00000b4c       0x18 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
-                0x00000b4c                CAN_SetIrqMask
+                0x00000bf4       0x18 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+                0x00000bf4                CAN_SetIrqMask
  .text.CAN_RxBufConfig
-                0x00000b64       0x90 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
-                0x00000b64                CAN_RxBufConfig
+                0x00000c0c       0x90 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+                0x00000c0c                CAN_RxBufConfig
  .text.CAN_TxBufConfig
-                0x00000bf4       0x54 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
-                0x00000bf4                CAN_TxBufConfig
+                0x00000c9c       0x54 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+                0x00000c9c                CAN_TxBufConfig
  .text.CAN_RxTxBuffersConfig
-                0x00000c48       0x50 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
-                0x00000c48                CAN_RxTxBuffersConfig
+                0x00000cf0       0x50 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+                0x00000cf0                CAN_RxTxBuffersConfig
  .text.CAN_Init
-                0x00000c98       0xe4 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
-                0x00000c98                CAN_Init
+                0x00000d40       0xe4 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+                0x00000d40                CAN_Init
  .text.CAN_Start
-                0x00000d7c       0x24 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
-                0x00000d7c                CAN_Start
+                0x00000e24       0x24 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+                0x00000e24                CAN_Start
  .text.CAN_MsgRXIsr
-                0x00000da0       0x44 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_INT.o)
-                0x00000da0                CAN_MsgRXIsr
- .text.CAN_ISR  0x00000de4       0x18 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_INT.o)
-                0x00000de4                CAN_ISR
+                0x00000e48       0x44 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_INT.o)
+                0x00000e48                CAN_MsgRXIsr
+ .text.CAN_ISR  0x00000e8c       0x18 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_INT.o)
+                0x00000e8c                CAN_ISR
  .text.CAN_ReceiveMsg
-                0x00000dfc       0x64 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_TX_RX_func.o)
-                0x00000dfc                CAN_ReceiveMsg
- .text          0x00000e60       0x20 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyBootAsmGnu.o)
-                0x00000e60                CyDelayCycles
-                0x00000e70                CyEnterCriticalSection
-                0x00000e78                CyExitCriticalSection
- .text.__errno  0x00000e80        0xc d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-errno.o)
-                0x00000e80                __errno
+                0x00000ea4       0x64 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_TX_RX_func.o)
+                0x00000ea4                CAN_ReceiveMsg
+ .text          0x00000f08       0x20 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyBootAsmGnu.o)
+                0x00000f08                CyDelayCycles
+                0x00000f18                CyEnterCriticalSection
+                0x00000f20                CyExitCriticalSection
+ .text.__errno  0x00000f28        0xc d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-errno.o)
+                0x00000f28                __errno
  .text.__libc_init_array
-                0x00000e8c       0x4c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-init.o)
-                0x00000e8c                __libc_init_array
- .text.memcpy   0x00000ed8       0x16 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memcpy.o)
-                0x00000ed8                memcpy
- .text.memset   0x00000eee       0x10 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memset.o)
-                0x00000eee                memset
- *fill*         0x00000efe        0x2 
- .text.sprintf  0x00000f00       0x48 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-sprintf.o)
-                0x00000f00                siprintf
-                0x00000f00                sprintf
+                0x00000f34       0x4c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-init.o)
+                0x00000f34                __libc_init_array
+ .text.memcpy   0x00000f80       0x16 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memcpy.o)
+                0x00000f80                memcpy
+ .text.memset   0x00000f96       0x10 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memset.o)
+                0x00000f96                memset
+ *fill*         0x00000fa6        0x2 
+ .text.sprintf  0x00000fa8       0x48 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-sprintf.o)
+                0x00000fa8                siprintf
+                0x00000fa8                sprintf
  .text.__ssputs_r
-                0x00000f48       0xb2 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-svfprintf.o)
-                0x00000f48                __ssputs_r
- *fill*         0x00000ffa        0x2 
+                0x00000ff0       0xb2 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-svfprintf.o)
+                0x00000ff0                __ssputs_r
+ *fill*         0x000010a2        0x2 
  .text._svfprintf_r
-                0x00000ffc      0x1e4 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-svfprintf.o)
-                0x00000ffc                _svfiprintf_r
-                0x00000ffc                _svfprintf_r
+                0x000010a4      0x1e4 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-svfprintf.o)
+                0x000010a4                _svfiprintf_r
+                0x000010a4                _svfprintf_r
  .text._printf_common
-                0x000011e0       0xea d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
-                0x000011e0                _printf_common
- *fill*         0x000012ca        0x2 
+                0x00001288       0xea d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
+                0x00001288                _printf_common
+ *fill*         0x00001372        0x2 
  .text._printf_i
-                0x000012cc      0x240 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
-                0x000012cc                _printf_i
- .text.memchr   0x0000150c       0x1c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memchr.o)
-                0x0000150c                memchr
- .text.memmove  0x00001528       0x36 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memmove.o)
-                0x00001528                memmove
- *fill*         0x0000155e        0x2 
- .text._free_r  0x00001560       0x88 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-freer.o)
-                0x00001560                _free_r
+                0x00001374      0x240 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
+                0x00001374                _printf_i
+ .text.memchr   0x000015b4       0x1c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memchr.o)
+                0x000015b4                memchr
+ .text.memmove  0x000015d0       0x36 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memmove.o)
+                0x000015d0                memmove
+ *fill*         0x00001606        0x2 
+ .text._free_r  0x00001608       0x88 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-freer.o)
+                0x00001608                _free_r
  .text._malloc_r
-                0x000015e8       0xac d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-mallocr.o)
-                0x000015e8                _malloc_r
+                0x00001690       0xac d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-mallocr.o)
+                0x00001690                _malloc_r
  .text._realloc_r
-                0x00001694       0x4c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-reallocr.o)
-                0x00001694                _realloc_r
- .text._sbrk_r  0x000016e0       0x20 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-sbrkr.o)
-                0x000016e0                _sbrk_r
+                0x0000173c       0x4c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-reallocr.o)
+                0x0000173c                _realloc_r
+ .text._sbrk_r  0x00001788       0x20 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-sbrkr.o)
+                0x00001788                _sbrk_r
  .text._malloc_usable_size_r
-                0x00001700       0x14 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-msizer.o)
-                0x00001700                _malloc_usable_size_r
+                0x000017a8       0x14 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-msizer.o)
+                0x000017a8                _malloc_usable_size_r
  *(.plt)
  *(.gnu.warning)
  *(.glue_7t)
@@ -754,92 +757,93 @@ END GROUP
  *(.ARM.extab* .gnu.linkonce.armextab.*)
  *(.gcc_except_table)
 
-.v4_bx          0x00001714        0x0
+.v4_bx          0x000017bc        0x0
  .v4_bx         0x00000000        0x0 linker stubs
 
-.iplt           0x00001714        0x0
+.iplt           0x000017bc        0x0
  .iplt          0x00000000        0x0 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
 
 .eh_frame_hdr
  *(.eh_frame_hdr)
 
-.eh_frame       0x00001714        0x4
+.eh_frame       0x000017bc        0x4
  *(.eh_frame)
- .eh_frame      0x00001714        0x0 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
- .eh_frame      0x00001714        0x4 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtend.o
-                0x00001718                PROVIDE (__exidx_start, .)
+ .eh_frame      0x000017bc        0x0 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
+ .eh_frame      0x000017bc        0x4 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtend.o
+                0x000017c0                PROVIDE (__exidx_start, .)
 
 .ARM.exidx
  *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-                0x00001718                __exidx_end = .
+                0x000017c0                __exidx_end = .
 
-.rodata         0x00001718      0x280
+.rodata         0x000017c0      0x290
  *(.rodata .rodata.* .gnu.linkonce.r.*)
  .rodata.str1.4
-                0x00001718       0x13 .\CortexM3\ARM_GCC_493\Debug\can_manager.o
-                                 0x14 (size before relaxing)
- *fill*         0x0000172b        0x1 
+                0x000017c0       0x23 .\CortexM3\ARM_GCC_493\Debug\can_manager.o
+                                 0x24 (size before relaxing)
+ *fill*         0x000017e3        0x1 
  .rodata.str1.4
-                0x0000172c       0x58 .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
- .rodata        0x00001784       0x38 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
- .rodata        0x000017bc       0x10 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
- .rodata        0x000017cc      0x160 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+                0x000017e4       0x54 .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
+ .rodata        0x00001838       0x38 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
+ .rodata        0x00001870       0x10 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+ .rodata        0x00001880      0x160 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
  .rodata.str1.1
-                0x0000192c        0x2 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-impure.o)
+                0x000019e0        0x2 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-impure.o)
  .rodata.str1.1
-                0x0000192e       0x11 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-svfprintf.o)
+                0x000019e2       0x11 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-svfprintf.o)
  .rodata.str1.1
-                0x0000193f       0x22 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
-                0x00001964                . = ALIGN (0x4)
- *fill*         0x00001961        0x3 
+                0x000019f3       0x22 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
+                0x00001a18                . = ALIGN (0x4)
+ *fill*         0x00001a15        0x3 
  *(.init)
- .init          0x00001964        0x4 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crti.o
-                0x00001964                _init
- .init          0x00001968        0x8 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtn.o
-                0x00001970                . = ALIGN (0x4)
-                0x00001970                __preinit_array_start = .
+ .init          0x00001a18        0x4 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crti.o
+                0x00001a18                _init
+ .init          0x00001a1c        0x8 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtn.o
+                0x00001a24                . = ALIGN (0x4)
+                0x00001a24                __preinit_array_start = .
  *(.preinit_array)
-                0x00001970                __preinit_array_end = .
-                0x00001970                . = ALIGN (0x4)
-                0x00001970                __init_array_start = .
+                0x00001a24                __preinit_array_end = .
+                0x00001a24                . = ALIGN (0x4)
+                0x00001a24                __init_array_start = .
  *(SORT(.init_array.*))
  *(.init_array)
- .init_array    0x00001970        0x4 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
- .init_array    0x00001974        0x4 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
-                0x00001978                __init_array_end = .
-                0x00001978                . = ALIGN (0x4)
+ .init_array    0x00001a24        0x4 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
+ .init_array    0x00001a28        0x4 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+                0x00001a2c                __init_array_end = .
+                0x00001a2c                . = ALIGN (0x4)
  *(.fini)
- .fini          0x00001978        0x4 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crti.o
-                0x00001978                _fini
- .fini          0x0000197c        0x8 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtn.o
-                0x00001984                . = ALIGN (0x4)
-                0x00001984                __fini_array_start = .
+ .fini          0x00001a2c        0x4 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crti.o
+                0x00001a2c                _fini
+ .fini          0x00001a30        0x8 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtn.o
+                0x00001a38                . = ALIGN (0x4)
+                0x00001a38                __fini_array_start = .
  *(.fini_array)
- .fini_array    0x00001984        0x4 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
+ .fini_array    0x00001a38        0x4 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
  *(SORT(.fini_array.*))
-                0x00001988                __fini_array_end = .
-                0x00001988                . = ALIGN (0x4)
+                0x00001a3c                __fini_array_end = .
+                0x00001a3c                . = ALIGN (0x4)
  *crtbegin.o(.ctors)
  *(EXCLUDE_FILE(*crtend.o) .ctors)
  *(SORT(.ctors.*))
  *crtend.o(.ctors)
-                0x00001988                . = ALIGN (0x4)
+                0x00001a3c                . = ALIGN (0x4)
  *crtbegin.o(.dtors)
  *(EXCLUDE_FILE(*crtend.o) .dtors)
  *(SORT(.dtors.*))
  *crtend.o(.dtors)
-                0x00001988                . = ALIGN (0x4)
-                0x00001988                __cy_regions = .
-                0x00001988        0x4 LONG 0x1998 __cy_region_init_ram
-                0x0000198c        0x4 LONG 0x1fff8108 __cy_region_start_data
-                0x00001990        0x4 LONG 0x80 __cy_region_init_size_ram
-                0x00001994        0x4 LONG 0x70 __cy_region_zero_size_ram
-                0x00001998                __cy_regions_end = .
-                0x00001998                . = ALIGN (0x8)
-                0x00001998                _etext = .
+                0x00001a3c                . = ALIGN (0x4)
+                0x00001a3c                __cy_regions = .
+                0x00001a3c        0x4 LONG 0x1a50 __cy_region_init_ram
+                0x00001a40        0x4 LONG 0x1fff8108 __cy_region_start_data
+                0x00001a44        0x4 LONG 0x80 __cy_region_init_size_ram
+                0x00001a48        0x4 LONG 0x70 __cy_region_zero_size_ram
+                0x00001a4c                __cy_regions_end = .
+                0x00001a50                . = ALIGN (0x8)
+ *fill*         0x00001a4c        0x4 
+                0x00001a50                _etext = .
 
 .cy_checksum_exclude
-                0x00001998        0x0
+                0x00001a50        0x0
  *(.cy_checksum_exclude)
 
 .ramvectors     0x1fff8000      0x100
@@ -854,7 +858,7 @@ END GROUP
  .noinit        0x1fff8104        0x1 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
                 0x1fff8104                CyResetStatus
 
-.data           0x1fff8108       0x80 load address 0x00001998
+.data           0x1fff8108       0x80 load address 0x00001a50
                 0x1fff8108                __cy_region_start_data = .
  *(.jcr)
  .jcr           0x1fff8108        0x0 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
@@ -879,10 +883,10 @@ END GROUP
  *(.ram)
                 0x1fff8188                _edata = .
 
-.igot.plt       0x1fff8188        0x0 load address 0x00001a18
+.igot.plt       0x1fff8188        0x0 load address 0x00001ad0
  .igot.plt      0x00000000        0x0 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
 
-.bss            0x1fff8188       0x70 load address 0x00001a18
+.bss            0x1fff8188       0x70 load address 0x00001ad0
                 0x1fff8188                PROVIDE (__bss_start__, .)
  *(.shbss)
  *(.bss .bss.* .gnu.linkonce.b.*)
@@ -914,11 +918,11 @@ END GROUP
                 0x1fff81f8                __end = .
                 0x1fff81f8                PROVIDE (end, .)
                 0x1fff81f8                PROVIDE (__bss_end__, .)
-                0x00001998                __cy_region_init_ram = LOADADDR (.data)
+                0x00001a50                __cy_region_init_ram = LOADADDR (.data)
                 0x00000080                __cy_region_init_size_ram = (_edata - ADDR (.data))
                 0x00000070                __cy_region_zero_size_ram = (_end - _edata)
 
-.heap           0x1fff81f8       0x80 load address 0x00001a18
+.heap           0x1fff81f8       0x80 load address 0x00001ad0
                 0x1fff81f8                . = _end
                 0x1fff8278                . = (. + 0x80)
  *fill*         0x1fff81f8       0x80 
@@ -969,7 +973,7 @@ END GROUP
  .cymeta        0x90500000        0xc .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
                 0x90500000                cy_metadata
 
-.rel.dyn        0x00001a18        0x0 load address 0x9050000c
+.rel.dyn        0x00001ad0        0x0 load address 0x9050000c
  .rel.iplt      0x00000000        0x0 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7-m/crtbegin.o
 
 .stab
@@ -990,193 +994,193 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000      0x780
+.debug_aranges  0x00000000      0x788
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x28 .\CortexM3\ARM_GCC_493\Debug\main.o
  .debug_aranges
-                0x00000028       0x60 .\CortexM3\ARM_GCC_493\Debug\can_manager.o
+                0x00000028       0x68 .\CortexM3\ARM_GCC_493\Debug\can_manager.o
  .debug_aranges
-                0x00000088       0x38 .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
+                0x00000090       0x38 .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
  .debug_aranges
-                0x000000c0       0x18 .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
+                0x000000c8       0x18 .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
  .debug_aranges
-                0x000000d8       0x48 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+                0x000000e0       0x48 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
  .debug_aranges
-                0x00000120       0x58 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
+                0x00000128       0x58 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
  .debug_aranges
-                0x00000178      0x2a0 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
+                0x00000180      0x2a0 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
  .debug_aranges
-                0x00000418       0x98 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyPm.o)
+                0x00000420       0x98 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyPm.o)
  .debug_aranges
-                0x000004b0       0x98 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+                0x000004b8       0x98 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
  .debug_aranges
-                0x00000548       0xc8 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+                0x00000550       0xc8 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
  .debug_aranges
-                0x00000610       0x28 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_INT.o)
+                0x00000618       0x28 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_INT.o)
  .debug_aranges
-                0x00000638       0x30 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_TX_RX_func.o)
+                0x00000640       0x30 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_TX_RX_func.o)
  .debug_aranges
-                0x00000668       0x20 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyBootAsmGnu.o)
+                0x00000670       0x20 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyBootAsmGnu.o)
  .debug_aranges
-                0x00000688       0x80 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyFlash.o)
+                0x00000690       0x80 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyFlash.o)
  .debug_aranges
-                0x00000708       0x78 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CySpc.o)
+                0x00000710       0x78 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CySpc.o)
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x58a5
+.debug_info     0x00000000     0x58bb
  *(.debug_info .gnu.linkonce.wi.*)
- .debug_info    0x00000000      0x2d9 .\CortexM3\ARM_GCC_493\Debug\main.o
- .debug_info    0x000002d9      0x700 .\CortexM3\ARM_GCC_493\Debug\can_manager.o
- .debug_info    0x000009d9      0x4df .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
- .debug_info    0x00000eb8      0x13a .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
- .debug_info    0x00000ff2      0x3b3 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
- .debug_info    0x000013a5      0x4f8 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
- .debug_info    0x0000189d     0x1385 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
- .debug_info    0x00002c22      0xa57 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyPm.o)
- .debug_info    0x00003679      0x716 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
- .debug_info    0x00003d8f      0x937 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
- .debug_info    0x000046c6      0x209 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_INT.o)
- .debug_info    0x000048cf      0x44d .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_TX_RX_func.o)
- .debug_info    0x00004d1c       0x97 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyBootAsmGnu.o)
- .debug_info    0x00004db3      0x608 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyFlash.o)
- .debug_info    0x000053bb      0x4ea .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CySpc.o)
+ .debug_info    0x00000000      0x26b .\CortexM3\ARM_GCC_493\Debug\main.o
+ .debug_info    0x0000026b      0x7bc .\CortexM3\ARM_GCC_493\Debug\can_manager.o
+ .debug_info    0x00000a27      0x4a7 .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
+ .debug_info    0x00000ece      0x13a .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
+ .debug_info    0x00001008      0x3b3 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+ .debug_info    0x000013bb      0x4f8 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
+ .debug_info    0x000018b3     0x1385 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
+ .debug_info    0x00002c38      0xa57 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyPm.o)
+ .debug_info    0x0000368f      0x716 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+ .debug_info    0x00003da5      0x937 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+ .debug_info    0x000046dc      0x209 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_INT.o)
+ .debug_info    0x000048e5      0x44d .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_TX_RX_func.o)
+ .debug_info    0x00004d32       0x97 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyBootAsmGnu.o)
+ .debug_info    0x00004dc9      0x608 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyFlash.o)
+ .debug_info    0x000053d1      0x4ea .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CySpc.o)
 
-.debug_abbrev   0x00000000     0x1794
+.debug_abbrev   0x00000000     0x1772
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x17b .\CortexM3\ARM_GCC_493\Debug\main.o
- .debug_abbrev  0x0000017b      0x218 .\CortexM3\ARM_GCC_493\Debug\can_manager.o
- .debug_abbrev  0x00000393      0x19e .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
- .debug_abbrev  0x00000531       0x5d .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
- .debug_abbrev  0x0000058e      0x1f7 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
- .debug_abbrev  0x00000785      0x203 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
- .debug_abbrev  0x00000988      0x296 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
- .debug_abbrev  0x00000c1e      0x1ed .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyPm.o)
- .debug_abbrev  0x00000e0b      0x171 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
- .debug_abbrev  0x00000f7c      0x1de .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
- .debug_abbrev  0x0000115a       0xdc .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_INT.o)
- .debug_abbrev  0x00001236      0x19c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_TX_RX_func.o)
- .debug_abbrev  0x000013d2       0x14 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyBootAsmGnu.o)
- .debug_abbrev  0x000013e6      0x1ed .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyFlash.o)
- .debug_abbrev  0x000015d3      0x1c1 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CySpc.o)
+ .debug_abbrev  0x0000017b      0x209 .\CortexM3\ARM_GCC_493\Debug\can_manager.o
+ .debug_abbrev  0x00000384      0x18b .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
+ .debug_abbrev  0x0000050f       0x5d .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
+ .debug_abbrev  0x0000056c      0x1f7 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+ .debug_abbrev  0x00000763      0x203 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
+ .debug_abbrev  0x00000966      0x296 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
+ .debug_abbrev  0x00000bfc      0x1ed .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyPm.o)
+ .debug_abbrev  0x00000de9      0x171 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+ .debug_abbrev  0x00000f5a      0x1de .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+ .debug_abbrev  0x00001138       0xdc .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_INT.o)
+ .debug_abbrev  0x00001214      0x19c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_TX_RX_func.o)
+ .debug_abbrev  0x000013b0       0x14 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyBootAsmGnu.o)
+ .debug_abbrev  0x000013c4      0x1ed .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyFlash.o)
+ .debug_abbrev  0x000015b1      0x1c1 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CySpc.o)
 
-.debug_line     0x00000000     0x22c2
+.debug_line     0x00000000     0x22d0
  *(.debug_line)
- .debug_line    0x00000000      0x1b8 .\CortexM3\ARM_GCC_493\Debug\main.o
- .debug_line    0x000001b8      0x2bb .\CortexM3\ARM_GCC_493\Debug\can_manager.o
- .debug_line    0x00000473      0x1be .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
- .debug_line    0x00000631       0x51 .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
- .debug_line    0x00000682      0x23f .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
- .debug_line    0x000008c1      0x1d2 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
- .debug_line    0x00000a93      0x816 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
- .debug_line    0x000012a9      0x364 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyPm.o)
- .debug_line    0x0000160d      0x1dc .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
- .debug_line    0x000017e9      0x37e .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
- .debug_line    0x00001b67       0x9c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_INT.o)
- .debug_line    0x00001c03      0x233 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_TX_RX_func.o)
- .debug_line    0x00001e36       0x66 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyBootAsmGnu.o)
- .debug_line    0x00001e9c      0x1ea .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyFlash.o)
- .debug_line    0x00002086      0x23c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CySpc.o)
+ .debug_line    0x00000000      0x1a5 .\CortexM3\ARM_GCC_493\Debug\main.o
+ .debug_line    0x000001a5      0x2dd .\CortexM3\ARM_GCC_493\Debug\can_manager.o
+ .debug_line    0x00000482      0x1bd .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
+ .debug_line    0x0000063f       0x51 .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
+ .debug_line    0x00000690      0x23f .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+ .debug_line    0x000008cf      0x1d2 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
+ .debug_line    0x00000aa1      0x816 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
+ .debug_line    0x000012b7      0x364 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyPm.o)
+ .debug_line    0x0000161b      0x1dc .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+ .debug_line    0x000017f7      0x37e .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+ .debug_line    0x00001b75       0x9c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_INT.o)
+ .debug_line    0x00001c11      0x233 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_TX_RX_func.o)
+ .debug_line    0x00001e44       0x66 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyBootAsmGnu.o)
+ .debug_line    0x00001eaa      0x1ea .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyFlash.o)
+ .debug_line    0x00002094      0x23c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CySpc.o)
 
-.debug_frame    0x00000000     0x1788
+.debug_frame    0x00000000     0x17a8
  *(.debug_frame)
  .debug_frame   0x00000000       0x48 .\CortexM3\ARM_GCC_493\Debug\main.o
- .debug_frame   0x00000048      0x10c .\CortexM3\ARM_GCC_493\Debug\can_manager.o
- .debug_frame   0x00000154       0x90 .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
- .debug_frame   0x000001e4       0xb8 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
- .debug_frame   0x0000029c       0xe4 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
- .debug_frame   0x00000380      0x738 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
- .debug_frame   0x00000ab8      0x1f8 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyPm.o)
- .debug_frame   0x00000cb0      0x1e4 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
- .debug_frame   0x00000e94      0x1cc .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
- .debug_frame   0x00001060       0x4c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_INT.o)
- .debug_frame   0x000010ac       0x6c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_TX_RX_func.o)
- .debug_frame   0x00001118      0x174 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyFlash.o)
- .debug_frame   0x0000128c      0x160 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CySpc.o)
- .debug_frame   0x000013ec       0x20 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-errno.o)
- .debug_frame   0x0000140c       0x28 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-exit.o)
- .debug_frame   0x00001434       0x2c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-init.o)
- .debug_frame   0x00001460       0x28 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memcpy.o)
- .debug_frame   0x00001488       0x20 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memset.o)
- .debug_frame   0x000014a8       0x70 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-sprintf.o)
- .debug_frame   0x00001518       0x8c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-svfprintf.o)
- .debug_frame   0x000015a4       0x58 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
- .debug_frame   0x000015fc       0x28 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memchr.o)
- .debug_frame   0x00001624       0x28 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memmove.o)
- .debug_frame   0x0000164c       0x2c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-freer.o)
- .debug_frame   0x00001678       0x2c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-mallocr.o)
- .debug_frame   0x000016a4       0x3c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-reallocr.o)
- .debug_frame   0x000016e0       0x2c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-sbrkr.o)
- .debug_frame   0x0000170c       0x20 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-msizer.o)
- .debug_frame   0x0000172c       0x5c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-reent.o)
+ .debug_frame   0x00000048      0x12c .\CortexM3\ARM_GCC_493\Debug\can_manager.o
+ .debug_frame   0x00000174       0x90 .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
+ .debug_frame   0x00000204       0xb8 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+ .debug_frame   0x000002bc       0xe4 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
+ .debug_frame   0x000003a0      0x738 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
+ .debug_frame   0x00000ad8      0x1f8 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyPm.o)
+ .debug_frame   0x00000cd0      0x1e4 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+ .debug_frame   0x00000eb4      0x1cc .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+ .debug_frame   0x00001080       0x4c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_INT.o)
+ .debug_frame   0x000010cc       0x6c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_TX_RX_func.o)
+ .debug_frame   0x00001138      0x174 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyFlash.o)
+ .debug_frame   0x000012ac      0x160 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CySpc.o)
+ .debug_frame   0x0000140c       0x20 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-errno.o)
+ .debug_frame   0x0000142c       0x28 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-exit.o)
+ .debug_frame   0x00001454       0x2c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-init.o)
+ .debug_frame   0x00001480       0x28 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memcpy.o)
+ .debug_frame   0x000014a8       0x20 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memset.o)
+ .debug_frame   0x000014c8       0x70 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-sprintf.o)
+ .debug_frame   0x00001538       0x8c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-svfprintf.o)
+ .debug_frame   0x000015c4       0x58 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-vfprintf_i.o)
+ .debug_frame   0x0000161c       0x28 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memchr.o)
+ .debug_frame   0x00001644       0x28 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-memmove.o)
+ .debug_frame   0x0000166c       0x2c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-freer.o)
+ .debug_frame   0x00001698       0x2c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-mallocr.o)
+ .debug_frame   0x000016c4       0x3c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-reallocr.o)
+ .debug_frame   0x00001700       0x2c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-sbrkr.o)
+ .debug_frame   0x0000172c       0x20 d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-nano-msizer.o)
+ .debug_frame   0x0000174c       0x5c d:/programming/cypress/psoc creator/4.0/psoc creator/import/gnu/arm/4.9.3/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7-m\libg_nano.a(lib_a-reent.o)
 
-.debug_str      0x00000000     0x19bb
+.debug_str      0x00000000     0x19d5
  *(.debug_str)
- .debug_str     0x00000000      0x265 .\CortexM3\ARM_GCC_493\Debug\main.o
-                                0x2c5 (size before relaxing)
- .debug_str     0x00000265      0x184 .\CortexM3\ARM_GCC_493\Debug\can_manager.o
-                                0x3e8 (size before relaxing)
- .debug_str     0x000003e9       0x80 .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
+ .debug_str     0x00000000      0x226 .\CortexM3\ARM_GCC_493\Debug\main.o
+                                0x286 (size before relaxing)
+ .debug_str     0x00000226      0x1dd .\CortexM3\ARM_GCC_493\Debug\can_manager.o
+                                0x40d (size before relaxing)
+ .debug_str     0x00000403       0x80 .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
                                 0x2e8 (size before relaxing)
- .debug_str     0x00000469       0x75 .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
+ .debug_str     0x00000483       0x75 .\CortexM3\ARM_GCC_493\Debug\cymetadata.o
                                 0x1f1 (size before relaxing)
- .debug_str     0x000004de      0x158 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+ .debug_str     0x000004f8      0x158 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
                                 0x305 (size before relaxing)
- .debug_str     0x00000636      0x154 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
+ .debug_str     0x00000650      0x154 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
                                 0x30a (size before relaxing)
- .debug_str     0x0000078a      0x811 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
+ .debug_str     0x000007a4      0x811 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
                                 0xa42 (size before relaxing)
- .debug_str     0x00000f9b      0x359 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyPm.o)
+ .debug_str     0x00000fb5      0x359 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyPm.o)
                                 0x722 (size before relaxing)
- .debug_str     0x000012f4      0x115 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+ .debug_str     0x0000130e      0x115 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
                                 0x326 (size before relaxing)
- .debug_str     0x00001409      0x2b5 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+ .debug_str     0x00001423      0x2b5 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
                                 0x4e9 (size before relaxing)
- .debug_str     0x000016be       0x53 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_INT.o)
+ .debug_str     0x000016d8       0x53 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_INT.o)
                                 0x240 (size before relaxing)
- .debug_str     0x00001711       0x62 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_TX_RX_func.o)
+ .debug_str     0x0000172b       0x62 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_TX_RX_func.o)
                                 0x348 (size before relaxing)
- .debug_str     0x00001773      0x19c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyFlash.o)
+ .debug_str     0x0000178d      0x19c .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyFlash.o)
                                 0x39c (size before relaxing)
- .debug_str     0x0000190f       0xac .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CySpc.o)
+ .debug_str     0x00001929       0xac .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CySpc.o)
                                 0x325 (size before relaxing)
 
-.debug_loc      0x00000000     0x2b46
+.debug_loc      0x00000000     0x2c83
  *(.debug_loc)
  .debug_loc     0x00000000       0x21 .\CortexM3\ARM_GCC_493\Debug\main.o
- .debug_loc     0x00000021      0x34e .\CortexM3\ARM_GCC_493\Debug\can_manager.o
- .debug_loc     0x0000036f       0x21 .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
- .debug_loc     0x00000390      0x144 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
- .debug_loc     0x000004d4      0x1d7 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
- .debug_loc     0x000006ab      0xa11 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
- .debug_loc     0x000010bc      0x1e4 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyPm.o)
- .debug_loc     0x000012a0      0x3c6 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
- .debug_loc     0x00001666      0x983 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
- .debug_loc     0x00001fe9       0x54 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_INT.o)
- .debug_loc     0x0000203d      0x1bc .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_TX_RX_func.o)
- .debug_loc     0x000021f9      0x300 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyFlash.o)
- .debug_loc     0x000024f9      0x64d .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CySpc.o)
+ .debug_loc     0x00000021      0x48b .\CortexM3\ARM_GCC_493\Debug\can_manager.o
+ .debug_loc     0x000004ac       0x21 .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
+ .debug_loc     0x000004cd      0x144 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+ .debug_loc     0x00000611      0x1d7 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
+ .debug_loc     0x000007e8      0xa11 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
+ .debug_loc     0x000011f9      0x1e4 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyPm.o)
+ .debug_loc     0x000013dd      0x3c6 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+ .debug_loc     0x000017a3      0x983 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+ .debug_loc     0x00002126       0x54 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_INT.o)
+ .debug_loc     0x0000217a      0x1bc .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_TX_RX_func.o)
+ .debug_loc     0x00002336      0x300 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyFlash.o)
+ .debug_loc     0x00002636      0x64d .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CySpc.o)
 
 .debug_macinfo
  *(.debug_macinfo)
 
-.debug_ranges   0x00000000      0x678
+.debug_ranges   0x00000000      0x680
  *(.debug_ranges)
  .debug_ranges  0x00000000       0x18 .\CortexM3\ARM_GCC_493\Debug\main.o
- .debug_ranges  0x00000018       0x50 .\CortexM3\ARM_GCC_493\Debug\can_manager.o
- .debug_ranges  0x00000068       0x28 .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
- .debug_ranges  0x00000090       0x38 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
- .debug_ranges  0x000000c8       0x48 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
- .debug_ranges  0x00000110      0x290 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
- .debug_ranges  0x000003a0       0x88 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyPm.o)
- .debug_ranges  0x00000428       0x88 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
- .debug_ranges  0x000004b0       0xb8 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
- .debug_ranges  0x00000568       0x18 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_INT.o)
- .debug_ranges  0x00000580       0x20 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_TX_RX_func.o)
- .debug_ranges  0x000005a0       0x70 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyFlash.o)
- .debug_ranges  0x00000610       0x68 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CySpc.o)
+ .debug_ranges  0x00000018       0x58 .\CortexM3\ARM_GCC_493\Debug\can_manager.o
+ .debug_ranges  0x00000070       0x28 .\CortexM3\ARM_GCC_493\Debug\lcd_manager.o
+ .debug_ranges  0x00000098       0x38 .\CortexM3\ARM_GCC_493\Debug\Cm3Start.o
+ .debug_ranges  0x000000d0       0x48 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyfitter_cfg.o)
+ .debug_ranges  0x00000118      0x290 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyLib.o)
+ .debug_ranges  0x000003a8       0x88 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(cyPm.o)
+ .debug_ranges  0x00000430       0x88 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(LCD.o)
+ .debug_ranges  0x000004b8       0xb8 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN.o)
+ .debug_ranges  0x00000570       0x18 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_INT.o)
+ .debug_ranges  0x00000588       0x20 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CAN_TX_RX_func.o)
+ .debug_ranges  0x000005a8       0x70 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CyFlash.o)
+ .debug_ranges  0x00000618       0x68 .\CortexM3\ARM_GCC_493\Debug\Node-Rhinoceros.a(CySpc.o)
 
 .comment        0x00000000       0x70
  .comment       0x00000000       0x70 .\CortexM3\ARM_GCC_493\Debug\main.o

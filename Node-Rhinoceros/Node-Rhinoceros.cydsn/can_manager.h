@@ -10,6 +10,7 @@ void can_init();
 void can_msg_init(DataPacket* can_msg, uint16_t id);
 int can_process(DataPacket* can_msg);
 int can_compare(DataPacket* prev_msg, DataPacket* new_msg);
+void can_process_BMS_STATUS();
 void can_process_BMS_CURR();
 void can_process_BMS_VOLT();
 void can_process_BMS_TEMP();
