@@ -1,6 +1,6 @@
 -- Project:   Node-Rhinoceros
--- Generated: 06/18/2017 18:58:27
--- PSoC Creator  4.0 Update 1
+-- Generated: 11/04/2017 12:02:12
+-- PSoC Creator  4.1 Update 1
 
 ENTITY \Node-Rhinoceros\ IS
     PORT(

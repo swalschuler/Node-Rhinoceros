@@ -1,0 +1,3971 @@
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.syntax unified
+  15              		.file	"can_manager.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.section	.text.can_msg_init,"ax",%progbits
+  20              		.align	2
+  21              		.global	can_msg_init
+  22              		.thumb
+  23              		.thumb_func
+  24              		.type	can_msg_init, %function
+  25              	can_msg_init:
+  26              	.LFB65:
+  27              		.file 1 "can_manager.c"
+   1:can_manager.c **** #include "can_manager.h"
+   2:can_manager.c **** #include <stdio.h>
+   3:can_manager.c **** 
+   4:can_manager.c **** #define BMS_STATUS_ID		0x188
+   5:can_manager.c **** #define BMS_CURRENT_ID		0x288
+   6:can_manager.c **** #define BMS_VOLTAGE_ID		0x388
+   7:can_manager.c **** #define BMS_TEMP_ID			0x488
+   8:can_manager.c **** 
+   9:can_manager.c **** DataPacket BMS_STATUS;		//0x188
+  10:can_manager.c **** DataPacket BMS_CURRENT;		//0x288
+  11:can_manager.c **** DataPacket BMS_VOLTAGE;		//0x388
+  12:can_manager.c **** DataPacket BMS_TEMP;		//0x488
+  13:can_manager.c **** 
+  14:can_manager.c **** void can_init() {
+  15:can_manager.c **** 	CAN_GlobalIntEnable(); // CAN Initialization
+  16:can_manager.c **** 	CAN_Init();
+  17:can_manager.c **** 	CAN_Start();
+  18:can_manager.c **** 	
+  19:can_manager.c **** 	can_msg_init(&BMS_STATUS, BMS_STATUS_ID);
+  20:can_manager.c **** 	can_msg_init(&BMS_CURRENT, BMS_CURRENT_ID); 
+  21:can_manager.c **** 	can_msg_init(&BMS_VOLTAGE, BMS_VOLTAGE_ID);
+  22:can_manager.c **** 	can_msg_init(&BMS_TEMP, BMS_TEMP_ID);
+  23:can_manager.c **** }
+  24:can_manager.c **** 
+  25:can_manager.c **** //initalize CAN message variables with FF's everywhere
+  26:can_manager.c **** void can_msg_init(DataPacket* can_msg, uint16_t id) {
+  28              		.loc 1 26 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 2
+
+
+  32              		@ link register save eliminated.
+  33              	.LVL0:
+  27:can_manager.c **** 	uint8_t i;
+  28:can_manager.c **** 	can_msg->id = id;
+  34              		.loc 1 28 0
+  35 0000 8180     		strh	r1, [r0, #4]	@ movhi
+  29:can_manager.c **** 	can_msg->length = 8;
+  36              		.loc 1 29 0
+  37 0002 0823     		movs	r3, #8
+  38 0004 8371     		strb	r3, [r0, #6]
+  30:can_manager.c **** 	can_msg->millicounter = 0;
+  39              		.loc 1 30 0
+  40 0006 0023     		movs	r3, #0
+  41 0008 0360     		str	r3, [r0]
+  42              	.LVL1:
+  31:can_manager.c **** 	for(i=0; i<can_msg->length; i++) {
+  43              		.loc 1 31 0
+  44 000a 04E0     		b	.L2
+  45              	.LVL2:
+  46              	.L3:
+  32:can_manager.c **** 		can_msg->data[i] = 0xFF;
+  47              		.loc 1 32 0 discriminator 3
+  48 000c C218     		adds	r2, r0, r3
+  49 000e FF21     		movs	r1, #255
+  50 0010 D171     		strb	r1, [r2, #7]
+  31:can_manager.c **** 	for(i=0; i<can_msg->length; i++) {
+  51              		.loc 1 31 0 discriminator 3
+  52 0012 0133     		adds	r3, r3, #1
+  53              	.LVL3:
+  54 0014 DBB2     		uxtb	r3, r3
+  55              	.LVL4:
+  56              	.L2:
+  31:can_manager.c **** 	for(i=0; i<can_msg->length; i++) {
+  57              		.loc 1 31 0 is_stmt 0 discriminator 1
+  58 0016 072B     		cmp	r3, #7
+  59 0018 F8D9     		bls	.L3
+  33:can_manager.c **** 	}
+  34:can_manager.c **** 	
+  35:can_manager.c **** } //can_msg_init()
+  60              		.loc 1 35 0 is_stmt 1
+  61 001a 7047     		bx	lr
+  62              		.cfi_endproc
+  63              	.LFE65:
+  64              		.size	can_msg_init, .-can_msg_init
+  65              		.section	.text.can_init,"ax",%progbits
+  66              		.align	2
+  67              		.global	can_init
+  68              		.thumb
+  69              		.thumb_func
+  70              		.type	can_init, %function
+  71              	can_init:
+  72              	.LFB64:
+  14:can_manager.c **** 	CAN_GlobalIntEnable(); // CAN Initialization
+  73              		.loc 1 14 0
+  74              		.cfi_startproc
+  75              		@ args = 0, pretend = 0, frame = 0
+  76              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 3
+
+
+  77 0000 08B5     		push	{r3, lr}
+  78              		.cfi_def_cfa_offset 8
+  79              		.cfi_offset 3, -8
+  80              		.cfi_offset 14, -4
+  15:can_manager.c **** 	CAN_Init();
+  81              		.loc 1 15 0
+  82 0002 FFF7FEFF 		bl	CAN_GlobalIntEnable
+  83              	.LVL5:
+  16:can_manager.c **** 	CAN_Start();
+  84              		.loc 1 16 0
+  85 0006 FFF7FEFF 		bl	CAN_Init
+  86              	.LVL6:
+  17:can_manager.c **** 	
+  87              		.loc 1 17 0
+  88 000a FFF7FEFF 		bl	CAN_Start
+  89              	.LVL7:
+  19:can_manager.c **** 	can_msg_init(&BMS_CURRENT, BMS_CURRENT_ID); 
+  90              		.loc 1 19 0
+  91 000e 4FF4C471 		mov	r1, #392
+  92 0012 0948     		ldr	r0, .L6
+  93 0014 FFF7FEFF 		bl	can_msg_init
+  94              	.LVL8:
+  20:can_manager.c **** 	can_msg_init(&BMS_VOLTAGE, BMS_VOLTAGE_ID);
+  95              		.loc 1 20 0
+  96 0018 4FF42271 		mov	r1, #648
+  97 001c 0748     		ldr	r0, .L6+4
+  98 001e FFF7FEFF 		bl	can_msg_init
+  99              	.LVL9:
+  21:can_manager.c **** 	can_msg_init(&BMS_TEMP, BMS_TEMP_ID);
+ 100              		.loc 1 21 0
+ 101 0022 4FF46271 		mov	r1, #904
+ 102 0026 0648     		ldr	r0, .L6+8
+ 103 0028 FFF7FEFF 		bl	can_msg_init
+ 104              	.LVL10:
+  22:can_manager.c **** }
+ 105              		.loc 1 22 0
+ 106 002c 4FF49161 		mov	r1, #1160
+ 107 0030 0448     		ldr	r0, .L6+12
+ 108 0032 FFF7FEFF 		bl	can_msg_init
+ 109              	.LVL11:
+ 110 0036 08BD     		pop	{r3, pc}
+ 111              	.L7:
+ 112              		.align	2
+ 113              	.L6:
+ 114 0038 00000000 		.word	BMS_STATUS
+ 115 003c 00000000 		.word	BMS_CURRENT
+ 116 0040 00000000 		.word	BMS_VOLTAGE
+ 117 0044 00000000 		.word	BMS_TEMP
+ 118              		.cfi_endproc
+ 119              	.LFE64:
+ 120              		.size	can_init, .-can_init
+ 121              		.section	.text.can_compare,"ax",%progbits
+ 122              		.align	2
+ 123              		.global	can_compare
+ 124              		.thumb
+ 125              		.thumb_func
+ 126              		.type	can_compare, %function
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 4
+
+
+ 127              	can_compare:
+ 128              	.LFB67:
+  36:can_manager.c **** 
+  37:can_manager.c **** 
+  38:can_manager.c **** /*  recieves can message from bus can compares it with is respective id*/
+  39:can_manager.c **** int can_process(DataPacket* can_msg){
+  40:can_manager.c **** 	int status = 0;		//returns 1 if message is updated
+  41:can_manager.c ****     switch (can_msg->id) {
+  42:can_manager.c **** 	case BMS_STATUS_ID:
+  43:can_manager.c **** 		status = can_compare(&BMS_STATUS, can_msg);
+  44:can_manager.c **** 		if(status)
+  45:can_manager.c ****             can_process_BMS_STATUS();
+  46:can_manager.c **** 		break;
+  47:can_manager.c **** 	case BMS_CURRENT_ID:	//0x288
+  48:can_manager.c **** 		status = can_compare(&BMS_CURRENT, can_msg);
+  49:can_manager.c **** 		if(status)
+  50:can_manager.c **** 			can_process_BMS_CURR();
+  51:can_manager.c **** 		break;
+  52:can_manager.c **** 	case BMS_VOLTAGE_ID:	//0x388
+  53:can_manager.c **** 		status = can_compare(&BMS_VOLTAGE, can_msg);
+  54:can_manager.c **** 		if(status) {
+  55:can_manager.c **** 		    #ifdef VOLTAGE_DIFF
+  56:can_manager.c ****             can_process_BMS_VOLT_D();
+  57:can_manager.c ****             #else
+  58:can_manager.c ****             can_process_BMS_VOLT();
+  59:can_manager.c ****             #endif
+  60:can_manager.c ****         }
+  61:can_manager.c **** 		break;
+  62:can_manager.c **** 	case BMS_TEMP_ID:		//0x488
+  63:can_manager.c **** 		status = can_compare(&BMS_TEMP, can_msg);
+  64:can_manager.c **** 		if(status)
+  65:can_manager.c **** 			can_process_BMS_TEMP();
+  66:can_manager.c **** 		break;
+  67:can_manager.c ****     default:
+  68:can_manager.c **** 		status = 0;
+  69:can_manager.c ****         break;
+  70:can_manager.c ****     }
+  71:can_manager.c **** 	return status;
+  72:can_manager.c **** }
+  73:can_manager.c **** 
+  74:can_manager.c **** /*	compares received can message with the latest can message of the same id.
+  75:can_manager.c **** 	if it is different, it will add update that DataPacket variable	
+  76:can_manager.c **** 	returns: 1 if message was updated, 0 if message same as before */
+  77:can_manager.c **** int can_compare(DataPacket* prev_msg, DataPacket* new_msg) {
+ 129              		.loc 1 77 0
+ 130              		.cfi_startproc
+ 131              		@ args = 0, pretend = 0, frame = 16
+ 132              		@ frame_needed = 0, uses_anonymous_args = 0
+ 133              	.LVL12:
+ 134 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 135              		.cfi_def_cfa_offset 20
+ 136              		.cfi_offset 4, -20
+ 137              		.cfi_offset 5, -16
+ 138              		.cfi_offset 6, -12
+ 139              		.cfi_offset 7, -8
+ 140              		.cfi_offset 14, -4
+ 141 0002 85B0     		sub	sp, sp, #20
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 5
+
+
+ 142              		.cfi_def_cfa_offset 40
+ 143              	.LVL13:
+  78:can_manager.c **** 	uint8_t i, j;
+  79:can_manager.c **** 	uint8_t offset = 0;
+  80:can_manager.c **** 	DataPacket temp;
+  81:can_manager.c ****  
+  82:can_manager.c **** 	temp.id = new_msg->id;
+ 144              		.loc 1 82 0
+ 145 0004 8D88     		ldrh	r5, [r1, #4]
+  83:can_manager.c **** 	temp.length = new_msg->length;
+ 146              		.loc 1 83 0
+ 147 0006 8C79     		ldrb	r4, [r1, #6]	@ zero_extendqisi2
+ 148              	.LVL14:
+  84:can_manager.c **** 	temp.millicounter = new_msg->millicounter;
+  85:can_manager.c **** 	for(i=0; i<temp.length; i++) {
+ 149              		.loc 1 85 0
+ 150 0008 0023     		movs	r3, #0
+ 151 000a 07E0     		b	.L9
+ 152              	.LVL15:
+ 153              	.L10:
+  86:can_manager.c **** 		temp.data[i] = new_msg->data[i];
+ 154              		.loc 1 86 0 discriminator 3
+ 155 000c CA18     		adds	r2, r1, r3
+ 156 000e D679     		ldrb	r6, [r2, #7]	@ zero_extendqisi2
+ 157 0010 04AA     		add	r2, sp, #16
+ 158 0012 1A44     		add	r2, r2, r3
+ 159 0014 02F8096C 		strb	r6, [r2, #-9]
+  85:can_manager.c **** 		temp.data[i] = new_msg->data[i];
+ 160              		.loc 1 85 0 discriminator 3
+ 161 0018 0133     		adds	r3, r3, #1
+ 162              	.LVL16:
+ 163 001a DBB2     		uxtb	r3, r3
+ 164              	.LVL17:
+ 165              	.L9:
+  85:can_manager.c **** 		temp.data[i] = new_msg->data[i];
+ 166              		.loc 1 85 0 is_stmt 0 discriminator 1
+ 167 001c A342     		cmp	r3, r4
+ 168 001e F5D3     		bcc	.L10
+ 169 0020 0022     		movs	r2, #0
+ 170 0022 09E0     		b	.L11
+ 171              	.LVL18:
+ 172              	.L12:
+  87:can_manager.c **** 	}
+  88:can_manager.c **** 	
+  89:can_manager.c **** 	//bytes received in little endian so have to reverse to big endian 32bits
+  90:can_manager.c **** 	for(i=0; i<(new_msg->length/2); i++) {		//swap bytes 0-3
+  91:can_manager.c **** 		new_msg->data[i+offset] = temp.data[offset + temp.length/2 - i - 1];
+ 173              		.loc 1 91 0 is_stmt 1 discriminator 3
+ 174 0024 9B1A     		subs	r3, r3, r2
+ 175 0026 013B     		subs	r3, r3, #1
+ 176 0028 04AE     		add	r6, sp, #16
+ 177 002a 3344     		add	r3, r3, r6
+ 178 002c 13F8096C 		ldrb	r6, [r3, #-9]	@ zero_extendqisi2
+ 179 0030 8B18     		adds	r3, r1, r2
+ 180 0032 DE71     		strb	r6, [r3, #7]
+  90:can_manager.c **** 		new_msg->data[i+offset] = temp.data[offset + temp.length/2 - i - 1];
+ 181              		.loc 1 90 0 discriminator 3
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 6
+
+
+ 182 0034 0132     		adds	r2, r2, #1
+ 183              	.LVL19:
+ 184 0036 D2B2     		uxtb	r2, r2
+ 185              	.LVL20:
+ 186              	.L11:
+  90:can_manager.c **** 		new_msg->data[i+offset] = temp.data[offset + temp.length/2 - i - 1];
+ 187              		.loc 1 90 0 is_stmt 0 discriminator 1
+ 188 0038 6308     		lsrs	r3, r4, #1
+ 189 003a 9A42     		cmp	r2, r3
+ 190 003c F2D3     		bcc	.L12
+ 191 003e 0026     		movs	r6, #0
+ 192 0040 0DE0     		b	.L13
+ 193              	.LVL21:
+ 194              	.L14:
+  92:can_manager.c **** 	}//for
+  93:can_manager.c **** 	offset = 4;
+  94:can_manager.c **** 	for(i=0; i<(new_msg->length/2); i++) {		//swap bytes 4-7
+  95:can_manager.c **** 		new_msg->data[i+offset] = temp.data[offset + temp.length/2 - i - 1];
+ 195              		.loc 1 95 0 is_stmt 1 discriminator 3
+ 196 0042 371D     		adds	r7, r6, #4
+ 197 0044 1A1D     		adds	r2, r3, #4
+ 198 0046 921B     		subs	r2, r2, r6
+ 199 0048 013A     		subs	r2, r2, #1
+ 200 004a 0DF1100E 		add	lr, sp, #16
+ 201 004e 7244     		add	r2, r2, lr
+ 202 0050 12F809EC 		ldrb	lr, [r2, #-9]	@ zero_extendqisi2
+ 203 0054 CA19     		adds	r2, r1, r7
+ 204 0056 82F807E0 		strb	lr, [r2, #7]
+  94:can_manager.c **** 		new_msg->data[i+offset] = temp.data[offset + temp.length/2 - i - 1];
+ 205              		.loc 1 94 0 discriminator 3
+ 206 005a 0136     		adds	r6, r6, #1
+ 207              	.LVL22:
+ 208 005c F6B2     		uxtb	r6, r6
+ 209              	.LVL23:
+ 210              	.L13:
+  94:can_manager.c **** 		new_msg->data[i+offset] = temp.data[offset + temp.length/2 - i - 1];
+ 211              		.loc 1 94 0 is_stmt 0 discriminator 1
+ 212 005e 9E42     		cmp	r6, r3
+ 213 0060 EFD3     		bcc	.L14
+ 214 0062 0023     		movs	r3, #0
+ 215 0064 19E0     		b	.L15
+ 216              	.LVL24:
+ 217              	.L20:
+  96:can_manager.c **** 	}//for
+  97:can_manager.c **** 	
+  98:can_manager.c **** 	for(i=0; i<new_msg->length; i++) {					//compare all 8 data bytes
+  99:can_manager.c **** 		if(prev_msg->data[i] != new_msg->data[i]) {		//update it if data[] has changed
+ 218              		.loc 1 99 0 is_stmt 1
+ 219 0066 C218     		adds	r2, r0, r3
+ 220 0068 D679     		ldrb	r6, [r2, #7]	@ zero_extendqisi2
+ 221 006a CA18     		adds	r2, r1, r3
+ 222 006c D279     		ldrb	r2, [r2, #7]	@ zero_extendqisi2
+ 223 006e 9642     		cmp	r6, r2
+ 224 0070 11D0     		beq	.L16
+ 100:can_manager.c **** 			prev_msg->id = new_msg->id;
+ 225              		.loc 1 100 0
+ 226 0072 8580     		strh	r5, [r0, #4]	@ movhi
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 7
+
+
+ 101:can_manager.c **** 			prev_msg->length = new_msg->length;
+ 227              		.loc 1 101 0
+ 228 0074 8B79     		ldrb	r3, [r1, #6]	@ zero_extendqisi2
+ 229              	.LVL25:
+ 230 0076 8371     		strb	r3, [r0, #6]
+ 102:can_manager.c **** 			prev_msg->millicounter = new_msg->millicounter;	
+ 231              		.loc 1 102 0
+ 232 0078 0B68     		ldr	r3, [r1]
+ 233 007a 0360     		str	r3, [r0]
+ 234              	.LVL26:
+ 103:can_manager.c **** 			for(j=0; j<new_msg->length; j++) {
+ 235              		.loc 1 103 0
+ 236 007c 0023     		movs	r3, #0
+ 237 007e 05E0     		b	.L17
+ 238              	.LVL27:
+ 239              	.L18:
+ 104:can_manager.c **** 				prev_msg->data[j] = new_msg->data[j];
+ 240              		.loc 1 104 0 discriminator 3
+ 241 0080 CA18     		adds	r2, r1, r3
+ 242 0082 D479     		ldrb	r4, [r2, #7]	@ zero_extendqisi2
+ 243 0084 C218     		adds	r2, r0, r3
+ 244 0086 D471     		strb	r4, [r2, #7]
+ 103:can_manager.c **** 			for(j=0; j<new_msg->length; j++) {
+ 245              		.loc 1 103 0 discriminator 3
+ 246 0088 0133     		adds	r3, r3, #1
+ 247              	.LVL28:
+ 248 008a DBB2     		uxtb	r3, r3
+ 249              	.LVL29:
+ 250              	.L17:
+ 103:can_manager.c **** 			for(j=0; j<new_msg->length; j++) {
+ 251              		.loc 1 103 0 is_stmt 0 discriminator 1
+ 252 008c 8A79     		ldrb	r2, [r1, #6]	@ zero_extendqisi2
+ 253 008e 9342     		cmp	r3, r2
+ 254 0090 F6D3     		bcc	.L18
+ 105:can_manager.c **** 			}
+ 106:can_manager.c **** 			
+ 107:can_manager.c **** 			return 1;
+ 255              		.loc 1 107 0 is_stmt 1
+ 256 0092 0120     		movs	r0, #1
+ 257              	.LVL30:
+ 258 0094 04E0     		b	.L19
+ 259              	.LVL31:
+ 260              	.L16:
+  98:can_manager.c **** 		if(prev_msg->data[i] != new_msg->data[i]) {		//update it if data[] has changed
+ 261              		.loc 1 98 0 discriminator 2
+ 262 0096 0133     		adds	r3, r3, #1
+ 263              	.LVL32:
+ 264 0098 DBB2     		uxtb	r3, r3
+ 265              	.LVL33:
+ 266              	.L15:
+  98:can_manager.c **** 		if(prev_msg->data[i] != new_msg->data[i]) {		//update it if data[] has changed
+ 267              		.loc 1 98 0 is_stmt 0 discriminator 1
+ 268 009a A342     		cmp	r3, r4
+ 269 009c E3D3     		bcc	.L20
+ 108:can_manager.c **** 		}//if
+ 109:can_manager.c **** 	}//for
+ 110:can_manager.c **** 	return 0;
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 8
+
+
+ 270              		.loc 1 110 0 is_stmt 1
+ 271 009e 0020     		movs	r0, #0
+ 272              	.LVL34:
+ 273              	.L19:
+ 111:can_manager.c **** }
+ 274              		.loc 1 111 0
+ 275 00a0 05B0     		add	sp, sp, #20
+ 276              		.cfi_def_cfa_offset 20
+ 277              		@ sp needed
+ 278 00a2 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 279              		.cfi_endproc
+ 280              	.LFE67:
+ 281              		.size	can_compare, .-can_compare
+ 282              		.section	.text.can_process_BMS_STATUS,"ax",%progbits
+ 283              		.align	2
+ 284              		.global	can_process_BMS_STATUS
+ 285              		.thumb
+ 286              		.thumb_func
+ 287              		.type	can_process_BMS_STATUS, %function
+ 288              	can_process_BMS_STATUS:
+ 289              	.LFB68:
+ 112:can_manager.c **** 
+ 113:can_manager.c **** 
+ 114:can_manager.c **** void can_process_BMS_STATUS() {
+ 290              		.loc 1 114 0
+ 291              		.cfi_startproc
+ 292              		@ args = 0, pretend = 0, frame = 8
+ 293              		@ frame_needed = 0, uses_anonymous_args = 0
+ 294 0000 00B5     		push	{lr}
+ 295              		.cfi_def_cfa_offset 4
+ 296              		.cfi_offset 14, -4
+ 297 0002 83B0     		sub	sp, sp, #12
+ 298              		.cfi_def_cfa_offset 16
+ 115:can_manager.c ****     /*
+ 116:can_manager.c **** 	uint32_t bms_stat1;
+ 117:can_manager.c **** 	uint32_t bms_stat2;
+ 118:can_manager.c **** 	char8 bms_stat1_str[16]; 
+ 119:can_manager.c **** 	char8 bms_stat2_str[16];
+ 120:can_manager.c **** 	sprintf(bms_stat1_str, "%02X%02X", can_msg->data[3], can_msg->data[2], can_msg->data[1], can_msg->
+ 121:can_manager.c **** 	sprintf(bms_stat2_str, "%02X %02X %02X %02X", can_msg->data[7], can_msg->data[6], can_msg->data[5]
+ 122:can_manager.c **** 	LCD_Position(0,0);
+ 123:can_manager.c **** 	LCD_PrintString(bms_stat1_str);
+ 124:can_manager.c **** 	LCD_Position(1,0);
+ 125:can_manager.c **** 	LCD_PrintString(bms_stat2_str);
+ 126:can_manager.c ****     */
+ 127:can_manager.c ****     
+ 128:can_manager.c **** 	char8 bms_error_str[4];
+ 129:can_manager.c **** 	sprintf(bms_error_str, "%02X%02X", BMS_STATUS.data[2], BMS_STATUS.data[3]);
+ 299              		.loc 1 129 0
+ 300 0004 084A     		ldr	r2, .L24
+ 301 0006 937A     		ldrb	r3, [r2, #10]	@ zero_extendqisi2
+ 302 0008 527A     		ldrb	r2, [r2, #9]	@ zero_extendqisi2
+ 303 000a 0849     		ldr	r1, .L24+4
+ 304 000c 01A8     		add	r0, sp, #4
+ 305 000e FFF7FEFF 		bl	sprintf
+ 306              	.LVL35:
+ 130:can_manager.c **** 	LCD_Position(0,12);
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 9
+
+
+ 307              		.loc 1 130 0
+ 308 0012 0C21     		movs	r1, #12
+ 309 0014 0020     		movs	r0, #0
+ 310 0016 FFF7FEFF 		bl	LCD_Position
+ 311              	.LVL36:
+ 131:can_manager.c **** 	LCD_PrintString(bms_error_str);
+ 312              		.loc 1 131 0
+ 313 001a 01A8     		add	r0, sp, #4
+ 314 001c FFF7FEFF 		bl	LCD_PrintString
+ 315              	.LVL37:
+ 132:can_manager.c **** }
+ 316              		.loc 1 132 0
+ 317 0020 03B0     		add	sp, sp, #12
+ 318              		.cfi_def_cfa_offset 4
+ 319              		@ sp needed
+ 320 0022 5DF804FB 		ldr	pc, [sp], #4
+ 321              	.L25:
+ 322 0026 00BF     		.align	2
+ 323              	.L24:
+ 324 0028 00000000 		.word	BMS_STATUS
+ 325 002c 00000000 		.word	.LC0
+ 326              		.cfi_endproc
+ 327              	.LFE68:
+ 328              		.size	can_process_BMS_STATUS, .-can_process_BMS_STATUS
+ 329              		.section	.text.can_process_BMS_CURR,"ax",%progbits
+ 330              		.align	2
+ 331              		.global	can_process_BMS_CURR
+ 332              		.thumb
+ 333              		.thumb_func
+ 334              		.type	can_process_BMS_CURR, %function
+ 335              	can_process_BMS_CURR:
+ 336              	.LFB69:
+ 133:can_manager.c **** 	
+ 134:can_manager.c **** //formats and gets lcd pos
+ 135:can_manager.c **** void can_process_BMS_CURR() {
+ 337              		.loc 1 135 0
+ 338              		.cfi_startproc
+ 339              		@ args = 0, pretend = 0, frame = 8
+ 340              		@ frame_needed = 0, uses_anonymous_args = 0
+ 341 0000 00B5     		push	{lr}
+ 342              		.cfi_def_cfa_offset 4
+ 343              		.cfi_offset 14, -4
+ 344 0002 83B0     		sub	sp, sp, #12
+ 345              		.cfi_def_cfa_offset 16
+ 136:can_manager.c **** 	uint16_t current;
+ 137:can_manager.c **** 	char8 curr_string[6]; 
+ 138:can_manager.c **** 	
+ 139:can_manager.c **** 	uint16_t byte2 = BMS_CURRENT.data[1] << 8;
+ 346              		.loc 1 139 0
+ 347 0004 0D4A     		ldr	r2, .L28
+ 348 0006 117A     		ldrb	r1, [r2, #8]	@ zero_extendqisi2
+ 349              	.LVL38:
+ 140:can_manager.c **** 	uint16_t byte1 = BMS_CURRENT.data[2];
+ 350              		.loc 1 140 0
+ 351 0008 537A     		ldrb	r3, [r2, #9]	@ zero_extendqisi2
+ 352              	.LVL39:
+ 141:can_manager.c **** 	current = byte2 | byte1;
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 10
+
+
+ 353              		.loc 1 141 0
+ 354 000a 43EA0123 		orr	r3, r3, r1, lsl #8
+ 355              	.LVL40:
+ 142:can_manager.c **** 	
+ 143:can_manager.c ****     
+ 144:can_manager.c **** 	//current = 0x10; 
+ 145:can_manager.c ****     //first bit of high byte: 0 = charging, 1 = discharging
+ 146:can_manager.c **** 	sprintf(curr_string, "%03d.%01dA", (int)(current/10), (int)(current%10)); 
+ 356              		.loc 1 146 0
+ 357 000e 0C4A     		ldr	r2, .L28+4
+ 358              	.LVL41:
+ 359 0010 A2FB0312 		umull	r1, r2, r2, r3
+ 360              	.LVL42:
+ 361 0014 D208     		lsrs	r2, r2, #3
+ 362 0016 02EB8200 		add	r0, r2, r2, lsl #2
+ 363 001a 4100     		lsls	r1, r0, #1
+ 364 001c 5B1A     		subs	r3, r3, r1
+ 365              	.LVL43:
+ 366 001e 9BB2     		uxth	r3, r3
+ 367 0020 0849     		ldr	r1, .L28+8
+ 368 0022 6846     		mov	r0, sp
+ 369 0024 FFF7FEFF 		bl	sprintf
+ 370              	.LVL44:
+ 147:can_manager.c ****     //sprintf(curr_string, "%02X %02X", BMS_CURRENT.data[1], BMS_CURRENT.data[2]); 
+ 148:can_manager.c **** 	LCD_Position(1, 3);
+ 371              		.loc 1 148 0
+ 372 0028 0321     		movs	r1, #3
+ 373 002a 0120     		movs	r0, #1
+ 374 002c FFF7FEFF 		bl	LCD_Position
+ 375              	.LVL45:
+ 149:can_manager.c **** 	LCD_PrintString(curr_string);
+ 376              		.loc 1 149 0
+ 377 0030 6846     		mov	r0, sp
+ 378 0032 FFF7FEFF 		bl	LCD_PrintString
+ 379              	.LVL46:
+ 150:can_manager.c ****     
+ 151:can_manager.c ****     
+ 152:can_manager.c ****     /*
+ 153:can_manager.c ****     char8 bms_curr1_str[16];
+ 154:can_manager.c ****     char8 bms_curr2_str[16];
+ 155:can_manager.c ****     sprintf(bms_curr1_str, "%02X %02X %02X %02X", BMS_CURRENT.data[0], BMS_CURRENT.data[1], BMS_CUR
+ 156:can_manager.c ****     sprintf(bms_curr2_str, "%02X %02X %02X %02X", BMS_CURRENT.data[4], BMS_CURRENT.data[5], BMS_CUR
+ 157:can_manager.c ****     LCD_Position(0,0);
+ 158:can_manager.c ****     LCD_PrintString(bms_curr1_str);
+ 159:can_manager.c ****     LCD_Position(1,0);
+ 160:can_manager.c ****     LCD_PrintString(bms_curr2_str);
+ 161:can_manager.c ****     */
+ 162:can_manager.c **** }
+ 380              		.loc 1 162 0
+ 381 0036 03B0     		add	sp, sp, #12
+ 382              		.cfi_def_cfa_offset 4
+ 383              		@ sp needed
+ 384 0038 5DF804FB 		ldr	pc, [sp], #4
+ 385              	.L29:
+ 386              		.align	2
+ 387              	.L28:
+ 388 003c 00000000 		.word	BMS_CURRENT
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 11
+
+
+ 389 0040 CDCCCCCC 		.word	-858993459
+ 390 0044 0C000000 		.word	.LC1
+ 391              		.cfi_endproc
+ 392              	.LFE69:
+ 393              		.size	can_process_BMS_CURR, .-can_process_BMS_CURR
+ 394              		.section	.text.can_process_BMS_VOLT,"ax",%progbits
+ 395              		.align	2
+ 396              		.global	can_process_BMS_VOLT
+ 397              		.thumb
+ 398              		.thumb_func
+ 399              		.type	can_process_BMS_VOLT, %function
+ 400              	can_process_BMS_VOLT:
+ 401              	.LFB70:
+ 163:can_manager.c **** 
+ 164:can_manager.c **** //gets pack voltage
+ 165:can_manager.c **** void can_process_BMS_VOLT() {
+ 402              		.loc 1 165 0
+ 403              		.cfi_startproc
+ 404              		@ args = 0, pretend = 0, frame = 8
+ 405              		@ frame_needed = 0, uses_anonymous_args = 0
+ 406 0000 00B5     		push	{lr}
+ 407              		.cfi_def_cfa_offset 4
+ 408              		.cfi_offset 14, -4
+ 409 0002 83B0     		sub	sp, sp, #12
+ 410              		.cfi_def_cfa_offset 16
+ 166:can_manager.c **** 	uint32_t voltage;
+ 167:can_manager.c **** 	char8 volt_string[6];
+ 168:can_manager.c **** 	
+ 169:can_manager.c **** 	uint32_t byte4 = BMS_VOLTAGE.data[4] << 24;
+ 411              		.loc 1 169 0
+ 412 0004 1449     		ldr	r1, .L32
+ 413 0006 C87A     		ldrb	r0, [r1, #11]	@ zero_extendqisi2
+ 414              	.LVL47:
+ 170:can_manager.c **** 	uint32_t byte3 = BMS_VOLTAGE.data[5] << 16;
+ 415              		.loc 1 170 0
+ 416 0008 0A7B     		ldrb	r2, [r1, #12]	@ zero_extendqisi2
+ 417 000a 1204     		lsls	r2, r2, #16
+ 418              	.LVL48:
+ 171:can_manager.c **** 	uint32_t byte2 = BMS_VOLTAGE.data[6] << 8;
+ 419              		.loc 1 171 0
+ 420 000c 4B7B     		ldrb	r3, [r1, #13]	@ zero_extendqisi2
+ 421              	.LVL49:
+ 172:can_manager.c **** 	uint32_t byte1 = BMS_VOLTAGE.data[7];
+ 422              		.loc 1 172 0
+ 423 000e 897B     		ldrb	r1, [r1, #14]	@ zero_extendqisi2
+ 424              	.LVL50:
+ 173:can_manager.c **** 	voltage = byte4 | byte3 | byte2 | byte1;
+ 425              		.loc 1 173 0
+ 426 0010 42EA0062 		orr	r2, r2, r0, lsl #24
+ 427              	.LVL51:
+ 428 0014 42EA0323 		orr	r3, r2, r3, lsl #8
+ 429              	.LVL52:
+ 430 0018 0B43     		orrs	r3, r3, r1
+ 431              	.LVL53:
+ 174:can_manager.c **** 	
+ 175:can_manager.c **** 	//voltage = 0x0001C3E3;
+ 176:can_manager.c **** 	sprintf(volt_string, "%03d.%01dV", (int)(voltage/1000), (int)(voltage/100%10));
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 12
+
+
+ 432              		.loc 1 176 0
+ 433 001a 104A     		ldr	r2, .L32+4
+ 434 001c A2FB0312 		umull	r1, r2, r2, r3
+ 435              	.LVL54:
+ 436 0020 0F49     		ldr	r1, .L32+8
+ 437 0022 A1FB0313 		umull	r1, r3, r1, r3
+ 438              	.LVL55:
+ 439 0026 5B09     		lsrs	r3, r3, #5
+ 440 0028 0E49     		ldr	r1, .L32+12
+ 441 002a A1FB0301 		umull	r0, r1, r1, r3
+ 442              	.LVL56:
+ 443 002e C908     		lsrs	r1, r1, #3
+ 444 0030 01EB8101 		add	r1, r1, r1, lsl #2
+ 445 0034 4800     		lsls	r0, r1, #1
+ 446 0036 1B1A     		subs	r3, r3, r0
+ 447 0038 9209     		lsrs	r2, r2, #6
+ 448 003a 0B49     		ldr	r1, .L32+16
+ 449 003c 6846     		mov	r0, sp
+ 450 003e FFF7FEFF 		bl	sprintf
+ 451              	.LVL57:
+ 177:can_manager.c **** 	LCD_Position(0, 3);
+ 452              		.loc 1 177 0
+ 453 0042 0321     		movs	r1, #3
+ 454 0044 0020     		movs	r0, #0
+ 455 0046 FFF7FEFF 		bl	LCD_Position
+ 456              	.LVL58:
+ 178:can_manager.c **** 	LCD_PrintString(volt_string);
+ 457              		.loc 1 178 0
+ 458 004a 6846     		mov	r0, sp
+ 459 004c FFF7FEFF 		bl	LCD_PrintString
+ 460              	.LVL59:
+ 179:can_manager.c **** }
+ 461              		.loc 1 179 0
+ 462 0050 03B0     		add	sp, sp, #12
+ 463              		.cfi_def_cfa_offset 4
+ 464              		@ sp needed
+ 465 0052 5DF804FB 		ldr	pc, [sp], #4
+ 466              	.L33:
+ 467 0056 00BF     		.align	2
+ 468              	.L32:
+ 469 0058 00000000 		.word	BMS_VOLTAGE
+ 470 005c D34D6210 		.word	274877907
+ 471 0060 1F85EB51 		.word	1374389535
+ 472 0064 CDCCCCCC 		.word	-858993459
+ 473 0068 18000000 		.word	.LC2
+ 474              		.cfi_endproc
+ 475              	.LFE70:
+ 476              		.size	can_process_BMS_VOLT, .-can_process_BMS_VOLT
+ 477              		.section	.text.can_process_BMS_VOLT_D,"ax",%progbits
+ 478              		.align	2
+ 479              		.global	can_process_BMS_VOLT_D
+ 480              		.thumb
+ 481              		.thumb_func
+ 482              		.type	can_process_BMS_VOLT_D, %function
+ 483              	can_process_BMS_VOLT_D:
+ 484              	.LFB71:
+ 180:can_manager.c **** 
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 13
+
+
+ 181:can_manager.c **** //gets pack voltage diff
+ 182:can_manager.c **** void can_process_BMS_VOLT_D() {
+ 485              		.loc 1 182 0
+ 486              		.cfi_startproc
+ 487              		@ args = 0, pretend = 0, frame = 8
+ 488              		@ frame_needed = 0, uses_anonymous_args = 0
+ 489 0000 00B5     		push	{lr}
+ 490              		.cfi_def_cfa_offset 4
+ 491              		.cfi_offset 14, -4
+ 492 0002 83B0     		sub	sp, sp, #12
+ 493              		.cfi_def_cfa_offset 16
+ 183:can_manager.c **** 	uint16_t voltageDiff;
+ 184:can_manager.c **** 	char8 volt_string[6];
+ 185:can_manager.c **** 	
+ 186:can_manager.c ****     uint16_t minVoltByte2 = BMS_VOLTAGE.data[0] << 8;
+ 494              		.loc 1 186 0
+ 495 0004 0C49     		ldr	r1, .L36
+ 496 0006 CA79     		ldrb	r2, [r1, #7]	@ zero_extendqisi2
+ 497              	.LVL60:
+ 187:can_manager.c ****     uint16_t minVoltByte1 = BMS_VOLTAGE.data[1];
+ 498              		.loc 1 187 0
+ 499 0008 0B7A     		ldrb	r3, [r1, #8]	@ zero_extendqisi2
+ 500              	.LVL61:
+ 188:can_manager.c ****     uint16_t minVolt = minVoltByte2 | minVoltByte1;
+ 501              		.loc 1 188 0
+ 502 000a 43EA0220 		orr	r0, r3, r2, lsl #8
+ 503              	.LVL62:
+ 189:can_manager.c ****     
+ 190:can_manager.c ****     
+ 191:can_manager.c ****     uint16_t maxVoltByte2 = BMS_VOLTAGE.data[2] << 8;
+ 504              		.loc 1 191 0
+ 505 000e 4A7A     		ldrb	r2, [r1, #9]	@ zero_extendqisi2
+ 506              	.LVL63:
+ 192:can_manager.c ****     uint16_t maxVoltByte1 = BMS_VOLTAGE.data[3];
+ 507              		.loc 1 192 0
+ 508 0010 8B7A     		ldrb	r3, [r1, #10]	@ zero_extendqisi2
+ 509              	.LVL64:
+ 193:can_manager.c ****     uint16_t maxVolt = maxVoltByte2 | maxVoltByte1;
+ 510              		.loc 1 193 0
+ 511 0012 43EA0223 		orr	r3, r3, r2, lsl #8
+ 512              	.LVL65:
+ 194:can_manager.c ****     
+ 195:can_manager.c ****     voltageDiff = maxVolt - minVolt;
+ 513              		.loc 1 195 0
+ 514 0016 1A1A     		subs	r2, r3, r0
+ 515              	.LVL66:
+ 196:can_manager.c **** 	
+ 197:can_manager.c **** 	//voltage = 0x0001C3E3;
+ 198:can_manager.c **** 	sprintf(volt_string, "%04dVD", (int)(voltageDiff));
+ 516              		.loc 1 198 0
+ 517 0018 92B2     		uxth	r2, r2
+ 518 001a 0849     		ldr	r1, .L36+4
+ 519              	.LVL67:
+ 520 001c 6846     		mov	r0, sp
+ 521              	.LVL68:
+ 522 001e FFF7FEFF 		bl	sprintf
+ 523              	.LVL69:
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 14
+
+
+ 199:can_manager.c **** 	LCD_Position(0, 3);
+ 524              		.loc 1 199 0
+ 525 0022 0321     		movs	r1, #3
+ 526 0024 0020     		movs	r0, #0
+ 527 0026 FFF7FEFF 		bl	LCD_Position
+ 528              	.LVL70:
+ 200:can_manager.c **** 	LCD_PrintString(volt_string);
+ 529              		.loc 1 200 0
+ 530 002a 6846     		mov	r0, sp
+ 531 002c FFF7FEFF 		bl	LCD_PrintString
+ 532              	.LVL71:
+ 201:can_manager.c **** }
+ 533              		.loc 1 201 0
+ 534 0030 03B0     		add	sp, sp, #12
+ 535              		.cfi_def_cfa_offset 4
+ 536              		@ sp needed
+ 537 0032 5DF804FB 		ldr	pc, [sp], #4
+ 538              	.L37:
+ 539 0036 00BF     		.align	2
+ 540              	.L36:
+ 541 0038 00000000 		.word	BMS_VOLTAGE
+ 542 003c 24000000 		.word	.LC3
+ 543              		.cfi_endproc
+ 544              	.LFE71:
+ 545              		.size	can_process_BMS_VOLT_D, .-can_process_BMS_VOLT_D
+ 546              		.section	.text.can_process_BMS_TEMP,"ax",%progbits
+ 547              		.align	2
+ 548              		.global	can_process_BMS_TEMP
+ 549              		.thumb
+ 550              		.thumb_func
+ 551              		.type	can_process_BMS_TEMP, %function
+ 552              	can_process_BMS_TEMP:
+ 553              	.LFB72:
+ 202:can_manager.c **** 
+ 203:can_manager.c **** //highest temp
+ 204:can_manager.c **** void can_process_BMS_TEMP() {
+ 554              		.loc 1 204 0
+ 555              		.cfi_startproc
+ 556              		@ args = 0, pretend = 0, frame = 0
+ 557              		@ frame_needed = 0, uses_anonymous_args = 0
+ 558 0000 10B5     		push	{r4, lr}
+ 559              		.cfi_def_cfa_offset 8
+ 560              		.cfi_offset 4, -8
+ 561              		.cfi_offset 14, -4
+ 205:can_manager.c **** 	uint8_t temperature = BMS_TEMP.data[7];	//displays as decimal
+ 562              		.loc 1 205 0
+ 563 0002 054B     		ldr	r3, .L40
+ 564 0004 9C7B     		ldrb	r4, [r3, #14]	@ zero_extendqisi2
+ 565              	.LVL72:
+ 206:can_manager.c **** 	//temperature = 0x25;
+ 207:can_manager.c **** 	LCD_Position(1, 13);
+ 566              		.loc 1 207 0
+ 567 0006 0D21     		movs	r1, #13
+ 568 0008 0120     		movs	r0, #1
+ 569 000a FFF7FEFF 		bl	LCD_Position
+ 570              	.LVL73:
+ 208:can_manager.c **** 	LCD_PrintHexUint8(temperature);
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 15
+
+
+ 571              		.loc 1 208 0
+ 572 000e 2046     		mov	r0, r4
+ 573 0010 FFF7FEFF 		bl	LCD_PrintInt8
+ 574              	.LVL74:
+ 575 0014 10BD     		pop	{r4, pc}
+ 576              	.LVL75:
+ 577              	.L41:
+ 578 0016 00BF     		.align	2
+ 579              	.L40:
+ 580 0018 00000000 		.word	BMS_TEMP
+ 581              		.cfi_endproc
+ 582              	.LFE72:
+ 583              		.size	can_process_BMS_TEMP, .-can_process_BMS_TEMP
+ 584              		.section	.text.can_process,"ax",%progbits
+ 585              		.align	2
+ 586              		.global	can_process
+ 587              		.thumb
+ 588              		.thumb_func
+ 589              		.type	can_process, %function
+ 590              	can_process:
+ 591              	.LFB66:
+  39:can_manager.c **** 	int status = 0;		//returns 1 if message is updated
+ 592              		.loc 1 39 0
+ 593              		.cfi_startproc
+ 594              		@ args = 0, pretend = 0, frame = 0
+ 595              		@ frame_needed = 0, uses_anonymous_args = 0
+ 596              	.LVL76:
+ 597 0000 10B5     		push	{r4, lr}
+ 598              		.cfi_def_cfa_offset 8
+ 599              		.cfi_offset 4, -8
+ 600              		.cfi_offset 14, -4
+ 601              	.LVL77:
+  41:can_manager.c **** 	case BMS_STATUS_ID:
+ 602              		.loc 1 41 0
+ 603 0002 8388     		ldrh	r3, [r0, #4]
+ 604 0004 B3F5227F 		cmp	r3, #648
+ 605 0008 14D0     		beq	.L44
+ 606 000a 03D8     		bhi	.L45
+ 607 000c B3F5C47F 		cmp	r3, #392
+ 608 0010 07D0     		beq	.L46
+ 609 0012 2AE0     		b	.L49
+ 610              	.L45:
+ 611 0014 B3F5627F 		cmp	r3, #904
+ 612 0018 15D0     		beq	.L47
+ 613 001a B3F5916F 		cmp	r3, #1160
+ 614 001e 1BD0     		beq	.L48
+ 615 0020 23E0     		b	.L49
+ 616              	.L46:
+  43:can_manager.c **** 		if(status)
+ 617              		.loc 1 43 0
+ 618 0022 0146     		mov	r1, r0
+ 619 0024 1248     		ldr	r0, .L51
+ 620              	.LVL78:
+ 621 0026 FFF7FEFF 		bl	can_compare
+ 622              	.LVL79:
+  44:can_manager.c ****             can_process_BMS_STATUS();
+ 623              		.loc 1 44 0
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 16
+
+
+ 624 002a 0446     		mov	r4, r0
+ 625 002c F0B1     		cbz	r0, .L43
+  45:can_manager.c **** 		break;
+ 626              		.loc 1 45 0
+ 627 002e FFF7FEFF 		bl	can_process_BMS_STATUS
+ 628              	.LVL80:
+ 629 0032 1BE0     		b	.L43
+ 630              	.LVL81:
+ 631              	.L44:
+  48:can_manager.c **** 		if(status)
+ 632              		.loc 1 48 0
+ 633 0034 0146     		mov	r1, r0
+ 634 0036 0F48     		ldr	r0, .L51+4
+ 635              	.LVL82:
+ 636 0038 FFF7FEFF 		bl	can_compare
+ 637              	.LVL83:
+  49:can_manager.c **** 			can_process_BMS_CURR();
+ 638              		.loc 1 49 0
+ 639 003c 0446     		mov	r4, r0
+ 640 003e A8B1     		cbz	r0, .L43
+  50:can_manager.c **** 		break;
+ 641              		.loc 1 50 0
+ 642 0040 FFF7FEFF 		bl	can_process_BMS_CURR
+ 643              	.LVL84:
+ 644 0044 12E0     		b	.L43
+ 645              	.LVL85:
+ 646              	.L47:
+  53:can_manager.c **** 		if(status) {
+ 647              		.loc 1 53 0
+ 648 0046 0146     		mov	r1, r0
+ 649 0048 0B48     		ldr	r0, .L51+8
+ 650              	.LVL86:
+ 651 004a FFF7FEFF 		bl	can_compare
+ 652              	.LVL87:
+  54:can_manager.c **** 		    #ifdef VOLTAGE_DIFF
+ 653              		.loc 1 54 0
+ 654 004e 0446     		mov	r4, r0
+ 655 0050 60B1     		cbz	r0, .L43
+  56:can_manager.c ****             #else
+ 656              		.loc 1 56 0
+ 657 0052 FFF7FEFF 		bl	can_process_BMS_VOLT_D
+ 658              	.LVL88:
+ 659 0056 09E0     		b	.L43
+ 660              	.LVL89:
+ 661              	.L48:
+  63:can_manager.c **** 		if(status)
+ 662              		.loc 1 63 0
+ 663 0058 0146     		mov	r1, r0
+ 664 005a 0848     		ldr	r0, .L51+12
+ 665              	.LVL90:
+ 666 005c FFF7FEFF 		bl	can_compare
+ 667              	.LVL91:
+  64:can_manager.c **** 			can_process_BMS_TEMP();
+ 668              		.loc 1 64 0
+ 669 0060 0446     		mov	r4, r0
+ 670 0062 18B1     		cbz	r0, .L43
+  65:can_manager.c **** 		break;
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 17
+
+
+ 671              		.loc 1 65 0
+ 672 0064 FFF7FEFF 		bl	can_process_BMS_TEMP
+ 673              	.LVL92:
+ 674 0068 00E0     		b	.L43
+ 675              	.LVL93:
+ 676              	.L49:
+  68:can_manager.c ****         break;
+ 677              		.loc 1 68 0
+ 678 006a 0024     		movs	r4, #0
+ 679              	.LVL94:
+ 680              	.L43:
+  72:can_manager.c **** 
+ 681              		.loc 1 72 0
+ 682 006c 2046     		mov	r0, r4
+ 683 006e 10BD     		pop	{r4, pc}
+ 684              	.LVL95:
+ 685              	.L52:
+ 686              		.align	2
+ 687              	.L51:
+ 688 0070 00000000 		.word	BMS_STATUS
+ 689 0074 00000000 		.word	BMS_CURRENT
+ 690 0078 00000000 		.word	BMS_VOLTAGE
+ 691 007c 00000000 		.word	BMS_TEMP
+ 692              		.cfi_endproc
+ 693              	.LFE66:
+ 694              		.size	can_process, .-can_process
+ 695              		.section	.text.can_test_send,"ax",%progbits
+ 696              		.align	2
+ 697              		.global	can_test_send
+ 698              		.thumb
+ 699              		.thumb_func
+ 700              		.type	can_test_send, %function
+ 701              	can_test_send:
+ 702              	.LFB73:
+ 209:can_manager.c **** }
+ 210:can_manager.c **** 
+ 211:can_manager.c **** 
+ 212:can_manager.c **** void can_test_send() {
+ 703              		.loc 1 212 0
+ 704              		.cfi_startproc
+ 705              		@ args = 0, pretend = 0, frame = 24
+ 706              		@ frame_needed = 0, uses_anonymous_args = 0
+ 707 0000 00B5     		push	{lr}
+ 708              		.cfi_def_cfa_offset 4
+ 709              		.cfi_offset 14, -4
+ 710 0002 87B0     		sub	sp, sp, #28
+ 711              		.cfi_def_cfa_offset 32
+ 213:can_manager.c **** 	uint8_t i;
+ 214:can_manager.c **** 	CAN_TX_MSG message;
+ 215:can_manager.c **** 	CAN_DATA_BYTES_MSG test_data;
+ 216:can_manager.c **** 
+ 217:can_manager.c **** 	message.id = 0x100;
+ 712              		.loc 1 217 0
+ 713 0004 4FF48073 		mov	r3, #256
+ 714 0008 0393     		str	r3, [sp, #12]
+ 218:can_manager.c **** 	message.rtr = 0;
+ 715              		.loc 1 218 0
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 18
+
+
+ 716 000a 0023     		movs	r3, #0
+ 717 000c 8DF81030 		strb	r3, [sp, #16]
+ 219:can_manager.c **** 	message.ide = 0;
+ 718              		.loc 1 219 0
+ 719 0010 8DF81130 		strb	r3, [sp, #17]
+ 220:can_manager.c **** 	message.dlc = 0x08;
+ 720              		.loc 1 220 0
+ 721 0014 0822     		movs	r2, #8
+ 722 0016 8DF81220 		strb	r2, [sp, #18]
+ 221:can_manager.c **** 	message.irq = 1;
+ 723              		.loc 1 221 0
+ 724 001a 0122     		movs	r2, #1
+ 725 001c 8DF81320 		strb	r2, [sp, #19]
+ 222:can_manager.c **** 	message.msg = &test_data;
+ 726              		.loc 1 222 0
+ 727 0020 01AA     		add	r2, sp, #4
+ 728 0022 0592     		str	r2, [sp, #20]
+ 729              	.LVL96:
+ 223:can_manager.c **** 
+ 224:can_manager.c **** 	for(i=0;i<8;i++)
+ 730              		.loc 1 224 0
+ 731 0024 06E0     		b	.L54
+ 732              	.LVL97:
+ 733              	.L55:
+ 225:can_manager.c **** 		test_data.byte[i] = 2;
+ 734              		.loc 1 225 0 discriminator 3
+ 735 0026 06AA     		add	r2, sp, #24
+ 736 0028 1A44     		add	r2, r2, r3
+ 737 002a 0221     		movs	r1, #2
+ 738 002c 02F8141C 		strb	r1, [r2, #-20]
+ 224:can_manager.c **** 		test_data.byte[i] = 2;
+ 739              		.loc 1 224 0 discriminator 3
+ 740 0030 0133     		adds	r3, r3, #1
+ 741              	.LVL98:
+ 742 0032 DBB2     		uxtb	r3, r3
+ 743              	.LVL99:
+ 744              	.L54:
+ 224:can_manager.c **** 		test_data.byte[i] = 2;
+ 745              		.loc 1 224 0 is_stmt 0 discriminator 1
+ 746 0034 072B     		cmp	r3, #7
+ 747 0036 F6D9     		bls	.L55
+ 226:can_manager.c **** 
+ 227:can_manager.c **** 	CAN_SendMsg(&message);
+ 748              		.loc 1 227 0 is_stmt 1
+ 749 0038 03A8     		add	r0, sp, #12
+ 750 003a FFF7FEFF 		bl	CAN_SendMsg
+ 751              	.LVL100:
+ 228:can_manager.c **** } // can_test_send()
+ 752              		.loc 1 228 0
+ 753 003e 07B0     		add	sp, sp, #28
+ 754              		.cfi_def_cfa_offset 4
+ 755              		@ sp needed
+ 756 0040 5DF804FB 		ldr	pc, [sp], #4
+ 757              		.cfi_endproc
+ 758              	.LFE73:
+ 759              		.size	can_test_send, .-can_test_send
+ 760              		.section	.text.can_test_receive,"ax",%progbits
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 19
+
+
+ 761              		.align	2
+ 762              		.global	can_test_receive
+ 763              		.thumb
+ 764              		.thumb_func
+ 765              		.type	can_test_receive, %function
+ 766              	can_test_receive:
+ 767              	.LFB74:
+ 229:can_manager.c **** 
+ 230:can_manager.c **** 
+ 231:can_manager.c **** void can_test_receive() {
+ 768              		.loc 1 231 0
+ 769              		.cfi_startproc
+ 770              		@ args = 0, pretend = 0, frame = 0
+ 771              		@ frame_needed = 0, uses_anonymous_args = 0
+ 772              		@ link register save eliminated.
+ 773              	.LVL101:
+ 232:can_manager.c **** 	DataPacket test_msg;
+ 233:can_manager.c ****     uint8 i;
+ 234:can_manager.c **** 	
+ 235:can_manager.c ****     //test packets
+ 236:can_manager.c ****     for(i=100; i<115; i++) { 
+ 774              		.loc 1 236 0
+ 775 0000 6423     		movs	r3, #100
+ 776 0002 01E0     		b	.L58
+ 777              	.LVL102:
+ 778              	.L59:
+ 779              		.loc 1 236 0 is_stmt 0 discriminator 3
+ 780 0004 0133     		adds	r3, r3, #1
+ 781              	.LVL103:
+ 782 0006 DBB2     		uxtb	r3, r3
+ 783              	.LVL104:
+ 784              	.L58:
+ 785              		.loc 1 236 0 discriminator 1
+ 786 0008 722B     		cmp	r3, #114
+ 787 000a FBD9     		bls	.L59
+ 237:can_manager.c **** 		//test_msg.millicounter = millis_timer_ReadCounter();    
+ 238:can_manager.c **** 		test_msg.id = 0x0923;
+ 239:can_manager.c **** 		test_msg.length = 8;
+ 240:can_manager.c **** 		test_msg.data[0]= 1;
+ 241:can_manager.c **** 		test_msg.data[1]= 2;
+ 242:can_manager.c **** 		test_msg.data[2]= 3;
+ 243:can_manager.c **** 		test_msg.data[3]= 4;
+ 244:can_manager.c **** 		test_msg.data[4]= 5;
+ 245:can_manager.c **** 		test_msg.data[5]= 6;
+ 246:can_manager.c **** 		test_msg.data[6]= 7;
+ 247:can_manager.c ****         test_msg.data[7]= 8;
+ 248:can_manager.c **** 		
+ 249:can_manager.c **** 		//msg_recieve(&test_msg);
+ 250:can_manager.c ****     } //for
+ 251:can_manager.c **** }
+ 788              		.loc 1 251 0 is_stmt 1
+ 789 000c 7047     		bx	lr
+ 790              		.cfi_endproc
+ 791              	.LFE74:
+ 792              		.size	can_test_receive, .-can_test_receive
+ 793              		.comm	BMS_TEMP,16,4
+ 794              		.comm	BMS_VOLTAGE,16,4
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 20
+
+
+ 795              		.comm	BMS_CURRENT,16,4
+ 796              		.comm	BMS_STATUS,16,4
+ 797 000e 00BF     		.section	.rodata.str1.4,"aMS",%progbits,1
+ 798              		.align	2
+ 799              	.LC0:
+ 800 0000 25303258 		.ascii	"%02X%02X\000"
+ 800      25303258 
+ 800      00
+ 801 0009 000000   		.space	3
+ 802              	.LC1:
+ 803 000c 25303364 		.ascii	"%03d.%01dA\000"
+ 803      2E253031 
+ 803      644100
+ 804 0017 00       		.space	1
+ 805              	.LC2:
+ 806 0018 25303364 		.ascii	"%03d.%01dV\000"
+ 806      2E253031 
+ 806      645600
+ 807 0023 00       		.space	1
+ 808              	.LC3:
+ 809 0024 25303464 		.ascii	"%04dVD\000"
+ 809      564400
+ 810              		.text
+ 811              	.Letext0:
+ 812              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 813              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 814              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 815              		.file 5 "Generated_Source\\PSoC5/CAN.h"
+ 816              		.file 6 "data.h"
+ 817              		.file 7 "Generated_Source\\PSoC5/core_cm3.h"
+ 818              		.file 8 "c:\\program files (x86)\\cypress\\psoc creator\\4.1\\psoc creator\\import\\gnu\\arm\\5.4.
+ 819              		.file 9 "Generated_Source\\PSoC5/LCD.h"
+ 820              		.section	.debug_info,"",%progbits
+ 821              	.Ldebug_info0:
+ 822 0000 2F080000 		.4byte	0x82f
+ 823 0004 0400     		.2byte	0x4
+ 824 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 825 000a 04       		.byte	0x4
+ 826 000b 01       		.uleb128 0x1
+ 827 000c DF030000 		.4byte	.LASF80
+ 828 0010 0C       		.byte	0xc
+ 829 0011 B7010000 		.4byte	.LASF81
+ 830 0015 70000000 		.4byte	.LASF82
+ 831 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 832 001d 00000000 		.4byte	0
+ 833 0021 00000000 		.4byte	.Ldebug_line0
+ 834 0025 02       		.uleb128 0x2
+ 835 0026 01       		.byte	0x1
+ 836 0027 06       		.byte	0x6
+ 837 0028 08020000 		.4byte	.LASF0
+ 838 002c 03       		.uleb128 0x3
+ 839 002d 9F010000 		.4byte	.LASF3
+ 840 0031 02       		.byte	0x2
+ 841 0032 1D       		.byte	0x1d
+ 842 0033 37000000 		.4byte	0x37
+ 843 0037 02       		.uleb128 0x2
+ 844 0038 01       		.byte	0x1
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 21
+
+
+ 845 0039 08       		.byte	0x8
+ 846 003a E2010000 		.4byte	.LASF1
+ 847 003e 02       		.uleb128 0x2
+ 848 003f 02       		.byte	0x2
+ 849 0040 05       		.byte	0x5
+ 850 0041 44000000 		.4byte	.LASF2
+ 851 0045 03       		.uleb128 0x3
+ 852 0046 E6000000 		.4byte	.LASF4
+ 853 004a 02       		.byte	0x2
+ 854 004b 2B       		.byte	0x2b
+ 855 004c 50000000 		.4byte	0x50
+ 856 0050 02       		.uleb128 0x2
+ 857 0051 02       		.byte	0x2
+ 858 0052 07       		.byte	0x7
+ 859 0053 A8020000 		.4byte	.LASF5
+ 860 0057 03       		.uleb128 0x3
+ 861 0058 96030000 		.4byte	.LASF6
+ 862 005c 02       		.byte	0x2
+ 863 005d 3F       		.byte	0x3f
+ 864 005e 62000000 		.4byte	0x62
+ 865 0062 02       		.uleb128 0x2
+ 866 0063 04       		.byte	0x4
+ 867 0064 05       		.byte	0x5
+ 868 0065 75010000 		.4byte	.LASF7
+ 869 0069 03       		.uleb128 0x3
+ 870 006a DB000000 		.4byte	.LASF8
+ 871 006e 02       		.byte	0x2
+ 872 006f 41       		.byte	0x41
+ 873 0070 74000000 		.4byte	0x74
+ 874 0074 02       		.uleb128 0x2
+ 875 0075 04       		.byte	0x4
+ 876 0076 07       		.byte	0x7
+ 877 0077 8D010000 		.4byte	.LASF9
+ 878 007b 02       		.uleb128 0x2
+ 879 007c 08       		.byte	0x8
+ 880 007d 05       		.byte	0x5
+ 881 007e 67010000 		.4byte	.LASF10
+ 882 0082 02       		.uleb128 0x2
+ 883 0083 08       		.byte	0x8
+ 884 0084 07       		.byte	0x7
+ 885 0085 14020000 		.4byte	.LASF11
+ 886 0089 04       		.uleb128 0x4
+ 887 008a 04       		.byte	0x4
+ 888 008b 05       		.byte	0x5
+ 889 008c 696E7400 		.ascii	"int\000"
+ 890 0090 02       		.uleb128 0x2
+ 891 0091 04       		.byte	0x4
+ 892 0092 07       		.byte	0x7
+ 893 0093 49020000 		.4byte	.LASF12
+ 894 0097 03       		.uleb128 0x3
+ 895 0098 14010000 		.4byte	.LASF13
+ 896 009c 03       		.byte	0x3
+ 897 009d 18       		.byte	0x18
+ 898 009e 2C000000 		.4byte	0x2c
+ 899 00a2 03       		.uleb128 0x3
+ 900 00a3 66020000 		.4byte	.LASF14
+ 901 00a7 03       		.byte	0x3
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 22
+
+
+ 902 00a8 24       		.byte	0x24
+ 903 00a9 45000000 		.4byte	0x45
+ 904 00ad 03       		.uleb128 0x3
+ 905 00ae E6020000 		.4byte	.LASF15
+ 906 00b2 03       		.byte	0x3
+ 907 00b3 2C       		.byte	0x2c
+ 908 00b4 57000000 		.4byte	0x57
+ 909 00b8 03       		.uleb128 0x3
+ 910 00b9 2B020000 		.4byte	.LASF16
+ 911 00bd 03       		.byte	0x3
+ 912 00be 30       		.byte	0x30
+ 913 00bf 69000000 		.4byte	0x69
+ 914 00c3 05       		.uleb128 0x5
+ 915 00c4 24010000 		.4byte	.LASF17
+ 916 00c8 04       		.byte	0x4
+ 917 00c9 9201     		.2byte	0x192
+ 918 00cb 37000000 		.4byte	0x37
+ 919 00cf 05       		.uleb128 0x5
+ 920 00d0 3C030000 		.4byte	.LASF18
+ 921 00d4 04       		.byte	0x4
+ 922 00d5 9401     		.2byte	0x194
+ 923 00d7 74000000 		.4byte	0x74
+ 924 00db 02       		.uleb128 0x2
+ 925 00dc 04       		.byte	0x4
+ 926 00dd 04       		.byte	0x4
+ 927 00de 47010000 		.4byte	.LASF19
+ 928 00e2 02       		.uleb128 0x2
+ 929 00e3 08       		.byte	0x8
+ 930 00e4 04       		.byte	0x4
+ 931 00e5 CB030000 		.4byte	.LASF20
+ 932 00e9 05       		.uleb128 0x5
+ 933 00ea 6A000000 		.4byte	.LASF21
+ 934 00ee 04       		.byte	0x4
+ 935 00ef A301     		.2byte	0x1a3
+ 936 00f1 F5000000 		.4byte	0xf5
+ 937 00f5 02       		.uleb128 0x2
+ 938 00f6 01       		.byte	0x1
+ 939 00f7 08       		.byte	0x8
+ 940 00f8 D3020000 		.4byte	.LASF22
+ 941 00fc 02       		.uleb128 0x2
+ 942 00fd 08       		.byte	0x8
+ 943 00fe 04       		.byte	0x4
+ 944 00ff CF000000 		.4byte	.LASF23
+ 945 0103 02       		.uleb128 0x2
+ 946 0104 04       		.byte	0x4
+ 947 0105 07       		.byte	0x7
+ 948 0106 4E000000 		.4byte	.LASF24
+ 949 010a 06       		.uleb128 0x6
+ 950 010b 08       		.byte	0x8
+ 951 010c 05       		.byte	0x5
+ 952 010d 6F       		.byte	0x6f
+ 953 010e 1F010000 		.4byte	0x11f
+ 954 0112 07       		.uleb128 0x7
+ 955 0113 B2010000 		.4byte	.LASF26
+ 956 0117 05       		.byte	0x5
+ 957 0118 71       		.byte	0x71
+ 958 0119 1F010000 		.4byte	0x11f
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 23
+
+
+ 959 011d 00       		.byte	0
+ 960 011e 00       		.byte	0
+ 961 011f 08       		.uleb128 0x8
+ 962 0120 C3000000 		.4byte	0xc3
+ 963 0124 2F010000 		.4byte	0x12f
+ 964 0128 09       		.uleb128 0x9
+ 965 0129 03010000 		.4byte	0x103
+ 966 012d 07       		.byte	0x7
+ 967 012e 00       		.byte	0
+ 968 012f 03       		.uleb128 0x3
+ 969 0130 57000000 		.4byte	.LASF25
+ 970 0134 05       		.byte	0x5
+ 971 0135 72       		.byte	0x72
+ 972 0136 0A010000 		.4byte	0x10a
+ 973 013a 06       		.uleb128 0x6
+ 974 013b 0C       		.byte	0xc
+ 975 013c 05       		.byte	0x5
+ 976 013d 81       		.byte	0x81
+ 977 013e 8A010000 		.4byte	0x18a
+ 978 0142 0A       		.uleb128 0xa
+ 979 0143 696400   		.ascii	"id\000"
+ 980 0146 05       		.byte	0x5
+ 981 0147 83       		.byte	0x83
+ 982 0148 CF000000 		.4byte	0xcf
+ 983 014c 00       		.byte	0
+ 984 014d 0A       		.uleb128 0xa
+ 985 014e 72747200 		.ascii	"rtr\000"
+ 986 0152 05       		.byte	0x5
+ 987 0153 84       		.byte	0x84
+ 988 0154 C3000000 		.4byte	0xc3
+ 989 0158 04       		.byte	0x4
+ 990 0159 0A       		.uleb128 0xa
+ 991 015a 69646500 		.ascii	"ide\000"
+ 992 015e 05       		.byte	0x5
+ 993 015f 85       		.byte	0x85
+ 994 0160 C3000000 		.4byte	0xc3
+ 995 0164 05       		.byte	0x5
+ 996 0165 0A       		.uleb128 0xa
+ 997 0166 646C6300 		.ascii	"dlc\000"
+ 998 016a 05       		.byte	0x5
+ 999 016b 86       		.byte	0x86
+ 1000 016c C3000000 		.4byte	0xc3
+ 1001 0170 06       		.byte	0x6
+ 1002 0171 0A       		.uleb128 0xa
+ 1003 0172 69727100 		.ascii	"irq\000"
+ 1004 0176 05       		.byte	0x5
+ 1005 0177 87       		.byte	0x87
+ 1006 0178 C3000000 		.4byte	0xc3
+ 1007 017c 07       		.byte	0x7
+ 1008 017d 0A       		.uleb128 0xa
+ 1009 017e 6D736700 		.ascii	"msg\000"
+ 1010 0182 05       		.byte	0x5
+ 1011 0183 8B       		.byte	0x8b
+ 1012 0184 8A010000 		.4byte	0x18a
+ 1013 0188 08       		.byte	0x8
+ 1014 0189 00       		.byte	0
+ 1015 018a 0B       		.uleb128 0xb
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 24
+
+
+ 1016 018b 04       		.byte	0x4
+ 1017 018c 2F010000 		.4byte	0x12f
+ 1018 0190 03       		.uleb128 0x3
+ 1019 0191 53030000 		.4byte	.LASF27
+ 1020 0195 05       		.byte	0x5
+ 1021 0196 8C       		.byte	0x8c
+ 1022 0197 3A010000 		.4byte	0x13a
+ 1023 019b 06       		.uleb128 0x6
+ 1024 019c 10       		.byte	0x10
+ 1025 019d 06       		.byte	0x6
+ 1026 019e 08       		.byte	0x8
+ 1027 019f D3010000 		.4byte	0x1d3
+ 1028 01a3 07       		.uleb128 0x7
+ 1029 01a4 07010000 		.4byte	.LASF28
+ 1030 01a8 06       		.byte	0x6
+ 1031 01a9 09       		.byte	0x9
+ 1032 01aa B8000000 		.4byte	0xb8
+ 1033 01ae 00       		.byte	0
+ 1034 01af 0A       		.uleb128 0xa
+ 1035 01b0 696400   		.ascii	"id\000"
+ 1036 01b3 06       		.byte	0x6
+ 1037 01b4 0A       		.byte	0xa
+ 1038 01b5 A2000000 		.4byte	0xa2
+ 1039 01b9 04       		.byte	0x4
+ 1040 01ba 07       		.uleb128 0x7
+ 1041 01bb 8F040000 		.4byte	.LASF29
+ 1042 01bf 06       		.byte	0x6
+ 1043 01c0 0B       		.byte	0xb
+ 1044 01c1 97000000 		.4byte	0x97
+ 1045 01c5 06       		.byte	0x6
+ 1046 01c6 07       		.uleb128 0x7
+ 1047 01c7 2A030000 		.4byte	.LASF30
+ 1048 01cb 06       		.byte	0x6
+ 1049 01cc 0C       		.byte	0xc
+ 1050 01cd D3010000 		.4byte	0x1d3
+ 1051 01d1 07       		.byte	0x7
+ 1052 01d2 00       		.byte	0
+ 1053 01d3 08       		.uleb128 0x8
+ 1054 01d4 97000000 		.4byte	0x97
+ 1055 01d8 E3010000 		.4byte	0x1e3
+ 1056 01dc 09       		.uleb128 0x9
+ 1057 01dd 03010000 		.4byte	0x103
+ 1058 01e1 07       		.byte	0x7
+ 1059 01e2 00       		.byte	0
+ 1060 01e3 03       		.uleb128 0x3
+ 1061 01e4 1F030000 		.4byte	.LASF31
+ 1062 01e8 06       		.byte	0x6
+ 1063 01e9 0D       		.byte	0xd
+ 1064 01ea 9B010000 		.4byte	0x19b
+ 1065 01ee 0C       		.uleb128 0xc
+ 1066 01ef A0030000 		.4byte	.LASF83
+ 1067 01f3 01       		.byte	0x1
+ 1068 01f4 1A       		.byte	0x1a
+ 1069 01f5 00000000 		.4byte	.LFB65
+ 1070 01f9 1C000000 		.4byte	.LFE65-.LFB65
+ 1071 01fd 01       		.uleb128 0x1
+ 1072 01fe 9C       		.byte	0x9c
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 25
+
+
+ 1073 01ff 2C020000 		.4byte	0x22c
+ 1074 0203 0D       		.uleb128 0xd
+ 1075 0204 4B030000 		.4byte	.LASF32
+ 1076 0208 01       		.byte	0x1
+ 1077 0209 1A       		.byte	0x1a
+ 1078 020a 2C020000 		.4byte	0x22c
+ 1079 020e 01       		.uleb128 0x1
+ 1080 020f 50       		.byte	0x50
+ 1081 0210 0E       		.uleb128 0xe
+ 1082 0211 696400   		.ascii	"id\000"
+ 1083 0214 01       		.byte	0x1
+ 1084 0215 1A       		.byte	0x1a
+ 1085 0216 A2000000 		.4byte	0xa2
+ 1086 021a 00000000 		.4byte	.LLST0
+ 1087 021e 0F       		.uleb128 0xf
+ 1088 021f 6900     		.ascii	"i\000"
+ 1089 0221 01       		.byte	0x1
+ 1090 0222 1B       		.byte	0x1b
+ 1091 0223 97000000 		.4byte	0x97
+ 1092 0227 21000000 		.4byte	.LLST1
+ 1093 022b 00       		.byte	0
+ 1094 022c 0B       		.uleb128 0xb
+ 1095 022d 04       		.byte	0x4
+ 1096 022e E3010000 		.4byte	0x1e3
+ 1097 0232 10       		.uleb128 0x10
+ 1098 0233 B5030000 		.4byte	.LASF37
+ 1099 0237 01       		.byte	0x1
+ 1100 0238 0E       		.byte	0xe
+ 1101 0239 00000000 		.4byte	.LFB64
+ 1102 023d 48000000 		.4byte	.LFE64-.LFB64
+ 1103 0241 01       		.uleb128 0x1
+ 1104 0242 9C       		.byte	0x9c
+ 1105 0243 D7020000 		.4byte	0x2d7
+ 1106 0247 11       		.uleb128 0x11
+ 1107 0248 06000000 		.4byte	.LVL5
+ 1108 024c D9070000 		.4byte	0x7d9
+ 1109 0250 11       		.uleb128 0x11
+ 1110 0251 0A000000 		.4byte	.LVL6
+ 1111 0255 E4070000 		.4byte	0x7e4
+ 1112 0259 11       		.uleb128 0x11
+ 1113 025a 0E000000 		.4byte	.LVL7
+ 1114 025e EF070000 		.4byte	0x7ef
+ 1115 0262 12       		.uleb128 0x12
+ 1116 0263 18000000 		.4byte	.LVL8
+ 1117 0267 EE010000 		.4byte	0x1ee
+ 1118 026b 80020000 		.4byte	0x280
+ 1119 026f 13       		.uleb128 0x13
+ 1120 0270 01       		.uleb128 0x1
+ 1121 0271 50       		.byte	0x50
+ 1122 0272 05       		.uleb128 0x5
+ 1123 0273 03       		.byte	0x3
+ 1124 0274 00000000 		.4byte	BMS_STATUS
+ 1125 0278 13       		.uleb128 0x13
+ 1126 0279 01       		.uleb128 0x1
+ 1127 027a 51       		.byte	0x51
+ 1128 027b 03       		.uleb128 0x3
+ 1129 027c 0A       		.byte	0xa
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 26
+
+
+ 1130 027d 8801     		.2byte	0x188
+ 1131 027f 00       		.byte	0
+ 1132 0280 12       		.uleb128 0x12
+ 1133 0281 22000000 		.4byte	.LVL9
+ 1134 0285 EE010000 		.4byte	0x1ee
+ 1135 0289 9E020000 		.4byte	0x29e
+ 1136 028d 13       		.uleb128 0x13
+ 1137 028e 01       		.uleb128 0x1
+ 1138 028f 50       		.byte	0x50
+ 1139 0290 05       		.uleb128 0x5
+ 1140 0291 03       		.byte	0x3
+ 1141 0292 00000000 		.4byte	BMS_CURRENT
+ 1142 0296 13       		.uleb128 0x13
+ 1143 0297 01       		.uleb128 0x1
+ 1144 0298 51       		.byte	0x51
+ 1145 0299 03       		.uleb128 0x3
+ 1146 029a 0A       		.byte	0xa
+ 1147 029b 8802     		.2byte	0x288
+ 1148 029d 00       		.byte	0
+ 1149 029e 12       		.uleb128 0x12
+ 1150 029f 2C000000 		.4byte	.LVL10
+ 1151 02a3 EE010000 		.4byte	0x1ee
+ 1152 02a7 BC020000 		.4byte	0x2bc
+ 1153 02ab 13       		.uleb128 0x13
+ 1154 02ac 01       		.uleb128 0x1
+ 1155 02ad 50       		.byte	0x50
+ 1156 02ae 05       		.uleb128 0x5
+ 1157 02af 03       		.byte	0x3
+ 1158 02b0 00000000 		.4byte	BMS_VOLTAGE
+ 1159 02b4 13       		.uleb128 0x13
+ 1160 02b5 01       		.uleb128 0x1
+ 1161 02b6 51       		.byte	0x51
+ 1162 02b7 03       		.uleb128 0x3
+ 1163 02b8 0A       		.byte	0xa
+ 1164 02b9 8803     		.2byte	0x388
+ 1165 02bb 00       		.byte	0
+ 1166 02bc 14       		.uleb128 0x14
+ 1167 02bd 36000000 		.4byte	.LVL11
+ 1168 02c1 EE010000 		.4byte	0x1ee
+ 1169 02c5 13       		.uleb128 0x13
+ 1170 02c6 01       		.uleb128 0x1
+ 1171 02c7 50       		.byte	0x50
+ 1172 02c8 05       		.uleb128 0x5
+ 1173 02c9 03       		.byte	0x3
+ 1174 02ca 00000000 		.4byte	BMS_TEMP
+ 1175 02ce 13       		.uleb128 0x13
+ 1176 02cf 01       		.uleb128 0x1
+ 1177 02d0 51       		.byte	0x51
+ 1178 02d1 03       		.uleb128 0x3
+ 1179 02d2 0A       		.byte	0xa
+ 1180 02d3 8804     		.2byte	0x488
+ 1181 02d5 00       		.byte	0
+ 1182 02d6 00       		.byte	0
+ 1183 02d7 15       		.uleb128 0x15
+ 1184 02d8 83040000 		.4byte	.LASF60
+ 1185 02dc 01       		.byte	0x1
+ 1186 02dd 4D       		.byte	0x4d
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 27
+
+
+ 1187 02de 89000000 		.4byte	0x89
+ 1188 02e2 00000000 		.4byte	.LFB67
+ 1189 02e6 A4000000 		.4byte	.LFE67-.LFB67
+ 1190 02ea 01       		.uleb128 0x1
+ 1191 02eb 9C       		.byte	0x9c
+ 1192 02ec 41030000 		.4byte	0x341
+ 1193 02f0 16       		.uleb128 0x16
+ 1194 02f1 A9010000 		.4byte	.LASF33
+ 1195 02f5 01       		.byte	0x1
+ 1196 02f6 4D       		.byte	0x4d
+ 1197 02f7 2C020000 		.4byte	0x22c
+ 1198 02fb 4B000000 		.4byte	.LLST2
+ 1199 02ff 0D       		.uleb128 0xd
+ 1200 0300 AD030000 		.4byte	.LASF34
+ 1201 0304 01       		.byte	0x1
+ 1202 0305 4D       		.byte	0x4d
+ 1203 0306 2C020000 		.4byte	0x22c
+ 1204 030a 01       		.uleb128 0x1
+ 1205 030b 51       		.byte	0x51
+ 1206 030c 0F       		.uleb128 0xf
+ 1207 030d 6900     		.ascii	"i\000"
+ 1208 030f 01       		.byte	0x1
+ 1209 0310 4E       		.byte	0x4e
+ 1210 0311 97000000 		.4byte	0x97
+ 1211 0315 85000000 		.4byte	.LLST3
+ 1212 0319 0F       		.uleb128 0xf
+ 1213 031a 6A00     		.ascii	"j\000"
+ 1214 031c 01       		.byte	0x1
+ 1215 031d 4E       		.byte	0x4e
+ 1216 031e 97000000 		.4byte	0x97
+ 1217 0322 FC000000 		.4byte	.LLST4
+ 1218 0326 17       		.uleb128 0x17
+ 1219 0327 86010000 		.4byte	.LASF35
+ 1220 032b 01       		.byte	0x1
+ 1221 032c 4F       		.byte	0x4f
+ 1222 032d 97000000 		.4byte	0x97
+ 1223 0331 00       		.byte	0
+ 1224 0332 18       		.uleb128 0x18
+ 1225 0333 3F000000 		.4byte	.LASF36
+ 1226 0337 01       		.byte	0x1
+ 1227 0338 50       		.byte	0x50
+ 1228 0339 E3010000 		.4byte	0x1e3
+ 1229 033d 02       		.uleb128 0x2
+ 1230 033e 91       		.byte	0x91
+ 1231 033f 58       		.sleb128 -40
+ 1232 0340 00       		.byte	0
+ 1233 0341 10       		.uleb128 0x10
+ 1234 0342 00000000 		.4byte	.LASF38
+ 1235 0346 01       		.byte	0x1
+ 1236 0347 72       		.byte	0x72
+ 1237 0348 00000000 		.4byte	.LFB68
+ 1238 034c 30000000 		.4byte	.LFE68-.LFB68
+ 1239 0350 01       		.uleb128 0x1
+ 1240 0351 9C       		.byte	0x9c
+ 1241 0352 AA030000 		.4byte	0x3aa
+ 1242 0356 18       		.uleb128 0x18
+ 1243 0357 05030000 		.4byte	.LASF39
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 28
+
+
+ 1244 035b 01       		.byte	0x1
+ 1245 035c 80       		.byte	0x80
+ 1246 035d AA030000 		.4byte	0x3aa
+ 1247 0361 02       		.uleb128 0x2
+ 1248 0362 91       		.byte	0x91
+ 1249 0363 74       		.sleb128 -12
+ 1250 0364 12       		.uleb128 0x12
+ 1251 0365 12000000 		.4byte	.LVL35
+ 1252 0369 FA070000 		.4byte	0x7fa
+ 1253 036d 81030000 		.4byte	0x381
+ 1254 0371 13       		.uleb128 0x13
+ 1255 0372 01       		.uleb128 0x1
+ 1256 0373 50       		.byte	0x50
+ 1257 0374 02       		.uleb128 0x2
+ 1258 0375 91       		.byte	0x91
+ 1259 0376 74       		.sleb128 -12
+ 1260 0377 13       		.uleb128 0x13
+ 1261 0378 01       		.uleb128 0x1
+ 1262 0379 51       		.byte	0x51
+ 1263 037a 05       		.uleb128 0x5
+ 1264 037b 03       		.byte	0x3
+ 1265 037c 00000000 		.4byte	.LC0
+ 1266 0380 00       		.byte	0
+ 1267 0381 12       		.uleb128 0x12
+ 1268 0382 1A000000 		.4byte	.LVL36
+ 1269 0386 05080000 		.4byte	0x805
+ 1270 038a 99030000 		.4byte	0x399
+ 1271 038e 13       		.uleb128 0x13
+ 1272 038f 01       		.uleb128 0x1
+ 1273 0390 50       		.byte	0x50
+ 1274 0391 01       		.uleb128 0x1
+ 1275 0392 30       		.byte	0x30
+ 1276 0393 13       		.uleb128 0x13
+ 1277 0394 01       		.uleb128 0x1
+ 1278 0395 51       		.byte	0x51
+ 1279 0396 01       		.uleb128 0x1
+ 1280 0397 3C       		.byte	0x3c
+ 1281 0398 00       		.byte	0
+ 1282 0399 14       		.uleb128 0x14
+ 1283 039a 20000000 		.4byte	.LVL37
+ 1284 039e 10080000 		.4byte	0x810
+ 1285 03a2 13       		.uleb128 0x13
+ 1286 03a3 01       		.uleb128 0x1
+ 1287 03a4 50       		.byte	0x50
+ 1288 03a5 02       		.uleb128 0x2
+ 1289 03a6 91       		.byte	0x91
+ 1290 03a7 74       		.sleb128 -12
+ 1291 03a8 00       		.byte	0
+ 1292 03a9 00       		.byte	0
+ 1293 03aa 08       		.uleb128 0x8
+ 1294 03ab E9000000 		.4byte	0xe9
+ 1295 03af BA030000 		.4byte	0x3ba
+ 1296 03b3 09       		.uleb128 0x9
+ 1297 03b4 03010000 		.4byte	0x103
+ 1298 03b8 03       		.byte	0x3
+ 1299 03b9 00       		.byte	0
+ 1300 03ba 10       		.uleb128 0x10
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 29
+
+
+ 1301 03bb 34020000 		.4byte	.LASF40
+ 1302 03bf 01       		.byte	0x1
+ 1303 03c0 87       		.byte	0x87
+ 1304 03c1 00000000 		.4byte	.LFB69
+ 1305 03c5 48000000 		.4byte	.LFE69-.LFB69
+ 1306 03c9 01       		.uleb128 0x1
+ 1307 03ca 9C       		.byte	0x9c
+ 1308 03cb 50040000 		.4byte	0x450
+ 1309 03cf 19       		.uleb128 0x19
+ 1310 03d0 90020000 		.4byte	.LASF41
+ 1311 03d4 01       		.byte	0x1
+ 1312 03d5 88       		.byte	0x88
+ 1313 03d6 A2000000 		.4byte	0xa2
+ 1314 03da 26010000 		.4byte	.LLST5
+ 1315 03de 18       		.uleb128 0x18
+ 1316 03df 6D040000 		.4byte	.LASF42
+ 1317 03e3 01       		.byte	0x1
+ 1318 03e4 89       		.byte	0x89
+ 1319 03e5 50040000 		.4byte	0x450
+ 1320 03e9 02       		.uleb128 0x2
+ 1321 03ea 91       		.byte	0x91
+ 1322 03eb 70       		.sleb128 -16
+ 1323 03ec 19       		.uleb128 0x19
+ 1324 03ed F6010000 		.4byte	.LASF43
+ 1325 03f1 01       		.byte	0x1
+ 1326 03f2 8B       		.byte	0x8b
+ 1327 03f3 A2000000 		.4byte	0xa2
+ 1328 03f7 5B010000 		.4byte	.LLST6
+ 1329 03fb 19       		.uleb128 0x19
+ 1330 03fc F0010000 		.4byte	.LASF44
+ 1331 0400 01       		.byte	0x1
+ 1332 0401 8C       		.byte	0x8c
+ 1333 0402 A2000000 		.4byte	0xa2
+ 1334 0406 89010000 		.4byte	.LLST7
+ 1335 040a 12       		.uleb128 0x12
+ 1336 040b 28000000 		.4byte	.LVL44
+ 1337 040f FA070000 		.4byte	0x7fa
+ 1338 0413 27040000 		.4byte	0x427
+ 1339 0417 13       		.uleb128 0x13
+ 1340 0418 01       		.uleb128 0x1
+ 1341 0419 50       		.byte	0x50
+ 1342 041a 02       		.uleb128 0x2
+ 1343 041b 7D       		.byte	0x7d
+ 1344 041c 00       		.sleb128 0
+ 1345 041d 13       		.uleb128 0x13
+ 1346 041e 01       		.uleb128 0x1
+ 1347 041f 51       		.byte	0x51
+ 1348 0420 05       		.uleb128 0x5
+ 1349 0421 03       		.byte	0x3
+ 1350 0422 0C000000 		.4byte	.LC1
+ 1351 0426 00       		.byte	0
+ 1352 0427 12       		.uleb128 0x12
+ 1353 0428 30000000 		.4byte	.LVL45
+ 1354 042c 05080000 		.4byte	0x805
+ 1355 0430 3F040000 		.4byte	0x43f
+ 1356 0434 13       		.uleb128 0x13
+ 1357 0435 01       		.uleb128 0x1
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 30
+
+
+ 1358 0436 50       		.byte	0x50
+ 1359 0437 01       		.uleb128 0x1
+ 1360 0438 31       		.byte	0x31
+ 1361 0439 13       		.uleb128 0x13
+ 1362 043a 01       		.uleb128 0x1
+ 1363 043b 51       		.byte	0x51
+ 1364 043c 01       		.uleb128 0x1
+ 1365 043d 33       		.byte	0x33
+ 1366 043e 00       		.byte	0
+ 1367 043f 14       		.uleb128 0x14
+ 1368 0440 36000000 		.4byte	.LVL46
+ 1369 0444 10080000 		.4byte	0x810
+ 1370 0448 13       		.uleb128 0x13
+ 1371 0449 01       		.uleb128 0x1
+ 1372 044a 50       		.byte	0x50
+ 1373 044b 02       		.uleb128 0x2
+ 1374 044c 7D       		.byte	0x7d
+ 1375 044d 00       		.sleb128 0
+ 1376 044e 00       		.byte	0
+ 1377 044f 00       		.byte	0
+ 1378 0450 08       		.uleb128 0x8
+ 1379 0451 E9000000 		.4byte	0xe9
+ 1380 0455 60040000 		.4byte	0x460
+ 1381 0459 09       		.uleb128 0x9
+ 1382 045a 03010000 		.4byte	0x103
+ 1383 045e 05       		.byte	0x5
+ 1384 045f 00       		.byte	0
+ 1385 0460 10       		.uleb128 0x10
+ 1386 0461 6F020000 		.4byte	.LASF45
+ 1387 0465 01       		.byte	0x1
+ 1388 0466 A5       		.byte	0xa5
+ 1389 0467 00000000 		.4byte	.LFB70
+ 1390 046b 6C000000 		.4byte	.LFE70-.LFB70
+ 1391 046f 01       		.uleb128 0x1
+ 1392 0470 9C       		.byte	0x9c
+ 1393 0471 14050000 		.4byte	0x514
+ 1394 0475 19       		.uleb128 0x19
+ 1395 0476 7E010000 		.4byte	.LASF46
+ 1396 047a 01       		.byte	0x1
+ 1397 047b A6       		.byte	0xa6
+ 1398 047c B8000000 		.4byte	0xb8
+ 1399 0480 C3010000 		.4byte	.LLST8
+ 1400 0484 18       		.uleb128 0x18
+ 1401 0485 F1000000 		.4byte	.LASF47
+ 1402 0489 01       		.byte	0x1
+ 1403 048a A7       		.byte	0xa7
+ 1404 048b 50040000 		.4byte	0x450
+ 1405 048f 02       		.uleb128 0x2
+ 1406 0490 91       		.byte	0x91
+ 1407 0491 70       		.sleb128 -16
+ 1408 0492 19       		.uleb128 0x19
+ 1409 0493 02020000 		.4byte	.LASF48
+ 1410 0497 01       		.byte	0x1
+ 1411 0498 A9       		.byte	0xa9
+ 1412 0499 B8000000 		.4byte	0xb8
+ 1413 049d 46020000 		.4byte	.LLST9
+ 1414 04a1 19       		.uleb128 0x19
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 31
+
+
+ 1415 04a2 FC010000 		.4byte	.LASF49
+ 1416 04a6 01       		.byte	0x1
+ 1417 04a7 AA       		.byte	0xaa
+ 1418 04a8 B8000000 		.4byte	0xb8
+ 1419 04ac 74020000 		.4byte	.LLST10
+ 1420 04b0 19       		.uleb128 0x19
+ 1421 04b1 F6010000 		.4byte	.LASF43
+ 1422 04b5 01       		.byte	0x1
+ 1423 04b6 AB       		.byte	0xab
+ 1424 04b7 B8000000 		.4byte	0xb8
+ 1425 04bb 9E020000 		.4byte	.LLST11
+ 1426 04bf 19       		.uleb128 0x19
+ 1427 04c0 F0010000 		.4byte	.LASF44
+ 1428 04c4 01       		.byte	0x1
+ 1429 04c5 AC       		.byte	0xac
+ 1430 04c6 B8000000 		.4byte	0xb8
+ 1431 04ca CC020000 		.4byte	.LLST12
+ 1432 04ce 12       		.uleb128 0x12
+ 1433 04cf 42000000 		.4byte	.LVL57
+ 1434 04d3 FA070000 		.4byte	0x7fa
+ 1435 04d7 EB040000 		.4byte	0x4eb
+ 1436 04db 13       		.uleb128 0x13
+ 1437 04dc 01       		.uleb128 0x1
+ 1438 04dd 50       		.byte	0x50
+ 1439 04de 02       		.uleb128 0x2
+ 1440 04df 7D       		.byte	0x7d
+ 1441 04e0 00       		.sleb128 0
+ 1442 04e1 13       		.uleb128 0x13
+ 1443 04e2 01       		.uleb128 0x1
+ 1444 04e3 51       		.byte	0x51
+ 1445 04e4 05       		.uleb128 0x5
+ 1446 04e5 03       		.byte	0x3
+ 1447 04e6 18000000 		.4byte	.LC2
+ 1448 04ea 00       		.byte	0
+ 1449 04eb 12       		.uleb128 0x12
+ 1450 04ec 4A000000 		.4byte	.LVL58
+ 1451 04f0 05080000 		.4byte	0x805
+ 1452 04f4 03050000 		.4byte	0x503
+ 1453 04f8 13       		.uleb128 0x13
+ 1454 04f9 01       		.uleb128 0x1
+ 1455 04fa 50       		.byte	0x50
+ 1456 04fb 01       		.uleb128 0x1
+ 1457 04fc 30       		.byte	0x30
+ 1458 04fd 13       		.uleb128 0x13
+ 1459 04fe 01       		.uleb128 0x1
+ 1460 04ff 51       		.byte	0x51
+ 1461 0500 01       		.uleb128 0x1
+ 1462 0501 33       		.byte	0x33
+ 1463 0502 00       		.byte	0
+ 1464 0503 14       		.uleb128 0x14
+ 1465 0504 50000000 		.4byte	.LVL59
+ 1466 0508 10080000 		.4byte	0x810
+ 1467 050c 13       		.uleb128 0x13
+ 1468 050d 01       		.uleb128 0x1
+ 1469 050e 50       		.byte	0x50
+ 1470 050f 02       		.uleb128 0x2
+ 1471 0510 7D       		.byte	0x7d
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 32
+
+
+ 1472 0511 00       		.sleb128 0
+ 1473 0512 00       		.byte	0
+ 1474 0513 00       		.byte	0
+ 1475 0514 10       		.uleb128 0x10
+ 1476 0515 EE020000 		.4byte	.LASF50
+ 1477 0519 01       		.byte	0x1
+ 1478 051a B6       		.byte	0xb6
+ 1479 051b 00000000 		.4byte	.LFB71
+ 1480 051f 40000000 		.4byte	.LFE71-.LFB71
+ 1481 0523 01       		.uleb128 0x1
+ 1482 0524 9C       		.byte	0x9c
+ 1483 0525 E6050000 		.4byte	0x5e6
+ 1484 0529 19       		.uleb128 0x19
+ 1485 052a 2A010000 		.4byte	.LASF51
+ 1486 052e 01       		.byte	0x1
+ 1487 052f B7       		.byte	0xb7
+ 1488 0530 A2000000 		.4byte	0xa2
+ 1489 0534 F4020000 		.4byte	.LLST13
+ 1490 0538 18       		.uleb128 0x18
+ 1491 0539 F1000000 		.4byte	.LASF47
+ 1492 053d 01       		.byte	0x1
+ 1493 053e B8       		.byte	0xb8
+ 1494 053f 50040000 		.4byte	0x450
+ 1495 0543 02       		.uleb128 0x2
+ 1496 0544 91       		.byte	0x91
+ 1497 0545 70       		.sleb128 -16
+ 1498 0546 19       		.uleb128 0x19
+ 1499 0547 5A010000 		.4byte	.LASF52
+ 1500 054b 01       		.byte	0x1
+ 1501 054c BA       		.byte	0xba
+ 1502 054d A2000000 		.4byte	0xa2
+ 1503 0551 07030000 		.4byte	.LLST14
+ 1504 0555 19       		.uleb128 0x19
+ 1505 0556 4D010000 		.4byte	.LASF53
+ 1506 055a 01       		.byte	0x1
+ 1507 055b BB       		.byte	0xbb
+ 1508 055c A2000000 		.4byte	0xa2
+ 1509 0560 49030000 		.4byte	.LLST15
+ 1510 0564 19       		.uleb128 0x19
+ 1511 0565 1C010000 		.4byte	.LASF54
+ 1512 0569 01       		.byte	0x1
+ 1513 056a BC       		.byte	0xbc
+ 1514 056b A2000000 		.4byte	0xa2
+ 1515 056f 83030000 		.4byte	.LLST16
+ 1516 0573 19       		.uleb128 0x19
+ 1517 0574 C6020000 		.4byte	.LASF55
+ 1518 0578 01       		.byte	0x1
+ 1519 0579 BF       		.byte	0xbf
+ 1520 057a A2000000 		.4byte	0xa2
+ 1521 057e B8030000 		.4byte	.LLST17
+ 1522 0582 19       		.uleb128 0x19
+ 1523 0583 2F030000 		.4byte	.LASF56
+ 1524 0587 01       		.byte	0x1
+ 1525 0588 C0       		.byte	0xc0
+ 1526 0589 A2000000 		.4byte	0xa2
+ 1527 058d FA030000 		.4byte	.LLST18
+ 1528 0591 19       		.uleb128 0x19
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 33
+
+
+ 1529 0592 3F010000 		.4byte	.LASF57
+ 1530 0596 01       		.byte	0x1
+ 1531 0597 C1       		.byte	0xc1
+ 1532 0598 A2000000 		.4byte	0xa2
+ 1533 059c 34040000 		.4byte	.LLST19
+ 1534 05a0 12       		.uleb128 0x12
+ 1535 05a1 22000000 		.4byte	.LVL69
+ 1536 05a5 FA070000 		.4byte	0x7fa
+ 1537 05a9 BD050000 		.4byte	0x5bd
+ 1538 05ad 13       		.uleb128 0x13
+ 1539 05ae 01       		.uleb128 0x1
+ 1540 05af 50       		.byte	0x50
+ 1541 05b0 02       		.uleb128 0x2
+ 1542 05b1 7D       		.byte	0x7d
+ 1543 05b2 00       		.sleb128 0
+ 1544 05b3 13       		.uleb128 0x13
+ 1545 05b4 01       		.uleb128 0x1
+ 1546 05b5 51       		.byte	0x51
+ 1547 05b6 05       		.uleb128 0x5
+ 1548 05b7 03       		.byte	0x3
+ 1549 05b8 24000000 		.4byte	.LC3
+ 1550 05bc 00       		.byte	0
+ 1551 05bd 12       		.uleb128 0x12
+ 1552 05be 2A000000 		.4byte	.LVL70
+ 1553 05c2 05080000 		.4byte	0x805
+ 1554 05c6 D5050000 		.4byte	0x5d5
+ 1555 05ca 13       		.uleb128 0x13
+ 1556 05cb 01       		.uleb128 0x1
+ 1557 05cc 50       		.byte	0x50
+ 1558 05cd 01       		.uleb128 0x1
+ 1559 05ce 30       		.byte	0x30
+ 1560 05cf 13       		.uleb128 0x13
+ 1561 05d0 01       		.uleb128 0x1
+ 1562 05d1 51       		.byte	0x51
+ 1563 05d2 01       		.uleb128 0x1
+ 1564 05d3 33       		.byte	0x33
+ 1565 05d4 00       		.byte	0
+ 1566 05d5 14       		.uleb128 0x14
+ 1567 05d6 30000000 		.4byte	.LVL71
+ 1568 05da 10080000 		.4byte	0x810
+ 1569 05de 13       		.uleb128 0x13
+ 1570 05df 01       		.uleb128 0x1
+ 1571 05e0 50       		.byte	0x50
+ 1572 05e1 02       		.uleb128 0x2
+ 1573 05e2 7D       		.byte	0x7d
+ 1574 05e3 00       		.sleb128 0
+ 1575 05e4 00       		.byte	0
+ 1576 05e5 00       		.byte	0
+ 1577 05e6 10       		.uleb128 0x10
+ 1578 05e7 C5010000 		.4byte	.LASF58
+ 1579 05eb 01       		.byte	0x1
+ 1580 05ec CC       		.byte	0xcc
+ 1581 05ed 00000000 		.4byte	.LFB72
+ 1582 05f1 1C000000 		.4byte	.LFE72-.LFB72
+ 1583 05f5 01       		.uleb128 0x1
+ 1584 05f6 9C       		.byte	0x9c
+ 1585 05f7 33060000 		.4byte	0x633
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 34
+
+
+ 1586 05fb 19       		.uleb128 0x19
+ 1587 05fc 8A030000 		.4byte	.LASF59
+ 1588 0600 01       		.byte	0x1
+ 1589 0601 CD       		.byte	0xcd
+ 1590 0602 97000000 		.4byte	0x97
+ 1591 0606 47040000 		.4byte	.LLST20
+ 1592 060a 12       		.uleb128 0x12
+ 1593 060b 0E000000 		.4byte	.LVL73
+ 1594 060f 05080000 		.4byte	0x805
+ 1595 0613 22060000 		.4byte	0x622
+ 1596 0617 13       		.uleb128 0x13
+ 1597 0618 01       		.uleb128 0x1
+ 1598 0619 50       		.byte	0x50
+ 1599 061a 01       		.uleb128 0x1
+ 1600 061b 31       		.byte	0x31
+ 1601 061c 13       		.uleb128 0x13
+ 1602 061d 01       		.uleb128 0x1
+ 1603 061e 51       		.byte	0x51
+ 1604 061f 01       		.uleb128 0x1
+ 1605 0620 3D       		.byte	0x3d
+ 1606 0621 00       		.byte	0
+ 1607 0622 14       		.uleb128 0x14
+ 1608 0623 14000000 		.4byte	.LVL74
+ 1609 0627 1B080000 		.4byte	0x81b
+ 1610 062b 13       		.uleb128 0x13
+ 1611 062c 01       		.uleb128 0x1
+ 1612 062d 50       		.byte	0x50
+ 1613 062e 02       		.uleb128 0x2
+ 1614 062f 74       		.byte	0x74
+ 1615 0630 00       		.sleb128 0
+ 1616 0631 00       		.byte	0
+ 1617 0632 00       		.byte	0
+ 1618 0633 15       		.uleb128 0x15
+ 1619 0634 13030000 		.4byte	.LASF61
+ 1620 0638 01       		.byte	0x1
+ 1621 0639 27       		.byte	0x27
+ 1622 063a 89000000 		.4byte	0x89
+ 1623 063e 00000000 		.4byte	.LFB66
+ 1624 0642 80000000 		.4byte	.LFE66-.LFB66
+ 1625 0646 01       		.uleb128 0x1
+ 1626 0647 9C       		.byte	0x9c
+ 1627 0648 07070000 		.4byte	0x707
+ 1628 064c 16       		.uleb128 0x16
+ 1629 064d 4B030000 		.4byte	.LASF32
+ 1630 0651 01       		.byte	0x1
+ 1631 0652 27       		.byte	0x27
+ 1632 0653 2C020000 		.4byte	0x22c
+ 1633 0657 5A040000 		.4byte	.LLST21
+ 1634 065b 19       		.uleb128 0x19
+ 1635 065c A1020000 		.4byte	.LASF62
+ 1636 0660 01       		.byte	0x1
+ 1637 0661 28       		.byte	0x28
+ 1638 0662 89000000 		.4byte	0x89
+ 1639 0666 0B050000 		.4byte	.LLST22
+ 1640 066a 12       		.uleb128 0x12
+ 1641 066b 2A000000 		.4byte	.LVL79
+ 1642 066f D7020000 		.4byte	0x2d7
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 35
+
+
+ 1643 0673 88060000 		.4byte	0x688
+ 1644 0677 13       		.uleb128 0x13
+ 1645 0678 01       		.uleb128 0x1
+ 1646 0679 50       		.byte	0x50
+ 1647 067a 05       		.uleb128 0x5
+ 1648 067b 03       		.byte	0x3
+ 1649 067c 00000000 		.4byte	BMS_STATUS
+ 1650 0680 13       		.uleb128 0x13
+ 1651 0681 01       		.uleb128 0x1
+ 1652 0682 51       		.byte	0x51
+ 1653 0683 03       		.uleb128 0x3
+ 1654 0684 F3       		.byte	0xf3
+ 1655 0685 01       		.uleb128 0x1
+ 1656 0686 50       		.byte	0x50
+ 1657 0687 00       		.byte	0
+ 1658 0688 11       		.uleb128 0x11
+ 1659 0689 32000000 		.4byte	.LVL80
+ 1660 068d 41030000 		.4byte	0x341
+ 1661 0691 12       		.uleb128 0x12
+ 1662 0692 3C000000 		.4byte	.LVL83
+ 1663 0696 D7020000 		.4byte	0x2d7
+ 1664 069a AF060000 		.4byte	0x6af
+ 1665 069e 13       		.uleb128 0x13
+ 1666 069f 01       		.uleb128 0x1
+ 1667 06a0 50       		.byte	0x50
+ 1668 06a1 05       		.uleb128 0x5
+ 1669 06a2 03       		.byte	0x3
+ 1670 06a3 00000000 		.4byte	BMS_CURRENT
+ 1671 06a7 13       		.uleb128 0x13
+ 1672 06a8 01       		.uleb128 0x1
+ 1673 06a9 51       		.byte	0x51
+ 1674 06aa 03       		.uleb128 0x3
+ 1675 06ab F3       		.byte	0xf3
+ 1676 06ac 01       		.uleb128 0x1
+ 1677 06ad 50       		.byte	0x50
+ 1678 06ae 00       		.byte	0
+ 1679 06af 11       		.uleb128 0x11
+ 1680 06b0 44000000 		.4byte	.LVL84
+ 1681 06b4 BA030000 		.4byte	0x3ba
+ 1682 06b8 12       		.uleb128 0x12
+ 1683 06b9 4E000000 		.4byte	.LVL87
+ 1684 06bd D7020000 		.4byte	0x2d7
+ 1685 06c1 D6060000 		.4byte	0x6d6
+ 1686 06c5 13       		.uleb128 0x13
+ 1687 06c6 01       		.uleb128 0x1
+ 1688 06c7 50       		.byte	0x50
+ 1689 06c8 05       		.uleb128 0x5
+ 1690 06c9 03       		.byte	0x3
+ 1691 06ca 00000000 		.4byte	BMS_VOLTAGE
+ 1692 06ce 13       		.uleb128 0x13
+ 1693 06cf 01       		.uleb128 0x1
+ 1694 06d0 51       		.byte	0x51
+ 1695 06d1 03       		.uleb128 0x3
+ 1696 06d2 F3       		.byte	0xf3
+ 1697 06d3 01       		.uleb128 0x1
+ 1698 06d4 50       		.byte	0x50
+ 1699 06d5 00       		.byte	0
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 36
+
+
+ 1700 06d6 11       		.uleb128 0x11
+ 1701 06d7 56000000 		.4byte	.LVL88
+ 1702 06db 14050000 		.4byte	0x514
+ 1703 06df 12       		.uleb128 0x12
+ 1704 06e0 60000000 		.4byte	.LVL91
+ 1705 06e4 D7020000 		.4byte	0x2d7
+ 1706 06e8 FD060000 		.4byte	0x6fd
+ 1707 06ec 13       		.uleb128 0x13
+ 1708 06ed 01       		.uleb128 0x1
+ 1709 06ee 50       		.byte	0x50
+ 1710 06ef 05       		.uleb128 0x5
+ 1711 06f0 03       		.byte	0x3
+ 1712 06f1 00000000 		.4byte	BMS_TEMP
+ 1713 06f5 13       		.uleb128 0x13
+ 1714 06f6 01       		.uleb128 0x1
+ 1715 06f7 51       		.byte	0x51
+ 1716 06f8 03       		.uleb128 0x3
+ 1717 06f9 F3       		.byte	0xf3
+ 1718 06fa 01       		.uleb128 0x1
+ 1719 06fb 50       		.byte	0x50
+ 1720 06fc 00       		.byte	0
+ 1721 06fd 11       		.uleb128 0x11
+ 1722 06fe 68000000 		.4byte	.LVL92
+ 1723 0702 E6050000 		.4byte	0x5e6
+ 1724 0706 00       		.byte	0
+ 1725 0707 10       		.uleb128 0x10
+ 1726 0708 20000000 		.4byte	.LASF63
+ 1727 070c 01       		.byte	0x1
+ 1728 070d D4       		.byte	0xd4
+ 1729 070e 00000000 		.4byte	.LFB73
+ 1730 0712 44000000 		.4byte	.LFE73-.LFB73
+ 1731 0716 01       		.uleb128 0x1
+ 1732 0717 9C       		.byte	0x9c
+ 1733 0718 56070000 		.4byte	0x756
+ 1734 071c 0F       		.uleb128 0xf
+ 1735 071d 6900     		.ascii	"i\000"
+ 1736 071f 01       		.byte	0x1
+ 1737 0720 D5       		.byte	0xd5
+ 1738 0721 97000000 		.4byte	0x97
+ 1739 0725 BD050000 		.4byte	.LLST23
+ 1740 0729 18       		.uleb128 0x18
+ 1741 072a 43030000 		.4byte	.LASF64
+ 1742 072e 01       		.byte	0x1
+ 1743 072f D6       		.byte	0xd6
+ 1744 0730 90010000 		.4byte	0x190
+ 1745 0734 02       		.uleb128 0x2
+ 1746 0735 91       		.byte	0x91
+ 1747 0736 6C       		.sleb128 -20
+ 1748 0737 18       		.uleb128 0x18
+ 1749 0738 79040000 		.4byte	.LASF65
+ 1750 073c 01       		.byte	0x1
+ 1751 073d D7       		.byte	0xd7
+ 1752 073e 2F010000 		.4byte	0x12f
+ 1753 0742 02       		.uleb128 0x2
+ 1754 0743 91       		.byte	0x91
+ 1755 0744 64       		.sleb128 -28
+ 1756 0745 14       		.uleb128 0x14
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 37
+
+
+ 1757 0746 3E000000 		.4byte	.LVL100
+ 1758 074a 26080000 		.4byte	0x826
+ 1759 074e 13       		.uleb128 0x13
+ 1760 074f 01       		.uleb128 0x1
+ 1761 0750 50       		.byte	0x50
+ 1762 0751 02       		.uleb128 0x2
+ 1763 0752 91       		.byte	0x91
+ 1764 0753 6C       		.sleb128 -20
+ 1765 0754 00       		.byte	0
+ 1766 0755 00       		.byte	0
+ 1767 0756 10       		.uleb128 0x10
+ 1768 0757 2E000000 		.4byte	.LASF66
+ 1769 075b 01       		.byte	0x1
+ 1770 075c E7       		.byte	0xe7
+ 1771 075d 00000000 		.4byte	.LFB74
+ 1772 0761 0E000000 		.4byte	.LFE74-.LFB74
+ 1773 0765 01       		.uleb128 0x1
+ 1774 0766 9C       		.byte	0x9c
+ 1775 0767 84070000 		.4byte	0x784
+ 1776 076b 1A       		.uleb128 0x1a
+ 1777 076c 36010000 		.4byte	.LASF84
+ 1778 0770 01       		.byte	0x1
+ 1779 0771 E8       		.byte	0xe8
+ 1780 0772 E3010000 		.4byte	0x1e3
+ 1781 0776 0F       		.uleb128 0xf
+ 1782 0777 6900     		.ascii	"i\000"
+ 1783 0779 01       		.byte	0x1
+ 1784 077a E9       		.byte	0xe9
+ 1785 077b C3000000 		.4byte	0xc3
+ 1786 077f E7050000 		.4byte	.LLST24
+ 1787 0783 00       		.byte	0
+ 1788 0784 1B       		.uleb128 0x1b
+ 1789 0785 D2030000 		.4byte	.LASF67
+ 1790 0789 07       		.byte	0x7
+ 1791 078a 9606     		.2byte	0x696
+ 1792 078c 90070000 		.4byte	0x790
+ 1793 0790 1C       		.uleb128 0x1c
+ 1794 0791 AD000000 		.4byte	0xad
+ 1795 0795 1D       		.uleb128 0x1d
+ 1796 0796 BB020000 		.4byte	.LASF68
+ 1797 079a 01       		.byte	0x1
+ 1798 079b 09       		.byte	0x9
+ 1799 079c E3010000 		.4byte	0x1e3
+ 1800 07a0 05       		.uleb128 0x5
+ 1801 07a1 03       		.byte	0x3
+ 1802 07a2 00000000 		.4byte	BMS_STATUS
+ 1803 07a6 1D       		.uleb128 0x1d
+ 1804 07a7 6A030000 		.4byte	.LASF69
+ 1805 07ab 01       		.byte	0x1
+ 1806 07ac 0A       		.byte	0xa
+ 1807 07ad E3010000 		.4byte	0x1e3
+ 1808 07b1 05       		.uleb128 0x5
+ 1809 07b2 03       		.byte	0x3
+ 1810 07b3 00000000 		.4byte	BMS_CURRENT
+ 1811 07b7 1D       		.uleb128 0x1d
+ 1812 07b8 84020000 		.4byte	.LASF70
+ 1813 07bc 01       		.byte	0x1
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 38
+
+
+ 1814 07bd 0B       		.byte	0xb
+ 1815 07be E3010000 		.4byte	0x1e3
+ 1816 07c2 05       		.uleb128 0x5
+ 1817 07c3 03       		.byte	0x3
+ 1818 07c4 00000000 		.4byte	BMS_VOLTAGE
+ 1819 07c8 1D       		.uleb128 0x1d
+ 1820 07c9 17000000 		.4byte	.LASF71
+ 1821 07cd 01       		.byte	0x1
+ 1822 07ce 0C       		.byte	0xc
+ 1823 07cf E3010000 		.4byte	0x1e3
+ 1824 07d3 05       		.uleb128 0x5
+ 1825 07d4 03       		.byte	0x3
+ 1826 07d5 00000000 		.4byte	BMS_TEMP
+ 1827 07d9 1E       		.uleb128 0x1e
+ 1828 07da 76030000 		.4byte	.LASF72
+ 1829 07de 76030000 		.4byte	.LASF72
+ 1830 07e2 05       		.byte	0x5
+ 1831 07e3 C8       		.byte	0xc8
+ 1832 07e4 1E       		.uleb128 0x1e
+ 1833 07e5 98020000 		.4byte	.LASF73
+ 1834 07e9 98020000 		.4byte	.LASF73
+ 1835 07ed 05       		.byte	0x5
+ 1836 07ee C4       		.byte	0xc4
+ 1837 07ef 1E       		.uleb128 0x1e
+ 1838 07f0 FD000000 		.4byte	.LASF74
+ 1839 07f4 FD000000 		.4byte	.LASF74
+ 1840 07f8 05       		.byte	0x5
+ 1841 07f9 C5       		.byte	0xc5
+ 1842 07fa 1E       		.uleb128 0x1e
+ 1843 07fb DA010000 		.4byte	.LASF75
+ 1844 07ff DA010000 		.4byte	.LASF75
+ 1845 0803 08       		.byte	0x8
+ 1846 0804 E7       		.byte	0xe7
+ 1847 0805 1E       		.uleb128 0x1e
+ 1848 0806 BE030000 		.4byte	.LASF76
+ 1849 080a BE030000 		.4byte	.LASF76
+ 1850 080e 09       		.byte	0x9
+ 1851 080f 3D       		.byte	0x3d
+ 1852 0810 1E       		.uleb128 0x1e
+ 1853 0811 56020000 		.4byte	.LASF77
+ 1854 0815 56020000 		.4byte	.LASF77
+ 1855 0819 09       		.byte	0x9
+ 1856 081a 3C       		.byte	0x3c
+ 1857 081b 1E       		.uleb128 0x1e
+ 1858 081c D8020000 		.4byte	.LASF78
+ 1859 0820 D8020000 		.4byte	.LASF78
+ 1860 0824 09       		.byte	0x9
+ 1861 0825 5D       		.byte	0x5d
+ 1862 0826 1F       		.uleb128 0x1f
+ 1863 0827 5E030000 		.4byte	.LASF79
+ 1864 082b 5E030000 		.4byte	.LASF79
+ 1865 082f 05       		.byte	0x5
+ 1866 0830 1801     		.2byte	0x118
+ 1867 0832 00       		.byte	0
+ 1868              		.section	.debug_abbrev,"",%progbits
+ 1869              	.Ldebug_abbrev0:
+ 1870 0000 01       		.uleb128 0x1
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 39
+
+
+ 1871 0001 11       		.uleb128 0x11
+ 1872 0002 01       		.byte	0x1
+ 1873 0003 25       		.uleb128 0x25
+ 1874 0004 0E       		.uleb128 0xe
+ 1875 0005 13       		.uleb128 0x13
+ 1876 0006 0B       		.uleb128 0xb
+ 1877 0007 03       		.uleb128 0x3
+ 1878 0008 0E       		.uleb128 0xe
+ 1879 0009 1B       		.uleb128 0x1b
+ 1880 000a 0E       		.uleb128 0xe
+ 1881 000b 55       		.uleb128 0x55
+ 1882 000c 17       		.uleb128 0x17
+ 1883 000d 11       		.uleb128 0x11
+ 1884 000e 01       		.uleb128 0x1
+ 1885 000f 10       		.uleb128 0x10
+ 1886 0010 17       		.uleb128 0x17
+ 1887 0011 00       		.byte	0
+ 1888 0012 00       		.byte	0
+ 1889 0013 02       		.uleb128 0x2
+ 1890 0014 24       		.uleb128 0x24
+ 1891 0015 00       		.byte	0
+ 1892 0016 0B       		.uleb128 0xb
+ 1893 0017 0B       		.uleb128 0xb
+ 1894 0018 3E       		.uleb128 0x3e
+ 1895 0019 0B       		.uleb128 0xb
+ 1896 001a 03       		.uleb128 0x3
+ 1897 001b 0E       		.uleb128 0xe
+ 1898 001c 00       		.byte	0
+ 1899 001d 00       		.byte	0
+ 1900 001e 03       		.uleb128 0x3
+ 1901 001f 16       		.uleb128 0x16
+ 1902 0020 00       		.byte	0
+ 1903 0021 03       		.uleb128 0x3
+ 1904 0022 0E       		.uleb128 0xe
+ 1905 0023 3A       		.uleb128 0x3a
+ 1906 0024 0B       		.uleb128 0xb
+ 1907 0025 3B       		.uleb128 0x3b
+ 1908 0026 0B       		.uleb128 0xb
+ 1909 0027 49       		.uleb128 0x49
+ 1910 0028 13       		.uleb128 0x13
+ 1911 0029 00       		.byte	0
+ 1912 002a 00       		.byte	0
+ 1913 002b 04       		.uleb128 0x4
+ 1914 002c 24       		.uleb128 0x24
+ 1915 002d 00       		.byte	0
+ 1916 002e 0B       		.uleb128 0xb
+ 1917 002f 0B       		.uleb128 0xb
+ 1918 0030 3E       		.uleb128 0x3e
+ 1919 0031 0B       		.uleb128 0xb
+ 1920 0032 03       		.uleb128 0x3
+ 1921 0033 08       		.uleb128 0x8
+ 1922 0034 00       		.byte	0
+ 1923 0035 00       		.byte	0
+ 1924 0036 05       		.uleb128 0x5
+ 1925 0037 16       		.uleb128 0x16
+ 1926 0038 00       		.byte	0
+ 1927 0039 03       		.uleb128 0x3
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 40
+
+
+ 1928 003a 0E       		.uleb128 0xe
+ 1929 003b 3A       		.uleb128 0x3a
+ 1930 003c 0B       		.uleb128 0xb
+ 1931 003d 3B       		.uleb128 0x3b
+ 1932 003e 05       		.uleb128 0x5
+ 1933 003f 49       		.uleb128 0x49
+ 1934 0040 13       		.uleb128 0x13
+ 1935 0041 00       		.byte	0
+ 1936 0042 00       		.byte	0
+ 1937 0043 06       		.uleb128 0x6
+ 1938 0044 13       		.uleb128 0x13
+ 1939 0045 01       		.byte	0x1
+ 1940 0046 0B       		.uleb128 0xb
+ 1941 0047 0B       		.uleb128 0xb
+ 1942 0048 3A       		.uleb128 0x3a
+ 1943 0049 0B       		.uleb128 0xb
+ 1944 004a 3B       		.uleb128 0x3b
+ 1945 004b 0B       		.uleb128 0xb
+ 1946 004c 01       		.uleb128 0x1
+ 1947 004d 13       		.uleb128 0x13
+ 1948 004e 00       		.byte	0
+ 1949 004f 00       		.byte	0
+ 1950 0050 07       		.uleb128 0x7
+ 1951 0051 0D       		.uleb128 0xd
+ 1952 0052 00       		.byte	0
+ 1953 0053 03       		.uleb128 0x3
+ 1954 0054 0E       		.uleb128 0xe
+ 1955 0055 3A       		.uleb128 0x3a
+ 1956 0056 0B       		.uleb128 0xb
+ 1957 0057 3B       		.uleb128 0x3b
+ 1958 0058 0B       		.uleb128 0xb
+ 1959 0059 49       		.uleb128 0x49
+ 1960 005a 13       		.uleb128 0x13
+ 1961 005b 38       		.uleb128 0x38
+ 1962 005c 0B       		.uleb128 0xb
+ 1963 005d 00       		.byte	0
+ 1964 005e 00       		.byte	0
+ 1965 005f 08       		.uleb128 0x8
+ 1966 0060 01       		.uleb128 0x1
+ 1967 0061 01       		.byte	0x1
+ 1968 0062 49       		.uleb128 0x49
+ 1969 0063 13       		.uleb128 0x13
+ 1970 0064 01       		.uleb128 0x1
+ 1971 0065 13       		.uleb128 0x13
+ 1972 0066 00       		.byte	0
+ 1973 0067 00       		.byte	0
+ 1974 0068 09       		.uleb128 0x9
+ 1975 0069 21       		.uleb128 0x21
+ 1976 006a 00       		.byte	0
+ 1977 006b 49       		.uleb128 0x49
+ 1978 006c 13       		.uleb128 0x13
+ 1979 006d 2F       		.uleb128 0x2f
+ 1980 006e 0B       		.uleb128 0xb
+ 1981 006f 00       		.byte	0
+ 1982 0070 00       		.byte	0
+ 1983 0071 0A       		.uleb128 0xa
+ 1984 0072 0D       		.uleb128 0xd
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 41
+
+
+ 1985 0073 00       		.byte	0
+ 1986 0074 03       		.uleb128 0x3
+ 1987 0075 08       		.uleb128 0x8
+ 1988 0076 3A       		.uleb128 0x3a
+ 1989 0077 0B       		.uleb128 0xb
+ 1990 0078 3B       		.uleb128 0x3b
+ 1991 0079 0B       		.uleb128 0xb
+ 1992 007a 49       		.uleb128 0x49
+ 1993 007b 13       		.uleb128 0x13
+ 1994 007c 38       		.uleb128 0x38
+ 1995 007d 0B       		.uleb128 0xb
+ 1996 007e 00       		.byte	0
+ 1997 007f 00       		.byte	0
+ 1998 0080 0B       		.uleb128 0xb
+ 1999 0081 0F       		.uleb128 0xf
+ 2000 0082 00       		.byte	0
+ 2001 0083 0B       		.uleb128 0xb
+ 2002 0084 0B       		.uleb128 0xb
+ 2003 0085 49       		.uleb128 0x49
+ 2004 0086 13       		.uleb128 0x13
+ 2005 0087 00       		.byte	0
+ 2006 0088 00       		.byte	0
+ 2007 0089 0C       		.uleb128 0xc
+ 2008 008a 2E       		.uleb128 0x2e
+ 2009 008b 01       		.byte	0x1
+ 2010 008c 3F       		.uleb128 0x3f
+ 2011 008d 19       		.uleb128 0x19
+ 2012 008e 03       		.uleb128 0x3
+ 2013 008f 0E       		.uleb128 0xe
+ 2014 0090 3A       		.uleb128 0x3a
+ 2015 0091 0B       		.uleb128 0xb
+ 2016 0092 3B       		.uleb128 0x3b
+ 2017 0093 0B       		.uleb128 0xb
+ 2018 0094 27       		.uleb128 0x27
+ 2019 0095 19       		.uleb128 0x19
+ 2020 0096 11       		.uleb128 0x11
+ 2021 0097 01       		.uleb128 0x1
+ 2022 0098 12       		.uleb128 0x12
+ 2023 0099 06       		.uleb128 0x6
+ 2024 009a 40       		.uleb128 0x40
+ 2025 009b 18       		.uleb128 0x18
+ 2026 009c 9742     		.uleb128 0x2117
+ 2027 009e 19       		.uleb128 0x19
+ 2028 009f 01       		.uleb128 0x1
+ 2029 00a0 13       		.uleb128 0x13
+ 2030 00a1 00       		.byte	0
+ 2031 00a2 00       		.byte	0
+ 2032 00a3 0D       		.uleb128 0xd
+ 2033 00a4 05       		.uleb128 0x5
+ 2034 00a5 00       		.byte	0
+ 2035 00a6 03       		.uleb128 0x3
+ 2036 00a7 0E       		.uleb128 0xe
+ 2037 00a8 3A       		.uleb128 0x3a
+ 2038 00a9 0B       		.uleb128 0xb
+ 2039 00aa 3B       		.uleb128 0x3b
+ 2040 00ab 0B       		.uleb128 0xb
+ 2041 00ac 49       		.uleb128 0x49
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 42
+
+
+ 2042 00ad 13       		.uleb128 0x13
+ 2043 00ae 02       		.uleb128 0x2
+ 2044 00af 18       		.uleb128 0x18
+ 2045 00b0 00       		.byte	0
+ 2046 00b1 00       		.byte	0
+ 2047 00b2 0E       		.uleb128 0xe
+ 2048 00b3 05       		.uleb128 0x5
+ 2049 00b4 00       		.byte	0
+ 2050 00b5 03       		.uleb128 0x3
+ 2051 00b6 08       		.uleb128 0x8
+ 2052 00b7 3A       		.uleb128 0x3a
+ 2053 00b8 0B       		.uleb128 0xb
+ 2054 00b9 3B       		.uleb128 0x3b
+ 2055 00ba 0B       		.uleb128 0xb
+ 2056 00bb 49       		.uleb128 0x49
+ 2057 00bc 13       		.uleb128 0x13
+ 2058 00bd 02       		.uleb128 0x2
+ 2059 00be 17       		.uleb128 0x17
+ 2060 00bf 00       		.byte	0
+ 2061 00c0 00       		.byte	0
+ 2062 00c1 0F       		.uleb128 0xf
+ 2063 00c2 34       		.uleb128 0x34
+ 2064 00c3 00       		.byte	0
+ 2065 00c4 03       		.uleb128 0x3
+ 2066 00c5 08       		.uleb128 0x8
+ 2067 00c6 3A       		.uleb128 0x3a
+ 2068 00c7 0B       		.uleb128 0xb
+ 2069 00c8 3B       		.uleb128 0x3b
+ 2070 00c9 0B       		.uleb128 0xb
+ 2071 00ca 49       		.uleb128 0x49
+ 2072 00cb 13       		.uleb128 0x13
+ 2073 00cc 02       		.uleb128 0x2
+ 2074 00cd 17       		.uleb128 0x17
+ 2075 00ce 00       		.byte	0
+ 2076 00cf 00       		.byte	0
+ 2077 00d0 10       		.uleb128 0x10
+ 2078 00d1 2E       		.uleb128 0x2e
+ 2079 00d2 01       		.byte	0x1
+ 2080 00d3 3F       		.uleb128 0x3f
+ 2081 00d4 19       		.uleb128 0x19
+ 2082 00d5 03       		.uleb128 0x3
+ 2083 00d6 0E       		.uleb128 0xe
+ 2084 00d7 3A       		.uleb128 0x3a
+ 2085 00d8 0B       		.uleb128 0xb
+ 2086 00d9 3B       		.uleb128 0x3b
+ 2087 00da 0B       		.uleb128 0xb
+ 2088 00db 11       		.uleb128 0x11
+ 2089 00dc 01       		.uleb128 0x1
+ 2090 00dd 12       		.uleb128 0x12
+ 2091 00de 06       		.uleb128 0x6
+ 2092 00df 40       		.uleb128 0x40
+ 2093 00e0 18       		.uleb128 0x18
+ 2094 00e1 9742     		.uleb128 0x2117
+ 2095 00e3 19       		.uleb128 0x19
+ 2096 00e4 01       		.uleb128 0x1
+ 2097 00e5 13       		.uleb128 0x13
+ 2098 00e6 00       		.byte	0
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 43
+
+
+ 2099 00e7 00       		.byte	0
+ 2100 00e8 11       		.uleb128 0x11
+ 2101 00e9 898201   		.uleb128 0x4109
+ 2102 00ec 00       		.byte	0
+ 2103 00ed 11       		.uleb128 0x11
+ 2104 00ee 01       		.uleb128 0x1
+ 2105 00ef 31       		.uleb128 0x31
+ 2106 00f0 13       		.uleb128 0x13
+ 2107 00f1 00       		.byte	0
+ 2108 00f2 00       		.byte	0
+ 2109 00f3 12       		.uleb128 0x12
+ 2110 00f4 898201   		.uleb128 0x4109
+ 2111 00f7 01       		.byte	0x1
+ 2112 00f8 11       		.uleb128 0x11
+ 2113 00f9 01       		.uleb128 0x1
+ 2114 00fa 31       		.uleb128 0x31
+ 2115 00fb 13       		.uleb128 0x13
+ 2116 00fc 01       		.uleb128 0x1
+ 2117 00fd 13       		.uleb128 0x13
+ 2118 00fe 00       		.byte	0
+ 2119 00ff 00       		.byte	0
+ 2120 0100 13       		.uleb128 0x13
+ 2121 0101 8A8201   		.uleb128 0x410a
+ 2122 0104 00       		.byte	0
+ 2123 0105 02       		.uleb128 0x2
+ 2124 0106 18       		.uleb128 0x18
+ 2125 0107 9142     		.uleb128 0x2111
+ 2126 0109 18       		.uleb128 0x18
+ 2127 010a 00       		.byte	0
+ 2128 010b 00       		.byte	0
+ 2129 010c 14       		.uleb128 0x14
+ 2130 010d 898201   		.uleb128 0x4109
+ 2131 0110 01       		.byte	0x1
+ 2132 0111 11       		.uleb128 0x11
+ 2133 0112 01       		.uleb128 0x1
+ 2134 0113 31       		.uleb128 0x31
+ 2135 0114 13       		.uleb128 0x13
+ 2136 0115 00       		.byte	0
+ 2137 0116 00       		.byte	0
+ 2138 0117 15       		.uleb128 0x15
+ 2139 0118 2E       		.uleb128 0x2e
+ 2140 0119 01       		.byte	0x1
+ 2141 011a 3F       		.uleb128 0x3f
+ 2142 011b 19       		.uleb128 0x19
+ 2143 011c 03       		.uleb128 0x3
+ 2144 011d 0E       		.uleb128 0xe
+ 2145 011e 3A       		.uleb128 0x3a
+ 2146 011f 0B       		.uleb128 0xb
+ 2147 0120 3B       		.uleb128 0x3b
+ 2148 0121 0B       		.uleb128 0xb
+ 2149 0122 27       		.uleb128 0x27
+ 2150 0123 19       		.uleb128 0x19
+ 2151 0124 49       		.uleb128 0x49
+ 2152 0125 13       		.uleb128 0x13
+ 2153 0126 11       		.uleb128 0x11
+ 2154 0127 01       		.uleb128 0x1
+ 2155 0128 12       		.uleb128 0x12
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 44
+
+
+ 2156 0129 06       		.uleb128 0x6
+ 2157 012a 40       		.uleb128 0x40
+ 2158 012b 18       		.uleb128 0x18
+ 2159 012c 9742     		.uleb128 0x2117
+ 2160 012e 19       		.uleb128 0x19
+ 2161 012f 01       		.uleb128 0x1
+ 2162 0130 13       		.uleb128 0x13
+ 2163 0131 00       		.byte	0
+ 2164 0132 00       		.byte	0
+ 2165 0133 16       		.uleb128 0x16
+ 2166 0134 05       		.uleb128 0x5
+ 2167 0135 00       		.byte	0
+ 2168 0136 03       		.uleb128 0x3
+ 2169 0137 0E       		.uleb128 0xe
+ 2170 0138 3A       		.uleb128 0x3a
+ 2171 0139 0B       		.uleb128 0xb
+ 2172 013a 3B       		.uleb128 0x3b
+ 2173 013b 0B       		.uleb128 0xb
+ 2174 013c 49       		.uleb128 0x49
+ 2175 013d 13       		.uleb128 0x13
+ 2176 013e 02       		.uleb128 0x2
+ 2177 013f 17       		.uleb128 0x17
+ 2178 0140 00       		.byte	0
+ 2179 0141 00       		.byte	0
+ 2180 0142 17       		.uleb128 0x17
+ 2181 0143 34       		.uleb128 0x34
+ 2182 0144 00       		.byte	0
+ 2183 0145 03       		.uleb128 0x3
+ 2184 0146 0E       		.uleb128 0xe
+ 2185 0147 3A       		.uleb128 0x3a
+ 2186 0148 0B       		.uleb128 0xb
+ 2187 0149 3B       		.uleb128 0x3b
+ 2188 014a 0B       		.uleb128 0xb
+ 2189 014b 49       		.uleb128 0x49
+ 2190 014c 13       		.uleb128 0x13
+ 2191 014d 1C       		.uleb128 0x1c
+ 2192 014e 0B       		.uleb128 0xb
+ 2193 014f 00       		.byte	0
+ 2194 0150 00       		.byte	0
+ 2195 0151 18       		.uleb128 0x18
+ 2196 0152 34       		.uleb128 0x34
+ 2197 0153 00       		.byte	0
+ 2198 0154 03       		.uleb128 0x3
+ 2199 0155 0E       		.uleb128 0xe
+ 2200 0156 3A       		.uleb128 0x3a
+ 2201 0157 0B       		.uleb128 0xb
+ 2202 0158 3B       		.uleb128 0x3b
+ 2203 0159 0B       		.uleb128 0xb
+ 2204 015a 49       		.uleb128 0x49
+ 2205 015b 13       		.uleb128 0x13
+ 2206 015c 02       		.uleb128 0x2
+ 2207 015d 18       		.uleb128 0x18
+ 2208 015e 00       		.byte	0
+ 2209 015f 00       		.byte	0
+ 2210 0160 19       		.uleb128 0x19
+ 2211 0161 34       		.uleb128 0x34
+ 2212 0162 00       		.byte	0
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 45
+
+
+ 2213 0163 03       		.uleb128 0x3
+ 2214 0164 0E       		.uleb128 0xe
+ 2215 0165 3A       		.uleb128 0x3a
+ 2216 0166 0B       		.uleb128 0xb
+ 2217 0167 3B       		.uleb128 0x3b
+ 2218 0168 0B       		.uleb128 0xb
+ 2219 0169 49       		.uleb128 0x49
+ 2220 016a 13       		.uleb128 0x13
+ 2221 016b 02       		.uleb128 0x2
+ 2222 016c 17       		.uleb128 0x17
+ 2223 016d 00       		.byte	0
+ 2224 016e 00       		.byte	0
+ 2225 016f 1A       		.uleb128 0x1a
+ 2226 0170 34       		.uleb128 0x34
+ 2227 0171 00       		.byte	0
+ 2228 0172 03       		.uleb128 0x3
+ 2229 0173 0E       		.uleb128 0xe
+ 2230 0174 3A       		.uleb128 0x3a
+ 2231 0175 0B       		.uleb128 0xb
+ 2232 0176 3B       		.uleb128 0x3b
+ 2233 0177 0B       		.uleb128 0xb
+ 2234 0178 49       		.uleb128 0x49
+ 2235 0179 13       		.uleb128 0x13
+ 2236 017a 00       		.byte	0
+ 2237 017b 00       		.byte	0
+ 2238 017c 1B       		.uleb128 0x1b
+ 2239 017d 34       		.uleb128 0x34
+ 2240 017e 00       		.byte	0
+ 2241 017f 03       		.uleb128 0x3
+ 2242 0180 0E       		.uleb128 0xe
+ 2243 0181 3A       		.uleb128 0x3a
+ 2244 0182 0B       		.uleb128 0xb
+ 2245 0183 3B       		.uleb128 0x3b
+ 2246 0184 05       		.uleb128 0x5
+ 2247 0185 49       		.uleb128 0x49
+ 2248 0186 13       		.uleb128 0x13
+ 2249 0187 3F       		.uleb128 0x3f
+ 2250 0188 19       		.uleb128 0x19
+ 2251 0189 3C       		.uleb128 0x3c
+ 2252 018a 19       		.uleb128 0x19
+ 2253 018b 00       		.byte	0
+ 2254 018c 00       		.byte	0
+ 2255 018d 1C       		.uleb128 0x1c
+ 2256 018e 35       		.uleb128 0x35
+ 2257 018f 00       		.byte	0
+ 2258 0190 49       		.uleb128 0x49
+ 2259 0191 13       		.uleb128 0x13
+ 2260 0192 00       		.byte	0
+ 2261 0193 00       		.byte	0
+ 2262 0194 1D       		.uleb128 0x1d
+ 2263 0195 34       		.uleb128 0x34
+ 2264 0196 00       		.byte	0
+ 2265 0197 03       		.uleb128 0x3
+ 2266 0198 0E       		.uleb128 0xe
+ 2267 0199 3A       		.uleb128 0x3a
+ 2268 019a 0B       		.uleb128 0xb
+ 2269 019b 3B       		.uleb128 0x3b
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 46
+
+
+ 2270 019c 0B       		.uleb128 0xb
+ 2271 019d 49       		.uleb128 0x49
+ 2272 019e 13       		.uleb128 0x13
+ 2273 019f 3F       		.uleb128 0x3f
+ 2274 01a0 19       		.uleb128 0x19
+ 2275 01a1 02       		.uleb128 0x2
+ 2276 01a2 18       		.uleb128 0x18
+ 2277 01a3 00       		.byte	0
+ 2278 01a4 00       		.byte	0
+ 2279 01a5 1E       		.uleb128 0x1e
+ 2280 01a6 2E       		.uleb128 0x2e
+ 2281 01a7 00       		.byte	0
+ 2282 01a8 3F       		.uleb128 0x3f
+ 2283 01a9 19       		.uleb128 0x19
+ 2284 01aa 3C       		.uleb128 0x3c
+ 2285 01ab 19       		.uleb128 0x19
+ 2286 01ac 6E       		.uleb128 0x6e
+ 2287 01ad 0E       		.uleb128 0xe
+ 2288 01ae 03       		.uleb128 0x3
+ 2289 01af 0E       		.uleb128 0xe
+ 2290 01b0 3A       		.uleb128 0x3a
+ 2291 01b1 0B       		.uleb128 0xb
+ 2292 01b2 3B       		.uleb128 0x3b
+ 2293 01b3 0B       		.uleb128 0xb
+ 2294 01b4 00       		.byte	0
+ 2295 01b5 00       		.byte	0
+ 2296 01b6 1F       		.uleb128 0x1f
+ 2297 01b7 2E       		.uleb128 0x2e
+ 2298 01b8 00       		.byte	0
+ 2299 01b9 3F       		.uleb128 0x3f
+ 2300 01ba 19       		.uleb128 0x19
+ 2301 01bb 3C       		.uleb128 0x3c
+ 2302 01bc 19       		.uleb128 0x19
+ 2303 01bd 6E       		.uleb128 0x6e
+ 2304 01be 0E       		.uleb128 0xe
+ 2305 01bf 03       		.uleb128 0x3
+ 2306 01c0 0E       		.uleb128 0xe
+ 2307 01c1 3A       		.uleb128 0x3a
+ 2308 01c2 0B       		.uleb128 0xb
+ 2309 01c3 3B       		.uleb128 0x3b
+ 2310 01c4 05       		.uleb128 0x5
+ 2311 01c5 00       		.byte	0
+ 2312 01c6 00       		.byte	0
+ 2313 01c7 00       		.byte	0
+ 2314              		.section	.debug_loc,"",%progbits
+ 2315              	.Ldebug_loc0:
+ 2316              	.LLST0:
+ 2317 0000 00000000 		.4byte	.LVL0
+ 2318 0004 0C000000 		.4byte	.LVL2
+ 2319 0008 0100     		.2byte	0x1
+ 2320 000a 51       		.byte	0x51
+ 2321 000b 0C000000 		.4byte	.LVL2
+ 2322 000f 1C000000 		.4byte	.LFE65
+ 2323 0013 0400     		.2byte	0x4
+ 2324 0015 F3       		.byte	0xf3
+ 2325 0016 01       		.uleb128 0x1
+ 2326 0017 51       		.byte	0x51
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 47
+
+
+ 2327 0018 9F       		.byte	0x9f
+ 2328 0019 00000000 		.4byte	0
+ 2329 001d 00000000 		.4byte	0
+ 2330              	.LLST1:
+ 2331 0021 0A000000 		.4byte	.LVL1
+ 2332 0025 0C000000 		.4byte	.LVL2
+ 2333 0029 0200     		.2byte	0x2
+ 2334 002b 30       		.byte	0x30
+ 2335 002c 9F       		.byte	0x9f
+ 2336 002d 0C000000 		.4byte	.LVL2
+ 2337 0031 14000000 		.4byte	.LVL3
+ 2338 0035 0100     		.2byte	0x1
+ 2339 0037 53       		.byte	0x53
+ 2340 0038 16000000 		.4byte	.LVL4
+ 2341 003c 1C000000 		.4byte	.LFE65
+ 2342 0040 0100     		.2byte	0x1
+ 2343 0042 53       		.byte	0x53
+ 2344 0043 00000000 		.4byte	0
+ 2345 0047 00000000 		.4byte	0
+ 2346              	.LLST2:
+ 2347 004b 00000000 		.4byte	.LVL12
+ 2348 004f 94000000 		.4byte	.LVL30
+ 2349 0053 0100     		.2byte	0x1
+ 2350 0055 50       		.byte	0x50
+ 2351 0056 94000000 		.4byte	.LVL30
+ 2352 005a 96000000 		.4byte	.LVL31
+ 2353 005e 0400     		.2byte	0x4
+ 2354 0060 F3       		.byte	0xf3
+ 2355 0061 01       		.uleb128 0x1
+ 2356 0062 50       		.byte	0x50
+ 2357 0063 9F       		.byte	0x9f
+ 2358 0064 96000000 		.4byte	.LVL31
+ 2359 0068 A0000000 		.4byte	.LVL34
+ 2360 006c 0100     		.2byte	0x1
+ 2361 006e 50       		.byte	0x50
+ 2362 006f A0000000 		.4byte	.LVL34
+ 2363 0073 A4000000 		.4byte	.LFE67
+ 2364 0077 0400     		.2byte	0x4
+ 2365 0079 F3       		.byte	0xf3
+ 2366 007a 01       		.uleb128 0x1
+ 2367 007b 50       		.byte	0x50
+ 2368 007c 9F       		.byte	0x9f
+ 2369 007d 00000000 		.4byte	0
+ 2370 0081 00000000 		.4byte	0
+ 2371              	.LLST3:
+ 2372 0085 08000000 		.4byte	.LVL14
+ 2373 0089 0C000000 		.4byte	.LVL15
+ 2374 008d 0200     		.2byte	0x2
+ 2375 008f 30       		.byte	0x30
+ 2376 0090 9F       		.byte	0x9f
+ 2377 0091 0C000000 		.4byte	.LVL15
+ 2378 0095 1A000000 		.4byte	.LVL16
+ 2379 0099 0100     		.2byte	0x1
+ 2380 009b 53       		.byte	0x53
+ 2381 009c 1C000000 		.4byte	.LVL17
+ 2382 00a0 24000000 		.4byte	.LVL18
+ 2383 00a4 0100     		.2byte	0x1
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 48
+
+
+ 2384 00a6 53       		.byte	0x53
+ 2385 00a7 24000000 		.4byte	.LVL18
+ 2386 00ab 36000000 		.4byte	.LVL19
+ 2387 00af 0100     		.2byte	0x1
+ 2388 00b1 52       		.byte	0x52
+ 2389 00b2 38000000 		.4byte	.LVL20
+ 2390 00b6 42000000 		.4byte	.LVL21
+ 2391 00ba 0100     		.2byte	0x1
+ 2392 00bc 52       		.byte	0x52
+ 2393 00bd 42000000 		.4byte	.LVL21
+ 2394 00c1 5C000000 		.4byte	.LVL22
+ 2395 00c5 0100     		.2byte	0x1
+ 2396 00c7 56       		.byte	0x56
+ 2397 00c8 5E000000 		.4byte	.LVL23
+ 2398 00cc 66000000 		.4byte	.LVL24
+ 2399 00d0 0100     		.2byte	0x1
+ 2400 00d2 56       		.byte	0x56
+ 2401 00d3 66000000 		.4byte	.LVL24
+ 2402 00d7 76000000 		.4byte	.LVL25
+ 2403 00db 0100     		.2byte	0x1
+ 2404 00dd 53       		.byte	0x53
+ 2405 00de 96000000 		.4byte	.LVL31
+ 2406 00e2 98000000 		.4byte	.LVL32
+ 2407 00e6 0100     		.2byte	0x1
+ 2408 00e8 53       		.byte	0x53
+ 2409 00e9 9A000000 		.4byte	.LVL33
+ 2410 00ed A0000000 		.4byte	.LVL34
+ 2411 00f1 0100     		.2byte	0x1
+ 2412 00f3 53       		.byte	0x53
+ 2413 00f4 00000000 		.4byte	0
+ 2414 00f8 00000000 		.4byte	0
+ 2415              	.LLST4:
+ 2416 00fc 7C000000 		.4byte	.LVL26
+ 2417 0100 80000000 		.4byte	.LVL27
+ 2418 0104 0200     		.2byte	0x2
+ 2419 0106 30       		.byte	0x30
+ 2420 0107 9F       		.byte	0x9f
+ 2421 0108 80000000 		.4byte	.LVL27
+ 2422 010c 8A000000 		.4byte	.LVL28
+ 2423 0110 0100     		.2byte	0x1
+ 2424 0112 53       		.byte	0x53
+ 2425 0113 8C000000 		.4byte	.LVL29
+ 2426 0117 96000000 		.4byte	.LVL31
+ 2427 011b 0100     		.2byte	0x1
+ 2428 011d 53       		.byte	0x53
+ 2429 011e 00000000 		.4byte	0
+ 2430 0122 00000000 		.4byte	0
+ 2431              	.LLST5:
+ 2432 0126 0E000000 		.4byte	.LVL40
+ 2433 012a 1E000000 		.4byte	.LVL43
+ 2434 012e 0100     		.2byte	0x1
+ 2435 0130 53       		.byte	0x53
+ 2436 0131 1E000000 		.4byte	.LVL43
+ 2437 0135 27000000 		.4byte	.LVL44-1
+ 2438 0139 1800     		.2byte	0x18
+ 2439 013b 03       		.byte	0x3
+ 2440 013c 08000000 		.4byte	BMS_CURRENT+8
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 49
+
+
+ 2441 0140 94       		.byte	0x94
+ 2442 0141 01       		.byte	0x1
+ 2443 0142 08       		.byte	0x8
+ 2444 0143 FF       		.byte	0xff
+ 2445 0144 1A       		.byte	0x1a
+ 2446 0145 38       		.byte	0x38
+ 2447 0146 24       		.byte	0x24
+ 2448 0147 03       		.byte	0x3
+ 2449 0148 09000000 		.4byte	BMS_CURRENT+9
+ 2450 014c 94       		.byte	0x94
+ 2451 014d 01       		.byte	0x1
+ 2452 014e 08       		.byte	0x8
+ 2453 014f FF       		.byte	0xff
+ 2454 0150 1A       		.byte	0x1a
+ 2455 0151 21       		.byte	0x21
+ 2456 0152 9F       		.byte	0x9f
+ 2457 0153 00000000 		.4byte	0
+ 2458 0157 00000000 		.4byte	0
+ 2459              	.LLST6:
+ 2460 015b 08000000 		.4byte	.LVL38
+ 2461 015f 14000000 		.4byte	.LVL42
+ 2462 0163 0500     		.2byte	0x5
+ 2463 0165 71       		.byte	0x71
+ 2464 0166 00       		.sleb128 0
+ 2465 0167 38       		.byte	0x38
+ 2466 0168 24       		.byte	0x24
+ 2467 0169 9F       		.byte	0x9f
+ 2468 016a 14000000 		.4byte	.LVL42
+ 2469 016e 27000000 		.4byte	.LVL44-1
+ 2470 0172 0D00     		.2byte	0xd
+ 2471 0174 03       		.byte	0x3
+ 2472 0175 08000000 		.4byte	BMS_CURRENT+8
+ 2473 0179 94       		.byte	0x94
+ 2474 017a 01       		.byte	0x1
+ 2475 017b 08       		.byte	0x8
+ 2476 017c FF       		.byte	0xff
+ 2477 017d 1A       		.byte	0x1a
+ 2478 017e 38       		.byte	0x38
+ 2479 017f 24       		.byte	0x24
+ 2480 0180 9F       		.byte	0x9f
+ 2481 0181 00000000 		.4byte	0
+ 2482 0185 00000000 		.4byte	0
+ 2483              	.LLST7:
+ 2484 0189 0A000000 		.4byte	.LVL39
+ 2485 018d 0E000000 		.4byte	.LVL40
+ 2486 0191 0100     		.2byte	0x1
+ 2487 0193 53       		.byte	0x53
+ 2488 0194 0E000000 		.4byte	.LVL40
+ 2489 0198 10000000 		.4byte	.LVL41
+ 2490 019c 0800     		.2byte	0x8
+ 2491 019e 72       		.byte	0x72
+ 2492 019f 09       		.sleb128 9
+ 2493 01a0 94       		.byte	0x94
+ 2494 01a1 01       		.byte	0x1
+ 2495 01a2 08       		.byte	0x8
+ 2496 01a3 FF       		.byte	0xff
+ 2497 01a4 1A       		.byte	0x1a
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 50
+
+
+ 2498 01a5 9F       		.byte	0x9f
+ 2499 01a6 10000000 		.4byte	.LVL41
+ 2500 01aa 27000000 		.4byte	.LVL44-1
+ 2501 01ae 0B00     		.2byte	0xb
+ 2502 01b0 03       		.byte	0x3
+ 2503 01b1 09000000 		.4byte	BMS_CURRENT+9
+ 2504 01b5 94       		.byte	0x94
+ 2505 01b6 01       		.byte	0x1
+ 2506 01b7 08       		.byte	0x8
+ 2507 01b8 FF       		.byte	0xff
+ 2508 01b9 1A       		.byte	0x1a
+ 2509 01ba 9F       		.byte	0x9f
+ 2510 01bb 00000000 		.4byte	0
+ 2511 01bf 00000000 		.4byte	0
+ 2512              	.LLST8:
+ 2513 01c3 1A000000 		.4byte	.LVL53
+ 2514 01c7 26000000 		.4byte	.LVL55
+ 2515 01cb 0100     		.2byte	0x1
+ 2516 01cd 53       		.byte	0x53
+ 2517 01ce 26000000 		.4byte	.LVL55
+ 2518 01d2 2E000000 		.4byte	.LVL56
+ 2519 01d6 2A00     		.2byte	0x2a
+ 2520 01d8 70       		.byte	0x70
+ 2521 01d9 00       		.sleb128 0
+ 2522 01da 48       		.byte	0x48
+ 2523 01db 24       		.byte	0x24
+ 2524 01dc 03       		.byte	0x3
+ 2525 01dd 0C000000 		.4byte	BMS_VOLTAGE+12
+ 2526 01e1 94       		.byte	0x94
+ 2527 01e2 01       		.byte	0x1
+ 2528 01e3 08       		.byte	0x8
+ 2529 01e4 FF       		.byte	0xff
+ 2530 01e5 1A       		.byte	0x1a
+ 2531 01e6 40       		.byte	0x40
+ 2532 01e7 24       		.byte	0x24
+ 2533 01e8 21       		.byte	0x21
+ 2534 01e9 03       		.byte	0x3
+ 2535 01ea 0D000000 		.4byte	BMS_VOLTAGE+13
+ 2536 01ee 94       		.byte	0x94
+ 2537 01ef 01       		.byte	0x1
+ 2538 01f0 08       		.byte	0x8
+ 2539 01f1 FF       		.byte	0xff
+ 2540 01f2 1A       		.byte	0x1a
+ 2541 01f3 38       		.byte	0x38
+ 2542 01f4 24       		.byte	0x24
+ 2543 01f5 21       		.byte	0x21
+ 2544 01f6 03       		.byte	0x3
+ 2545 01f7 0E000000 		.4byte	BMS_VOLTAGE+14
+ 2546 01fb 94       		.byte	0x94
+ 2547 01fc 01       		.byte	0x1
+ 2548 01fd 08       		.byte	0x8
+ 2549 01fe FF       		.byte	0xff
+ 2550 01ff 1A       		.byte	0x1a
+ 2551 0200 21       		.byte	0x21
+ 2552 0201 9F       		.byte	0x9f
+ 2553 0202 2E000000 		.4byte	.LVL56
+ 2554 0206 41000000 		.4byte	.LVL57-1
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 51
+
+
+ 2555 020a 3200     		.2byte	0x32
+ 2556 020c 03       		.byte	0x3
+ 2557 020d 0B000000 		.4byte	BMS_VOLTAGE+11
+ 2558 0211 94       		.byte	0x94
+ 2559 0212 01       		.byte	0x1
+ 2560 0213 08       		.byte	0x8
+ 2561 0214 FF       		.byte	0xff
+ 2562 0215 1A       		.byte	0x1a
+ 2563 0216 48       		.byte	0x48
+ 2564 0217 24       		.byte	0x24
+ 2565 0218 03       		.byte	0x3
+ 2566 0219 0C000000 		.4byte	BMS_VOLTAGE+12
+ 2567 021d 94       		.byte	0x94
+ 2568 021e 01       		.byte	0x1
+ 2569 021f 08       		.byte	0x8
+ 2570 0220 FF       		.byte	0xff
+ 2571 0221 1A       		.byte	0x1a
+ 2572 0222 40       		.byte	0x40
+ 2573 0223 24       		.byte	0x24
+ 2574 0224 21       		.byte	0x21
+ 2575 0225 03       		.byte	0x3
+ 2576 0226 0D000000 		.4byte	BMS_VOLTAGE+13
+ 2577 022a 94       		.byte	0x94
+ 2578 022b 01       		.byte	0x1
+ 2579 022c 08       		.byte	0x8
+ 2580 022d FF       		.byte	0xff
+ 2581 022e 1A       		.byte	0x1a
+ 2582 022f 38       		.byte	0x38
+ 2583 0230 24       		.byte	0x24
+ 2584 0231 21       		.byte	0x21
+ 2585 0232 03       		.byte	0x3
+ 2586 0233 0E000000 		.4byte	BMS_VOLTAGE+14
+ 2587 0237 94       		.byte	0x94
+ 2588 0238 01       		.byte	0x1
+ 2589 0239 08       		.byte	0x8
+ 2590 023a FF       		.byte	0xff
+ 2591 023b 1A       		.byte	0x1a
+ 2592 023c 21       		.byte	0x21
+ 2593 023d 9F       		.byte	0x9f
+ 2594 023e 00000000 		.4byte	0
+ 2595 0242 00000000 		.4byte	0
+ 2596              	.LLST9:
+ 2597 0246 08000000 		.4byte	.LVL47
+ 2598 024a 2E000000 		.4byte	.LVL56
+ 2599 024e 0500     		.2byte	0x5
+ 2600 0250 70       		.byte	0x70
+ 2601 0251 00       		.sleb128 0
+ 2602 0252 48       		.byte	0x48
+ 2603 0253 24       		.byte	0x24
+ 2604 0254 9F       		.byte	0x9f
+ 2605 0255 2E000000 		.4byte	.LVL56
+ 2606 0259 41000000 		.4byte	.LVL57-1
+ 2607 025d 0D00     		.2byte	0xd
+ 2608 025f 03       		.byte	0x3
+ 2609 0260 0B000000 		.4byte	BMS_VOLTAGE+11
+ 2610 0264 94       		.byte	0x94
+ 2611 0265 01       		.byte	0x1
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 52
+
+
+ 2612 0266 08       		.byte	0x8
+ 2613 0267 FF       		.byte	0xff
+ 2614 0268 1A       		.byte	0x1a
+ 2615 0269 48       		.byte	0x48
+ 2616 026a 24       		.byte	0x24
+ 2617 026b 9F       		.byte	0x9f
+ 2618 026c 00000000 		.4byte	0
+ 2619 0270 00000000 		.4byte	0
+ 2620              	.LLST10:
+ 2621 0274 0C000000 		.4byte	.LVL48
+ 2622 0278 14000000 		.4byte	.LVL51
+ 2623 027c 0100     		.2byte	0x1
+ 2624 027e 52       		.byte	0x52
+ 2625 027f 14000000 		.4byte	.LVL51
+ 2626 0283 41000000 		.4byte	.LVL57-1
+ 2627 0287 0D00     		.2byte	0xd
+ 2628 0289 03       		.byte	0x3
+ 2629 028a 0C000000 		.4byte	BMS_VOLTAGE+12
+ 2630 028e 94       		.byte	0x94
+ 2631 028f 01       		.byte	0x1
+ 2632 0290 08       		.byte	0x8
+ 2633 0291 FF       		.byte	0xff
+ 2634 0292 1A       		.byte	0x1a
+ 2635 0293 40       		.byte	0x40
+ 2636 0294 24       		.byte	0x24
+ 2637 0295 9F       		.byte	0x9f
+ 2638 0296 00000000 		.4byte	0
+ 2639 029a 00000000 		.4byte	0
+ 2640              	.LLST11:
+ 2641 029e 0E000000 		.4byte	.LVL49
+ 2642 02a2 18000000 		.4byte	.LVL52
+ 2643 02a6 0500     		.2byte	0x5
+ 2644 02a8 73       		.byte	0x73
+ 2645 02a9 00       		.sleb128 0
+ 2646 02aa 38       		.byte	0x38
+ 2647 02ab 24       		.byte	0x24
+ 2648 02ac 9F       		.byte	0x9f
+ 2649 02ad 18000000 		.4byte	.LVL52
+ 2650 02b1 41000000 		.4byte	.LVL57-1
+ 2651 02b5 0D00     		.2byte	0xd
+ 2652 02b7 03       		.byte	0x3
+ 2653 02b8 0D000000 		.4byte	BMS_VOLTAGE+13
+ 2654 02bc 94       		.byte	0x94
+ 2655 02bd 01       		.byte	0x1
+ 2656 02be 08       		.byte	0x8
+ 2657 02bf FF       		.byte	0xff
+ 2658 02c0 1A       		.byte	0x1a
+ 2659 02c1 38       		.byte	0x38
+ 2660 02c2 24       		.byte	0x24
+ 2661 02c3 9F       		.byte	0x9f
+ 2662 02c4 00000000 		.4byte	0
+ 2663 02c8 00000000 		.4byte	0
+ 2664              	.LLST12:
+ 2665 02cc 10000000 		.4byte	.LVL50
+ 2666 02d0 20000000 		.4byte	.LVL54
+ 2667 02d4 0100     		.2byte	0x1
+ 2668 02d6 51       		.byte	0x51
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 53
+
+
+ 2669 02d7 20000000 		.4byte	.LVL54
+ 2670 02db 41000000 		.4byte	.LVL57-1
+ 2671 02df 0B00     		.2byte	0xb
+ 2672 02e1 03       		.byte	0x3
+ 2673 02e2 0E000000 		.4byte	BMS_VOLTAGE+14
+ 2674 02e6 94       		.byte	0x94
+ 2675 02e7 01       		.byte	0x1
+ 2676 02e8 08       		.byte	0x8
+ 2677 02e9 FF       		.byte	0xff
+ 2678 02ea 1A       		.byte	0x1a
+ 2679 02eb 9F       		.byte	0x9f
+ 2680 02ec 00000000 		.4byte	0
+ 2681 02f0 00000000 		.4byte	0
+ 2682              	.LLST13:
+ 2683 02f4 18000000 		.4byte	.LVL66
+ 2684 02f8 21000000 		.4byte	.LVL69-1
+ 2685 02fc 0100     		.2byte	0x1
+ 2686 02fe 52       		.byte	0x52
+ 2687 02ff 00000000 		.4byte	0
+ 2688 0303 00000000 		.4byte	0
+ 2689              	.LLST14:
+ 2690 0307 08000000 		.4byte	.LVL60
+ 2691 030b 10000000 		.4byte	.LVL63
+ 2692 030f 0500     		.2byte	0x5
+ 2693 0311 72       		.byte	0x72
+ 2694 0312 00       		.sleb128 0
+ 2695 0313 38       		.byte	0x38
+ 2696 0314 24       		.byte	0x24
+ 2697 0315 9F       		.byte	0x9f
+ 2698 0316 10000000 		.4byte	.LVL63
+ 2699 031a 1C000000 		.4byte	.LVL67
+ 2700 031e 0A00     		.2byte	0xa
+ 2701 0320 71       		.byte	0x71
+ 2702 0321 07       		.sleb128 7
+ 2703 0322 94       		.byte	0x94
+ 2704 0323 01       		.byte	0x1
+ 2705 0324 08       		.byte	0x8
+ 2706 0325 FF       		.byte	0xff
+ 2707 0326 1A       		.byte	0x1a
+ 2708 0327 38       		.byte	0x38
+ 2709 0328 24       		.byte	0x24
+ 2710 0329 9F       		.byte	0x9f
+ 2711 032a 1C000000 		.4byte	.LVL67
+ 2712 032e 21000000 		.4byte	.LVL69-1
+ 2713 0332 0D00     		.2byte	0xd
+ 2714 0334 03       		.byte	0x3
+ 2715 0335 07000000 		.4byte	BMS_VOLTAGE+7
+ 2716 0339 94       		.byte	0x94
+ 2717 033a 01       		.byte	0x1
+ 2718 033b 08       		.byte	0x8
+ 2719 033c FF       		.byte	0xff
+ 2720 033d 1A       		.byte	0x1a
+ 2721 033e 38       		.byte	0x38
+ 2722 033f 24       		.byte	0x24
+ 2723 0340 9F       		.byte	0x9f
+ 2724 0341 00000000 		.4byte	0
+ 2725 0345 00000000 		.4byte	0
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 54
+
+
+ 2726              	.LLST15:
+ 2727 0349 0A000000 		.4byte	.LVL61
+ 2728 034d 12000000 		.4byte	.LVL64
+ 2729 0351 0100     		.2byte	0x1
+ 2730 0353 53       		.byte	0x53
+ 2731 0354 12000000 		.4byte	.LVL64
+ 2732 0358 1C000000 		.4byte	.LVL67
+ 2733 035c 0800     		.2byte	0x8
+ 2734 035e 71       		.byte	0x71
+ 2735 035f 08       		.sleb128 8
+ 2736 0360 94       		.byte	0x94
+ 2737 0361 01       		.byte	0x1
+ 2738 0362 08       		.byte	0x8
+ 2739 0363 FF       		.byte	0xff
+ 2740 0364 1A       		.byte	0x1a
+ 2741 0365 9F       		.byte	0x9f
+ 2742 0366 1C000000 		.4byte	.LVL67
+ 2743 036a 21000000 		.4byte	.LVL69-1
+ 2744 036e 0B00     		.2byte	0xb
+ 2745 0370 03       		.byte	0x3
+ 2746 0371 08000000 		.4byte	BMS_VOLTAGE+8
+ 2747 0375 94       		.byte	0x94
+ 2748 0376 01       		.byte	0x1
+ 2749 0377 08       		.byte	0x8
+ 2750 0378 FF       		.byte	0xff
+ 2751 0379 1A       		.byte	0x1a
+ 2752 037a 9F       		.byte	0x9f
+ 2753 037b 00000000 		.4byte	0
+ 2754 037f 00000000 		.4byte	0
+ 2755              	.LLST16:
+ 2756 0383 0E000000 		.4byte	.LVL62
+ 2757 0387 1E000000 		.4byte	.LVL68
+ 2758 038b 0100     		.2byte	0x1
+ 2759 038d 50       		.byte	0x50
+ 2760 038e 1E000000 		.4byte	.LVL68
+ 2761 0392 21000000 		.4byte	.LVL69-1
+ 2762 0396 1800     		.2byte	0x18
+ 2763 0398 03       		.byte	0x3
+ 2764 0399 07000000 		.4byte	BMS_VOLTAGE+7
+ 2765 039d 94       		.byte	0x94
+ 2766 039e 01       		.byte	0x1
+ 2767 039f 08       		.byte	0x8
+ 2768 03a0 FF       		.byte	0xff
+ 2769 03a1 1A       		.byte	0x1a
+ 2770 03a2 38       		.byte	0x38
+ 2771 03a3 24       		.byte	0x24
+ 2772 03a4 03       		.byte	0x3
+ 2773 03a5 08000000 		.4byte	BMS_VOLTAGE+8
+ 2774 03a9 94       		.byte	0x94
+ 2775 03aa 01       		.byte	0x1
+ 2776 03ab 08       		.byte	0x8
+ 2777 03ac FF       		.byte	0xff
+ 2778 03ad 1A       		.byte	0x1a
+ 2779 03ae 21       		.byte	0x21
+ 2780 03af 9F       		.byte	0x9f
+ 2781 03b0 00000000 		.4byte	0
+ 2782 03b4 00000000 		.4byte	0
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 55
+
+
+ 2783              	.LLST17:
+ 2784 03b8 10000000 		.4byte	.LVL63
+ 2785 03bc 18000000 		.4byte	.LVL66
+ 2786 03c0 0500     		.2byte	0x5
+ 2787 03c2 72       		.byte	0x72
+ 2788 03c3 00       		.sleb128 0
+ 2789 03c4 38       		.byte	0x38
+ 2790 03c5 24       		.byte	0x24
+ 2791 03c6 9F       		.byte	0x9f
+ 2792 03c7 18000000 		.4byte	.LVL66
+ 2793 03cb 1C000000 		.4byte	.LVL67
+ 2794 03cf 0A00     		.2byte	0xa
+ 2795 03d1 71       		.byte	0x71
+ 2796 03d2 09       		.sleb128 9
+ 2797 03d3 94       		.byte	0x94
+ 2798 03d4 01       		.byte	0x1
+ 2799 03d5 08       		.byte	0x8
+ 2800 03d6 FF       		.byte	0xff
+ 2801 03d7 1A       		.byte	0x1a
+ 2802 03d8 38       		.byte	0x38
+ 2803 03d9 24       		.byte	0x24
+ 2804 03da 9F       		.byte	0x9f
+ 2805 03db 1C000000 		.4byte	.LVL67
+ 2806 03df 21000000 		.4byte	.LVL69-1
+ 2807 03e3 0D00     		.2byte	0xd
+ 2808 03e5 03       		.byte	0x3
+ 2809 03e6 09000000 		.4byte	BMS_VOLTAGE+9
+ 2810 03ea 94       		.byte	0x94
+ 2811 03eb 01       		.byte	0x1
+ 2812 03ec 08       		.byte	0x8
+ 2813 03ed FF       		.byte	0xff
+ 2814 03ee 1A       		.byte	0x1a
+ 2815 03ef 38       		.byte	0x38
+ 2816 03f0 24       		.byte	0x24
+ 2817 03f1 9F       		.byte	0x9f
+ 2818 03f2 00000000 		.4byte	0
+ 2819 03f6 00000000 		.4byte	0
+ 2820              	.LLST18:
+ 2821 03fa 12000000 		.4byte	.LVL64
+ 2822 03fe 16000000 		.4byte	.LVL65
+ 2823 0402 0100     		.2byte	0x1
+ 2824 0404 53       		.byte	0x53
+ 2825 0405 16000000 		.4byte	.LVL65
+ 2826 0409 1C000000 		.4byte	.LVL67
+ 2827 040d 0800     		.2byte	0x8
+ 2828 040f 71       		.byte	0x71
+ 2829 0410 0A       		.sleb128 10
+ 2830 0411 94       		.byte	0x94
+ 2831 0412 01       		.byte	0x1
+ 2832 0413 08       		.byte	0x8
+ 2833 0414 FF       		.byte	0xff
+ 2834 0415 1A       		.byte	0x1a
+ 2835 0416 9F       		.byte	0x9f
+ 2836 0417 1C000000 		.4byte	.LVL67
+ 2837 041b 21000000 		.4byte	.LVL69-1
+ 2838 041f 0B00     		.2byte	0xb
+ 2839 0421 03       		.byte	0x3
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 56
+
+
+ 2840 0422 0A000000 		.4byte	BMS_VOLTAGE+10
+ 2841 0426 94       		.byte	0x94
+ 2842 0427 01       		.byte	0x1
+ 2843 0428 08       		.byte	0x8
+ 2844 0429 FF       		.byte	0xff
+ 2845 042a 1A       		.byte	0x1a
+ 2846 042b 9F       		.byte	0x9f
+ 2847 042c 00000000 		.4byte	0
+ 2848 0430 00000000 		.4byte	0
+ 2849              	.LLST19:
+ 2850 0434 16000000 		.4byte	.LVL65
+ 2851 0438 21000000 		.4byte	.LVL69-1
+ 2852 043c 0100     		.2byte	0x1
+ 2853 043e 53       		.byte	0x53
+ 2854 043f 00000000 		.4byte	0
+ 2855 0443 00000000 		.4byte	0
+ 2856              	.LLST20:
+ 2857 0447 06000000 		.4byte	.LVL72
+ 2858 044b 16000000 		.4byte	.LVL75
+ 2859 044f 0100     		.2byte	0x1
+ 2860 0451 54       		.byte	0x54
+ 2861 0452 00000000 		.4byte	0
+ 2862 0456 00000000 		.4byte	0
+ 2863              	.LLST21:
+ 2864 045a 00000000 		.4byte	.LVL76
+ 2865 045e 26000000 		.4byte	.LVL78
+ 2866 0462 0100     		.2byte	0x1
+ 2867 0464 50       		.byte	0x50
+ 2868 0465 26000000 		.4byte	.LVL78
+ 2869 0469 29000000 		.4byte	.LVL79-1
+ 2870 046d 0100     		.2byte	0x1
+ 2871 046f 51       		.byte	0x51
+ 2872 0470 29000000 		.4byte	.LVL79-1
+ 2873 0474 34000000 		.4byte	.LVL81
+ 2874 0478 0400     		.2byte	0x4
+ 2875 047a F3       		.byte	0xf3
+ 2876 047b 01       		.uleb128 0x1
+ 2877 047c 50       		.byte	0x50
+ 2878 047d 9F       		.byte	0x9f
+ 2879 047e 34000000 		.4byte	.LVL81
+ 2880 0482 38000000 		.4byte	.LVL82
+ 2881 0486 0100     		.2byte	0x1
+ 2882 0488 50       		.byte	0x50
+ 2883 0489 38000000 		.4byte	.LVL82
+ 2884 048d 3B000000 		.4byte	.LVL83-1
+ 2885 0491 0100     		.2byte	0x1
+ 2886 0493 51       		.byte	0x51
+ 2887 0494 3B000000 		.4byte	.LVL83-1
+ 2888 0498 46000000 		.4byte	.LVL85
+ 2889 049c 0400     		.2byte	0x4
+ 2890 049e F3       		.byte	0xf3
+ 2891 049f 01       		.uleb128 0x1
+ 2892 04a0 50       		.byte	0x50
+ 2893 04a1 9F       		.byte	0x9f
+ 2894 04a2 46000000 		.4byte	.LVL85
+ 2895 04a6 4A000000 		.4byte	.LVL86
+ 2896 04aa 0100     		.2byte	0x1
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 57
+
+
+ 2897 04ac 50       		.byte	0x50
+ 2898 04ad 4A000000 		.4byte	.LVL86
+ 2899 04b1 4D000000 		.4byte	.LVL87-1
+ 2900 04b5 0100     		.2byte	0x1
+ 2901 04b7 51       		.byte	0x51
+ 2902 04b8 4D000000 		.4byte	.LVL87-1
+ 2903 04bc 58000000 		.4byte	.LVL89
+ 2904 04c0 0400     		.2byte	0x4
+ 2905 04c2 F3       		.byte	0xf3
+ 2906 04c3 01       		.uleb128 0x1
+ 2907 04c4 50       		.byte	0x50
+ 2908 04c5 9F       		.byte	0x9f
+ 2909 04c6 58000000 		.4byte	.LVL89
+ 2910 04ca 5C000000 		.4byte	.LVL90
+ 2911 04ce 0100     		.2byte	0x1
+ 2912 04d0 50       		.byte	0x50
+ 2913 04d1 5C000000 		.4byte	.LVL90
+ 2914 04d5 5F000000 		.4byte	.LVL91-1
+ 2915 04d9 0100     		.2byte	0x1
+ 2916 04db 51       		.byte	0x51
+ 2917 04dc 5F000000 		.4byte	.LVL91-1
+ 2918 04e0 6A000000 		.4byte	.LVL93
+ 2919 04e4 0400     		.2byte	0x4
+ 2920 04e6 F3       		.byte	0xf3
+ 2921 04e7 01       		.uleb128 0x1
+ 2922 04e8 50       		.byte	0x50
+ 2923 04e9 9F       		.byte	0x9f
+ 2924 04ea 6A000000 		.4byte	.LVL93
+ 2925 04ee 6C000000 		.4byte	.LVL94
+ 2926 04f2 0100     		.2byte	0x1
+ 2927 04f4 50       		.byte	0x50
+ 2928 04f5 6C000000 		.4byte	.LVL94
+ 2929 04f9 80000000 		.4byte	.LFE66
+ 2930 04fd 0400     		.2byte	0x4
+ 2931 04ff F3       		.byte	0xf3
+ 2932 0500 01       		.uleb128 0x1
+ 2933 0501 50       		.byte	0x50
+ 2934 0502 9F       		.byte	0x9f
+ 2935 0503 00000000 		.4byte	0
+ 2936 0507 00000000 		.4byte	0
+ 2937              	.LLST22:
+ 2938 050b 02000000 		.4byte	.LVL77
+ 2939 050f 2A000000 		.4byte	.LVL79
+ 2940 0513 0200     		.2byte	0x2
+ 2941 0515 30       		.byte	0x30
+ 2942 0516 9F       		.byte	0x9f
+ 2943 0517 2A000000 		.4byte	.LVL79
+ 2944 051b 31000000 		.4byte	.LVL80-1
+ 2945 051f 0100     		.2byte	0x1
+ 2946 0521 50       		.byte	0x50
+ 2947 0522 31000000 		.4byte	.LVL80-1
+ 2948 0526 34000000 		.4byte	.LVL81
+ 2949 052a 0100     		.2byte	0x1
+ 2950 052c 54       		.byte	0x54
+ 2951 052d 34000000 		.4byte	.LVL81
+ 2952 0531 3C000000 		.4byte	.LVL83
+ 2953 0535 0200     		.2byte	0x2
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 58
+
+
+ 2954 0537 30       		.byte	0x30
+ 2955 0538 9F       		.byte	0x9f
+ 2956 0539 3C000000 		.4byte	.LVL83
+ 2957 053d 43000000 		.4byte	.LVL84-1
+ 2958 0541 0100     		.2byte	0x1
+ 2959 0543 50       		.byte	0x50
+ 2960 0544 43000000 		.4byte	.LVL84-1
+ 2961 0548 46000000 		.4byte	.LVL85
+ 2962 054c 0100     		.2byte	0x1
+ 2963 054e 54       		.byte	0x54
+ 2964 054f 46000000 		.4byte	.LVL85
+ 2965 0553 4E000000 		.4byte	.LVL87
+ 2966 0557 0200     		.2byte	0x2
+ 2967 0559 30       		.byte	0x30
+ 2968 055a 9F       		.byte	0x9f
+ 2969 055b 4E000000 		.4byte	.LVL87
+ 2970 055f 55000000 		.4byte	.LVL88-1
+ 2971 0563 0100     		.2byte	0x1
+ 2972 0565 50       		.byte	0x50
+ 2973 0566 55000000 		.4byte	.LVL88-1
+ 2974 056a 58000000 		.4byte	.LVL89
+ 2975 056e 0100     		.2byte	0x1
+ 2976 0570 54       		.byte	0x54
+ 2977 0571 58000000 		.4byte	.LVL89
+ 2978 0575 60000000 		.4byte	.LVL91
+ 2979 0579 0200     		.2byte	0x2
+ 2980 057b 30       		.byte	0x30
+ 2981 057c 9F       		.byte	0x9f
+ 2982 057d 60000000 		.4byte	.LVL91
+ 2983 0581 67000000 		.4byte	.LVL92-1
+ 2984 0585 0100     		.2byte	0x1
+ 2985 0587 50       		.byte	0x50
+ 2986 0588 67000000 		.4byte	.LVL92-1
+ 2987 058c 6A000000 		.4byte	.LVL93
+ 2988 0590 0100     		.2byte	0x1
+ 2989 0592 54       		.byte	0x54
+ 2990 0593 6A000000 		.4byte	.LVL93
+ 2991 0597 6C000000 		.4byte	.LVL94
+ 2992 059b 0200     		.2byte	0x2
+ 2993 059d 30       		.byte	0x30
+ 2994 059e 9F       		.byte	0x9f
+ 2995 059f 6C000000 		.4byte	.LVL94
+ 2996 05a3 70000000 		.4byte	.LVL95
+ 2997 05a7 0100     		.2byte	0x1
+ 2998 05a9 54       		.byte	0x54
+ 2999 05aa 70000000 		.4byte	.LVL95
+ 3000 05ae 80000000 		.4byte	.LFE66
+ 3001 05b2 0100     		.2byte	0x1
+ 3002 05b4 50       		.byte	0x50
+ 3003 05b5 00000000 		.4byte	0
+ 3004 05b9 00000000 		.4byte	0
+ 3005              	.LLST23:
+ 3006 05bd 24000000 		.4byte	.LVL96
+ 3007 05c1 26000000 		.4byte	.LVL97
+ 3008 05c5 0200     		.2byte	0x2
+ 3009 05c7 30       		.byte	0x30
+ 3010 05c8 9F       		.byte	0x9f
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 59
+
+
+ 3011 05c9 26000000 		.4byte	.LVL97
+ 3012 05cd 32000000 		.4byte	.LVL98
+ 3013 05d1 0100     		.2byte	0x1
+ 3014 05d3 53       		.byte	0x53
+ 3015 05d4 34000000 		.4byte	.LVL99
+ 3016 05d8 3D000000 		.4byte	.LVL100-1
+ 3017 05dc 0100     		.2byte	0x1
+ 3018 05de 53       		.byte	0x53
+ 3019 05df 00000000 		.4byte	0
+ 3020 05e3 00000000 		.4byte	0
+ 3021              	.LLST24:
+ 3022 05e7 00000000 		.4byte	.LVL101
+ 3023 05eb 04000000 		.4byte	.LVL102
+ 3024 05ef 0300     		.2byte	0x3
+ 3025 05f1 08       		.byte	0x8
+ 3026 05f2 64       		.byte	0x64
+ 3027 05f3 9F       		.byte	0x9f
+ 3028 05f4 04000000 		.4byte	.LVL102
+ 3029 05f8 06000000 		.4byte	.LVL103
+ 3030 05fc 0100     		.2byte	0x1
+ 3031 05fe 53       		.byte	0x53
+ 3032 05ff 08000000 		.4byte	.LVL104
+ 3033 0603 0E000000 		.4byte	.LFE74
+ 3034 0607 0100     		.2byte	0x1
+ 3035 0609 53       		.byte	0x53
+ 3036 060a 00000000 		.4byte	0
+ 3037 060e 00000000 		.4byte	0
+ 3038              		.section	.debug_aranges,"",%progbits
+ 3039 0000 6C000000 		.4byte	0x6c
+ 3040 0004 0200     		.2byte	0x2
+ 3041 0006 00000000 		.4byte	.Ldebug_info0
+ 3042 000a 04       		.byte	0x4
+ 3043 000b 00       		.byte	0
+ 3044 000c 0000     		.2byte	0
+ 3045 000e 0000     		.2byte	0
+ 3046 0010 00000000 		.4byte	.LFB65
+ 3047 0014 1C000000 		.4byte	.LFE65-.LFB65
+ 3048 0018 00000000 		.4byte	.LFB64
+ 3049 001c 48000000 		.4byte	.LFE64-.LFB64
+ 3050 0020 00000000 		.4byte	.LFB67
+ 3051 0024 A4000000 		.4byte	.LFE67-.LFB67
+ 3052 0028 00000000 		.4byte	.LFB68
+ 3053 002c 30000000 		.4byte	.LFE68-.LFB68
+ 3054 0030 00000000 		.4byte	.LFB69
+ 3055 0034 48000000 		.4byte	.LFE69-.LFB69
+ 3056 0038 00000000 		.4byte	.LFB70
+ 3057 003c 6C000000 		.4byte	.LFE70-.LFB70
+ 3058 0040 00000000 		.4byte	.LFB71
+ 3059 0044 40000000 		.4byte	.LFE71-.LFB71
+ 3060 0048 00000000 		.4byte	.LFB72
+ 3061 004c 1C000000 		.4byte	.LFE72-.LFB72
+ 3062 0050 00000000 		.4byte	.LFB66
+ 3063 0054 80000000 		.4byte	.LFE66-.LFB66
+ 3064 0058 00000000 		.4byte	.LFB73
+ 3065 005c 44000000 		.4byte	.LFE73-.LFB73
+ 3066 0060 00000000 		.4byte	.LFB74
+ 3067 0064 0E000000 		.4byte	.LFE74-.LFB74
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 60
+
+
+ 3068 0068 00000000 		.4byte	0
+ 3069 006c 00000000 		.4byte	0
+ 3070              		.section	.debug_ranges,"",%progbits
+ 3071              	.Ldebug_ranges0:
+ 3072 0000 00000000 		.4byte	.LFB65
+ 3073 0004 1C000000 		.4byte	.LFE65
+ 3074 0008 00000000 		.4byte	.LFB64
+ 3075 000c 48000000 		.4byte	.LFE64
+ 3076 0010 00000000 		.4byte	.LFB67
+ 3077 0014 A4000000 		.4byte	.LFE67
+ 3078 0018 00000000 		.4byte	.LFB68
+ 3079 001c 30000000 		.4byte	.LFE68
+ 3080 0020 00000000 		.4byte	.LFB69
+ 3081 0024 48000000 		.4byte	.LFE69
+ 3082 0028 00000000 		.4byte	.LFB70
+ 3083 002c 6C000000 		.4byte	.LFE70
+ 3084 0030 00000000 		.4byte	.LFB71
+ 3085 0034 40000000 		.4byte	.LFE71
+ 3086 0038 00000000 		.4byte	.LFB72
+ 3087 003c 1C000000 		.4byte	.LFE72
+ 3088 0040 00000000 		.4byte	.LFB66
+ 3089 0044 80000000 		.4byte	.LFE66
+ 3090 0048 00000000 		.4byte	.LFB73
+ 3091 004c 44000000 		.4byte	.LFE73
+ 3092 0050 00000000 		.4byte	.LFB74
+ 3093 0054 0E000000 		.4byte	.LFE74
+ 3094 0058 00000000 		.4byte	0
+ 3095 005c 00000000 		.4byte	0
+ 3096              		.section	.debug_line,"",%progbits
+ 3097              	.Ldebug_line0:
+ 3098 0000 71030000 		.section	.debug_str,"MS",%progbits,1
+ 3098      0200E201 
+ 3098      00000201 
+ 3098      FB0E0D00 
+ 3098      01010101 
+ 3099              	.LASF38:
+ 3100 0000 63616E5F 		.ascii	"can_process_BMS_STATUS\000"
+ 3100      70726F63 
+ 3100      6573735F 
+ 3100      424D535F 
+ 3100      53544154 
+ 3101              	.LASF71:
+ 3102 0017 424D535F 		.ascii	"BMS_TEMP\000"
+ 3102      54454D50 
+ 3102      00
+ 3103              	.LASF63:
+ 3104 0020 63616E5F 		.ascii	"can_test_send\000"
+ 3104      74657374 
+ 3104      5F73656E 
+ 3104      6400
+ 3105              	.LASF66:
+ 3106 002e 63616E5F 		.ascii	"can_test_receive\000"
+ 3106      74657374 
+ 3106      5F726563 
+ 3106      65697665 
+ 3106      00
+ 3107              	.LASF36:
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 61
+
+
+ 3108 003f 74656D70 		.ascii	"temp\000"
+ 3108      00
+ 3109              	.LASF2:
+ 3110 0044 73686F72 		.ascii	"short int\000"
+ 3110      7420696E 
+ 3110      7400
+ 3111              	.LASF24:
+ 3112 004e 73697A65 		.ascii	"sizetype\000"
+ 3112      74797065 
+ 3112      00
+ 3113              	.LASF25:
+ 3114 0057 43414E5F 		.ascii	"CAN_DATA_BYTES_MSG\000"
+ 3114      44415441 
+ 3114      5F425954 
+ 3114      45535F4D 
+ 3114      534700
+ 3115              	.LASF21:
+ 3116 006a 63686172 		.ascii	"char8\000"
+ 3116      3800
+ 3117              	.LASF82:
+ 3118 0070 433A5C55 		.ascii	"C:\\Users\\Schuyler\\Documents\\PSoC Creator\\Node-"
+ 3118      73657273 
+ 3118      5C536368 
+ 3118      75796C65 
+ 3118      725C446F 
+ 3119 009e 5268696E 		.ascii	"Rhinoceros\\Node-Rhinoceros\\Node-Rhinoceros.cydsn\000"
+ 3119      6F636572 
+ 3119      6F735C4E 
+ 3119      6F64652D 
+ 3119      5268696E 
+ 3120              	.LASF23:
+ 3121 00cf 6C6F6E67 		.ascii	"long double\000"
+ 3121      20646F75 
+ 3121      626C6500 
+ 3122              	.LASF8:
+ 3123 00db 5F5F7569 		.ascii	"__uint32_t\000"
+ 3123      6E743332 
+ 3123      5F7400
+ 3124              	.LASF4:
+ 3125 00e6 5F5F7569 		.ascii	"__uint16_t\000"
+ 3125      6E743136 
+ 3125      5F7400
+ 3126              	.LASF47:
+ 3127 00f1 766F6C74 		.ascii	"volt_string\000"
+ 3127      5F737472 
+ 3127      696E6700 
+ 3128              	.LASF74:
+ 3129 00fd 43414E5F 		.ascii	"CAN_Start\000"
+ 3129      53746172 
+ 3129      7400
+ 3130              	.LASF28:
+ 3131 0107 6D696C6C 		.ascii	"millicounter\000"
+ 3131      69636F75 
+ 3131      6E746572 
+ 3131      00
+ 3132              	.LASF13:
+ 3133 0114 75696E74 		.ascii	"uint8_t\000"
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 62
+
+
+ 3133      385F7400 
+ 3134              	.LASF54:
+ 3135 011c 6D696E56 		.ascii	"minVolt\000"
+ 3135      6F6C7400 
+ 3136              	.LASF17:
+ 3137 0124 75696E74 		.ascii	"uint8\000"
+ 3137      3800
+ 3138              	.LASF51:
+ 3139 012a 766F6C74 		.ascii	"voltageDiff\000"
+ 3139      61676544 
+ 3139      69666600 
+ 3140              	.LASF84:
+ 3141 0136 74657374 		.ascii	"test_msg\000"
+ 3141      5F6D7367 
+ 3141      00
+ 3142              	.LASF57:
+ 3143 013f 6D617856 		.ascii	"maxVolt\000"
+ 3143      6F6C7400 
+ 3144              	.LASF19:
+ 3145 0147 666C6F61 		.ascii	"float\000"
+ 3145      7400
+ 3146              	.LASF53:
+ 3147 014d 6D696E56 		.ascii	"minVoltByte1\000"
+ 3147      6F6C7442 
+ 3147      79746531 
+ 3147      00
+ 3148              	.LASF52:
+ 3149 015a 6D696E56 		.ascii	"minVoltByte2\000"
+ 3149      6F6C7442 
+ 3149      79746532 
+ 3149      00
+ 3150              	.LASF10:
+ 3151 0167 6C6F6E67 		.ascii	"long long int\000"
+ 3151      206C6F6E 
+ 3151      6720696E 
+ 3151      7400
+ 3152              	.LASF7:
+ 3153 0175 6C6F6E67 		.ascii	"long int\000"
+ 3153      20696E74 
+ 3153      00
+ 3154              	.LASF46:
+ 3155 017e 766F6C74 		.ascii	"voltage\000"
+ 3155      61676500 
+ 3156              	.LASF35:
+ 3157 0186 6F666673 		.ascii	"offset\000"
+ 3157      657400
+ 3158              	.LASF9:
+ 3159 018d 6C6F6E67 		.ascii	"long unsigned int\000"
+ 3159      20756E73 
+ 3159      69676E65 
+ 3159      6420696E 
+ 3159      7400
+ 3160              	.LASF3:
+ 3161 019f 5F5F7569 		.ascii	"__uint8_t\000"
+ 3161      6E74385F 
+ 3161      7400
+ 3162              	.LASF33:
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 63
+
+
+ 3163 01a9 70726576 		.ascii	"prev_msg\000"
+ 3163      5F6D7367 
+ 3163      00
+ 3164              	.LASF26:
+ 3165 01b2 62797465 		.ascii	"byte\000"
+ 3165      00
+ 3166              	.LASF81:
+ 3167 01b7 63616E5F 		.ascii	"can_manager.c\000"
+ 3167      6D616E61 
+ 3167      6765722E 
+ 3167      6300
+ 3168              	.LASF58:
+ 3169 01c5 63616E5F 		.ascii	"can_process_BMS_TEMP\000"
+ 3169      70726F63 
+ 3169      6573735F 
+ 3169      424D535F 
+ 3169      54454D50 
+ 3170              	.LASF75:
+ 3171 01da 73707269 		.ascii	"sprintf\000"
+ 3171      6E746600 
+ 3172              	.LASF1:
+ 3173 01e2 756E7369 		.ascii	"unsigned char\000"
+ 3173      676E6564 
+ 3173      20636861 
+ 3173      7200
+ 3174              	.LASF44:
+ 3175 01f0 62797465 		.ascii	"byte1\000"
+ 3175      3100
+ 3176              	.LASF43:
+ 3177 01f6 62797465 		.ascii	"byte2\000"
+ 3177      3200
+ 3178              	.LASF49:
+ 3179 01fc 62797465 		.ascii	"byte3\000"
+ 3179      3300
+ 3180              	.LASF48:
+ 3181 0202 62797465 		.ascii	"byte4\000"
+ 3181      3400
+ 3182              	.LASF0:
+ 3183 0208 7369676E 		.ascii	"signed char\000"
+ 3183      65642063 
+ 3183      68617200 
+ 3184              	.LASF11:
+ 3185 0214 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 3185      206C6F6E 
+ 3185      6720756E 
+ 3185      7369676E 
+ 3185      65642069 
+ 3186              	.LASF16:
+ 3187 022b 75696E74 		.ascii	"uint32_t\000"
+ 3187      33325F74 
+ 3187      00
+ 3188              	.LASF40:
+ 3189 0234 63616E5F 		.ascii	"can_process_BMS_CURR\000"
+ 3189      70726F63 
+ 3189      6573735F 
+ 3189      424D535F 
+ 3189      43555252 
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 64
+
+
+ 3190              	.LASF12:
+ 3191 0249 756E7369 		.ascii	"unsigned int\000"
+ 3191      676E6564 
+ 3191      20696E74 
+ 3191      00
+ 3192              	.LASF77:
+ 3193 0256 4C43445F 		.ascii	"LCD_PrintString\000"
+ 3193      5072696E 
+ 3193      74537472 
+ 3193      696E6700 
+ 3194              	.LASF14:
+ 3195 0266 75696E74 		.ascii	"uint16_t\000"
+ 3195      31365F74 
+ 3195      00
+ 3196              	.LASF45:
+ 3197 026f 63616E5F 		.ascii	"can_process_BMS_VOLT\000"
+ 3197      70726F63 
+ 3197      6573735F 
+ 3197      424D535F 
+ 3197      564F4C54 
+ 3198              	.LASF70:
+ 3199 0284 424D535F 		.ascii	"BMS_VOLTAGE\000"
+ 3199      564F4C54 
+ 3199      41474500 
+ 3200              	.LASF41:
+ 3201 0290 63757272 		.ascii	"current\000"
+ 3201      656E7400 
+ 3202              	.LASF73:
+ 3203 0298 43414E5F 		.ascii	"CAN_Init\000"
+ 3203      496E6974 
+ 3203      00
+ 3204              	.LASF62:
+ 3205 02a1 73746174 		.ascii	"status\000"
+ 3205      757300
+ 3206              	.LASF5:
+ 3207 02a8 73686F72 		.ascii	"short unsigned int\000"
+ 3207      7420756E 
+ 3207      7369676E 
+ 3207      65642069 
+ 3207      6E7400
+ 3208              	.LASF68:
+ 3209 02bb 424D535F 		.ascii	"BMS_STATUS\000"
+ 3209      53544154 
+ 3209      555300
+ 3210              	.LASF55:
+ 3211 02c6 6D617856 		.ascii	"maxVoltByte2\000"
+ 3211      6F6C7442 
+ 3211      79746532 
+ 3211      00
+ 3212              	.LASF22:
+ 3213 02d3 63686172 		.ascii	"char\000"
+ 3213      00
+ 3214              	.LASF78:
+ 3215 02d8 4C43445F 		.ascii	"LCD_PrintInt8\000"
+ 3215      5072696E 
+ 3215      74496E74 
+ 3215      3800
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 65
+
+
+ 3216              	.LASF15:
+ 3217 02e6 696E7433 		.ascii	"int32_t\000"
+ 3217      325F7400 
+ 3218              	.LASF50:
+ 3219 02ee 63616E5F 		.ascii	"can_process_BMS_VOLT_D\000"
+ 3219      70726F63 
+ 3219      6573735F 
+ 3219      424D535F 
+ 3219      564F4C54 
+ 3220              	.LASF39:
+ 3221 0305 626D735F 		.ascii	"bms_error_str\000"
+ 3221      6572726F 
+ 3221      725F7374 
+ 3221      7200
+ 3222              	.LASF61:
+ 3223 0313 63616E5F 		.ascii	"can_process\000"
+ 3223      70726F63 
+ 3223      65737300 
+ 3224              	.LASF31:
+ 3225 031f 44617461 		.ascii	"DataPacket\000"
+ 3225      5061636B 
+ 3225      657400
+ 3226              	.LASF30:
+ 3227 032a 64617461 		.ascii	"data\000"
+ 3227      00
+ 3228              	.LASF56:
+ 3229 032f 6D617856 		.ascii	"maxVoltByte1\000"
+ 3229      6F6C7442 
+ 3229      79746531 
+ 3229      00
+ 3230              	.LASF18:
+ 3231 033c 75696E74 		.ascii	"uint32\000"
+ 3231      333200
+ 3232              	.LASF64:
+ 3233 0343 6D657373 		.ascii	"message\000"
+ 3233      61676500 
+ 3234              	.LASF32:
+ 3235 034b 63616E5F 		.ascii	"can_msg\000"
+ 3235      6D736700 
+ 3236              	.LASF27:
+ 3237 0353 43414E5F 		.ascii	"CAN_TX_MSG\000"
+ 3237      54585F4D 
+ 3237      534700
+ 3238              	.LASF79:
+ 3239 035e 43414E5F 		.ascii	"CAN_SendMsg\000"
+ 3239      53656E64 
+ 3239      4D736700 
+ 3240              	.LASF69:
+ 3241 036a 424D535F 		.ascii	"BMS_CURRENT\000"
+ 3241      43555252 
+ 3241      454E5400 
+ 3242              	.LASF72:
+ 3243 0376 43414E5F 		.ascii	"CAN_GlobalIntEnable\000"
+ 3243      476C6F62 
+ 3243      616C496E 
+ 3243      74456E61 
+ 3243      626C6500 
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 66
+
+
+ 3244              	.LASF59:
+ 3245 038a 74656D70 		.ascii	"temperature\000"
+ 3245      65726174 
+ 3245      75726500 
+ 3246              	.LASF6:
+ 3247 0396 5F5F696E 		.ascii	"__int32_t\000"
+ 3247      7433325F 
+ 3247      7400
+ 3248              	.LASF83:
+ 3249 03a0 63616E5F 		.ascii	"can_msg_init\000"
+ 3249      6D73675F 
+ 3249      696E6974 
+ 3249      00
+ 3250              	.LASF34:
+ 3251 03ad 6E65775F 		.ascii	"new_msg\000"
+ 3251      6D736700 
+ 3252              	.LASF37:
+ 3253 03b5 63616E5F 		.ascii	"can_init\000"
+ 3253      696E6974 
+ 3253      00
+ 3254              	.LASF76:
+ 3255 03be 4C43445F 		.ascii	"LCD_Position\000"
+ 3255      506F7369 
+ 3255      74696F6E 
+ 3255      00
+ 3256              	.LASF20:
+ 3257 03cb 646F7562 		.ascii	"double\000"
+ 3257      6C6500
+ 3258              	.LASF67:
+ 3259 03d2 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 3259      52784275 
+ 3259      66666572 
+ 3259      00
+ 3260              	.LASF80:
+ 3261 03df 474E5520 		.ascii	"GNU C11 5.4.1 20160609 (release) [ARM/embedded-5-br"
+ 3261      43313120 
+ 3261      352E342E 
+ 3261      31203230 
+ 3261      31363036 
+ 3262 0412 616E6368 		.ascii	"anch revision 237715] -mcpu=cortex-m3 -mthumb -g -O"
+ 3262      20726576 
+ 3262      6973696F 
+ 3262      6E203233 
+ 3262      37373135 
+ 3263 0445 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 3263      66756E63 
+ 3263      74696F6E 
+ 3263      2D736563 
+ 3263      74696F6E 
+ 3264              	.LASF42:
+ 3265 046d 63757272 		.ascii	"curr_string\000"
+ 3265      5F737472 
+ 3265      696E6700 
+ 3266              	.LASF65:
+ 3267 0479 74657374 		.ascii	"test_data\000"
+ 3267      5F646174 
+ 3267      6100
+ARM GAS  C:\Users\Schuyler\AppData\Local\Temp\ccamabNe.s 			page 67
+
+
+ 3268              	.LASF60:
+ 3269 0483 63616E5F 		.ascii	"can_compare\000"
+ 3269      636F6D70 
+ 3269      61726500 
+ 3270              	.LASF29:
+ 3271 048f 6C656E67 		.ascii	"length\000"
+ 3271      746800
+ 3272              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 5.4.1 20160609 (release) [ARM/embedded-5-bran

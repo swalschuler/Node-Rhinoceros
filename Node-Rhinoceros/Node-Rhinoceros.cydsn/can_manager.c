@@ -51,8 +51,13 @@ int can_process(DataPacket* can_msg){
 		break;
 	case BMS_VOLTAGE_ID:	//0x388
 		status = can_compare(&BMS_VOLTAGE, can_msg);
-		if(status)
-			can_process_BMS_VOLT();
+		if(status) {
+		    #ifdef VOLTAGE_DIFF
+            can_process_BMS_VOLT_D();
+            #else
+            can_process_BMS_VOLT();
+            #endif
+        }
 		break;
 	case BMS_TEMP_ID:		//0x488
 		status = can_compare(&BMS_TEMP, can_msg);
@@ -169,6 +174,28 @@ void can_process_BMS_VOLT() {
 	
 	//voltage = 0x0001C3E3;
 	sprintf(volt_string, "%03d.%01dV", (int)(voltage/1000), (int)(voltage/100%10));
+	LCD_Position(0, 3);
+	LCD_PrintString(volt_string);
+}
+
+//gets pack voltage diff
+void can_process_BMS_VOLT_D() {
+	uint16_t voltageDiff;
+	char8 volt_string[6];
+	
+    uint16_t minVoltByte2 = BMS_VOLTAGE.data[0] << 8;
+    uint16_t minVoltByte1 = BMS_VOLTAGE.data[1];
+    uint16_t minVolt = minVoltByte2 | minVoltByte1;
+    
+    
+    uint16_t maxVoltByte2 = BMS_VOLTAGE.data[2] << 8;
+    uint16_t maxVoltByte1 = BMS_VOLTAGE.data[3];
+    uint16_t maxVolt = maxVoltByte2 | maxVoltByte1;
+    
+    voltageDiff = maxVolt - minVolt;
+	
+	//voltage = 0x0001C3E3;
+	sprintf(volt_string, "%04dVD", (int)(voltageDiff));
 	LCD_Position(0, 3);
 	LCD_PrintString(volt_string);
 }
